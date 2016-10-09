@@ -5,7 +5,7 @@
  */
 function MyTriangle(scene, id, x0, y0, z0, x1, y1, z1, x2, y2, z2) {
 	CGFobject.call(this,scene);
-	
+
 	this.id=id;
 	this.x0=x0;
 	this.x1=x1;
@@ -38,11 +38,11 @@ MyTriangle.prototype.initBuffers = function () {
     this.normals = [
             //calcular depois
     ];
-	
+
 	this.texCoords = [
 		//TODO: depois ve-se
 	]
-		
+
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };

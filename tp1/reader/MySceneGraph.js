@@ -4,7 +4,7 @@ function MySceneGraph(filename, scene) {
 
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
-	scene.graph=this;
+	scene.graph = this;
 
 	// File reading
 	this.reader = new CGFXMLreader();
@@ -41,7 +41,7 @@ MySceneGraph.prototype.onXMLReady=function()
 };
 
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
-	var primitives =  rootElement.getElementsByTagName('primitive');
+	var primitives = rootElement.getElementsByTagName('primitive');
 
 	if (elems == null) {
 		//return "primitive element is missing.";
@@ -100,6 +100,38 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	}
 }
 
+MySceneGraph.prototype.parseComponents = function(rootElement) {
+	var components = rootElement.getElementsByTagName('component');
+	for(i = 0; i < components.length; i++){
+		myComponent.id = this.reader.getString(components[i], "id", true);
+	}
+
+	if (elems == null) {
+		//return "component element is missing.";
+	}
+}
+
+MySceneGraph.prototype.parseChildren = function(rootElement, component) {
+	var primRefs = rootElement.getElementsByTagName('primitiveref');
+	var compRefs = rootElement.getElementsByTagName('componentref');
+	component.primitives = [];
+	component.components = [];
+
+	for(i = 0; i < primRefs.length; i++){
+		primId = this.reader.getString(primRefs[i], "id", true);
+		if (!this.scene.primitives.hasOwnProperty(primId))
+			return "Reference to undefined primitive " + primId;
+		component.primitives.push(primId);
+	}
+
+	for(i = 0; i < compRefs.length; i++){
+		compId = this.reader.getString(compRefs[i], "id", true);
+		if (!this.scene.primitives.hasOwnProperty(compId))
+			return "Reference to undefined component " + compId;
+		component.components.push(compId);
+	}
+}
+
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
@@ -107,7 +139,11 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 
 	error = this.parsePrimitives(rootElement);
 	if(error != null)
-		return error
+		return error;
+
+	error = this.parseComponents(rootElement);
+	if(error != null)
+		return error;
 
 	/*
 	var elems =  rootElement.getElementsByTagName('globals');

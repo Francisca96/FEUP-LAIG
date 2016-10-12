@@ -47,7 +47,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 		//return "primitive element is missing.";
 	}
 
-	this.scene.primitives = [];
+	this.scene.primitives = {};
 
 	for (i = 0; i < primitives.length; i++){
 		id = this.reader.getString(primitives[i], "id", true); //TODO: ver que erro dá se não existir
@@ -59,7 +59,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				y0 = this.reader.getFloat(primitives[i], "y0", true);
 				x1 = this.reader.getFloat(primitives[i], "x1", true);
 				y1 = this.reader.getFloat(primitives[i], "y1", true);
-				this.scene.primitives.push(new MyRectangle(this.scene, id, x0, y0, x1, y1));
+				this.scene.primitives[id] = new MyRectangle(this.scene, id, x0, y0, x1, y1);
 				break;
 			case "triangle":
 				x0 = this.reader.getFloat(primitives[i], "x0", true);
@@ -71,7 +71,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				x2 = this.reader.getFloat(primitives[i], "x2", true);
 				y2 = this.reader.getFloat(primitives[i], "y2", true);
 				z2 = this.reader.getFloat(primitives[i], "z2", true);
-				this.scene.primitives.push(new MyTriangle(this.scene, id, x0, y0, z0, x1, y1, z1, x2, y2, z2));
+				this.scene.primitives[id] = new MyTriangle(this.scene, id, x0, y0, z0, x1, y1, z1, x2, y2, z2);
 				break;
 			case "cylinder":
 				base = this.reader.getFloat(primitives[i], "base", true);
@@ -79,20 +79,20 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				height = this.reader.getFloat(primitives[i], "height", true);
 				slices = this.reader.getInteger(primitives[i], "slices", true);
 				stacks = this.reader.getInteger(primitives[i], "stacks", true);
-				//this.scene.primitives.push(new MyCylinder(this.scene, id, base, top, height, slices, stacks));
+				this.scene.primitives[id] = new MyCylinder(this.scene, id, base, top, height, slices, stacks);
 				break;
 			case "sphere":
 				radius = this.reader.getFloat(primitives[i], "radius", true);
 				slices = this.reader.getInteger(primitives[i], "slices", true);
 				stacks = this.reader.getInteger(primitives[i], "stacks", true);
-				//this.scene.primitives.push(new MySphere(this.scene, id, radius, slices, stacks));
+				this.scene.primitives[id] = new MySphere(this.scene, id, radius, slices, stacks);
 				break;
 			case "torus":
 				inner = this.reader.getFloat(primitives[i], "inner", true);
 				outer = this.reader.getFloat(primitives[i], "outer", true);
 				slices = this.reader.getInteger(primitives[i], "slices", true);
 				loop = this.reader.getInteger(primitives[i], "loop", true);
-				//this.scene.primitives.push(new MyTorus(this.scene, id, inner, outer, slices, loops));
+				//this.scene.primitives[id] = new MyTorus(this.scene, id, inner, outer, slices, loops);
 				break;
 			default:
 				return "Unrecognized type of primitive: " + primitives[i].childNodes[0].tagName;

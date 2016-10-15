@@ -48,7 +48,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	}
 
 	this.scene.primitives = {};
-
+	
 	for (i = 0; i < primitives.length; i++){
 		id = this.reader.getString(primitives[i], "id", true); //TODO: ver que erro dá se não existir
 		if (primitives[i].childNodes.length != 1)
@@ -104,6 +104,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	var components = rootElement.getElementsByTagName('component');
 	for(i = 0; i < components.length; i++){
 		myComponent.id = this.reader.getString(components[i], "id", true);
+		parseChildren(rootElement, component);
 	}
 
 	if (elems == null) {
@@ -115,7 +116,7 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 	var primRefs = rootElement.getElementsByTagName('primitiveref');
 	var compRefs = rootElement.getElementsByTagName('componentref');
 	component.primitives = [];
-	component.components = [];
+	component.subComponents = [];
 
 	for(i = 0; i < primRefs.length; i++){
 		primId = this.reader.getString(primRefs[i], "id", true);
@@ -126,9 +127,43 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 
 	for(i = 0; i < compRefs.length; i++){
 		compId = this.reader.getString(compRefs[i], "id", true);
-		if (!this.scene.primitives.hasOwnProperty(compId))
-			return "Reference to undefined component " + compId;
-		component.components.push(compId);
+		component.subComponents.push(compId);
+	}
+}
+
+MySceneGraph.prototype.parseMaterials = function(rootElement, component) {
+	var materials = rootElement.getElementsByTagName('material');
+	component.materials = [];
+
+	for(i = 0; i < materials.length; i++){
+		materialId = this.reader.getString(materials[i], "id", true);
+		if (!this.scene.primitives.hasOwnProperty(materialId))
+			return "Reference to undefined material " + materialId;
+		component.materials.push(materialId);
+	}
+}
+
+MySceneGraph.prototype.parseTextures = function(rootElement, component) {
+	var textures = rootElement.getElementsByTagName('texture');
+	component.textures = [];
+
+	for(i = 0; i < textures.length; i++){
+		textureId = this.reader.getString(textures[i], "id", true);
+		if (!this.scene.primitives.hasOwnProperty(textureId))
+			return "Reference to undefined texture " + textureId;
+		component.textures.push(textureId);
+	}
+}
+
+MySceneGraph.prototype.parseTransformation = function(rootElement, component) {
+	var transfRef = rootElement.getElementsByTagName('transformationref');
+	component.transformation = [];
+
+	for(i = 0; i < textures.length; i++){
+		transfId = this.reader.getString(transfRef[i], "id", true);
+		if (!this.scene.primitives.hasOwnProperty(transfId))
+			return "Reference to undefined transformation " + transfId;
+		component.textures.push(transfId);
 	}
 }
 
@@ -188,8 +223,21 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 /*
  * Callback to be executed on any read error
  */
-
 MySceneGraph.prototype.onXMLError=function (message) {
 	console.error("XML Loading Error: "+message);
 	this.loadedOk=false;
+};
+
+
+MySceneGraph.prototype.displayComponent=function(component) {
+	for (var i=0; i < component.subComponents; i++){
+		var subComponentID = component.subComponents[i];
+		this.displayObject(this.scene.components[subComponentID]);
+	}
+	
+	for(var i=0; i < component.primitives; i++){
+		var primitiveID = component.primitives[i];
+		this.scene.primitives[primitiveID].display();
+	}
+
 };

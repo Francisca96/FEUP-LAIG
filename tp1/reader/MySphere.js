@@ -29,9 +29,9 @@
 
 	for(j = 0; j <= this.stacks; j++){
 		for(i = 0 ; i < this.slices; i++) {
-			var x = Math.cos(this.horizontalAng*i) * Math.sin(this.verticalAng*j) * radius;
-			var y = Math.sin(this.horizontalAng*i) * Math.sin(this.verticalAng*j) * radius;
-			var z = Math.cos(this.verticalAng*j) * radius;
+			var x = Math.cos(this.horizontalAng*i) * Math.sin(this.verticalAng*j) * this.radius;
+			var y = Math.sin(this.horizontalAng*i) * Math.sin(this.verticalAng*j) * this.radius;
+			var z = Math.cos(this.verticalAng*j) * this.radius;
 			this.vertices.push(x, y, z);
 			this.normals.push(x, y, z);
 			this.texCoords.push((x+1)/2, (y+1)/2);

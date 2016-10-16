@@ -21,6 +21,13 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+
+	//scene primitives
+    this.rectangle = new MyRectangle(this, "rectangle", 0, 2, 2, 4);
+    this.triangle = new MyTriangle(this, "triangle", 0, 2, 2, 0, 2, 0, 0, 4, 1);
+    this.cylinder = new MyCylinder(this, "cylinder", 1, 1, 3, 40, 40);
+    this.sphere = new MySphere(this, "sphere", 1, 40, 40);
+    //this.torus = new MyTorus(this, "torus", inner, outer, slices, loop)
 };
 
 XMLscene.prototype.initLights = function () {
@@ -78,4 +85,24 @@ XMLscene.prototype.display = function () {
 	{
 		this.lights[0].update();
 	};
+
+	this.pushMatrix();
+        this.rectangle.display();
+    this.popMatrix();
+ 
+    this.pushMatrix();
+         this.triangle.display();
+    this.popMatrix();
+ 
+    this.pushMatrix();
+        this.cylinder.display();
+    this.popMatrix();
+ 
+    this.pushMatrix();
+        this.sphere.display();
+    this.popMatrix();
+ 
+    /*this.pushMatrix();
+        this.torus.display();
+    this.popMatrix();*/
 };

@@ -43,9 +43,9 @@ MySceneGraph.prototype.onXMLReady=function()
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	var primitives = rootElement.getElementsByTagName('primitive');
 
-	if (elems == null) {
-		//return "primitive element is missing.";
-	}
+	// if (elems == null) {
+	// 	//return "primitive element is missing.";
+	// }
 
 	this.scene.primitives = {};
 	
@@ -92,7 +92,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				outer = this.reader.getFloat(primitives[i], "outer", true);
 				slices = this.reader.getInteger(primitives[i], "slices", true);
 				loop = this.reader.getInteger(primitives[i], "loop", true);
-				//this.scene.primitives[id] = new MyTorus(this.scene, id, inner, outer, slices, loops);
+				this.scene.primitives[id] = new MyTorus(this.scene, id, inner, outer, slices, loops);
 				break;
 			default:
 				return "Unrecognized type of primitive: " + primitives[i].childNodes[0].tagName;
@@ -107,9 +107,9 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 		parseChildren(rootElement, component);
 	}
 
-	if (elems == null) {
-		//return "component element is missing.";
-	}
+	// if (elems == null) {
+	// 	//return "component element is missing.";
+	// }
 }
 
 MySceneGraph.prototype.parseChildren = function(rootElement, component) {

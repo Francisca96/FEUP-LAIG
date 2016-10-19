@@ -13,11 +13,11 @@
  };
 
  MyOpenCylinder.prototype = Object.create(CGFobject.prototype);
- MyCylinder.prototype.constructor = MyOpenCylinder;
+ MyOpenCylinder.prototype.constructor = MyOpenCylinder;
 
  MyOpenCylinder.prototype.initBuffers = function() {
 	this.ang = Math.PI*2/this.slices;
-	this.stackSize = height/this.stacks;
+	this.stackSize = this.height/this.stacks;
 
 	this.vertices = [];
 	this.indices = [];

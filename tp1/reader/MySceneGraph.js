@@ -48,7 +48,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	// }
 
 	this.scene.primitives = {};
-	
+
 	for (i = 0; i < primitives.length; i++){
 		id = this.reader.getString(primitives[i], "id", true); //TODO: ver que erro dá se não existir
 		if (primitives[i].childNodes.length != 1)
@@ -130,6 +130,55 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 		component.subComponents.push(compId);
 	}
 };
+
+MySceneGraph.prototype.getRGBA = function(xmlTag){
+	rgba = [];
+	rgba[0]=this.reader.getFloat(xmlTag, "r", true);
+	rgba[1]=this.reader.getFloat(xmlTag, "g", true);
+	rgba[2]=this.reader.getFloat(xmlTag, "b", true);
+	rgba[3]=this.reader.getFloat(xmlTag, "a", true);
+	return rgba;
+};
+
+MySceneGraph.prototype.getMaterial = function(rootElement){
+	if(rootElement.childNodes.length != 5){
+		return null;
+	}
+	var materialParams = [0, 0, 0, 0, 0];
+	for(var i = 0; i < rootElement.childNodes.length; i++){
+		switch(rootElement.childNodes[i].tagName){
+			case "emission": materialParams[0] = getRGBA(rootElement.childNodes[i]); break;
+			case "ambient": materialParams[1] = getRGBA(rootElement.childNodes[i]); break;
+			case "diffuse": materialParams[2] = getRGBA(rootElement.childNodes[i]); break;
+			case "specular": materialParams[3] = getRGBA(rootElement.childNodes[i]); break;
+			case "shininess": materialParams[4] = getInteger(rootElement.childNodes[i], "value", true); break;
+			default: return null;
+		}
+		var newMaterial = new CGFappearance(this.scene);
+		newMaterial.setEmission(materialParams[0][0], materialParams[0][1], materialParams[0][2], materialParams[0][3], materialParams[0][4]);
+		newMaterial.setAmbient(materialParams[1][0], materialParams[1][1], materialParams[1][2], materialParams[1][3], materialParams[1][4]);
+		newMaterial.setDiffuse(materialParams[2][0], materialParams[2][1], materialParams[2][2], materialParams[2][3], materialParams[2][4]);
+		newMaterial.setSpecular(materialParams[3][0], materialParams[3][1], materialParams[3][2], materialParams[3][3], materialParams[3][4]);
+		newMaterial.setShininess(materialParams[4]);
+		return newMaterial;
+	}
+};
+
+MySceneGraph.prototype.parseMaterials = function(rootElement){
+	this.scene.materials={};
+
+	var materials = rootElement.getElementsByTagName('material');
+
+	for(var i=0; i < materials.length; i++){
+		var id = this.reader.getString(materials[i], "id", true);
+		var myMaterial = getMaterial(materials[i]);
+		if(myMaterial == null){
+			return "Error, invalid format on tag " + materials[i];
+		}
+		this.scene.materials[id] = myMaterial;
+	}
+};
+
 
 MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component) {
 	var materials = rootElement.getElementsByTagName('material');

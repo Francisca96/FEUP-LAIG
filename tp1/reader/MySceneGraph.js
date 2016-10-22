@@ -219,7 +219,63 @@ MySceneGraph.prototype.parseComponentTextures = function(rootElement, component)
 	}
 };
 
-MySceneGraph.prototype.parseComponentTransformation = function(rootElement, component) {
+MySceneGraph.prototype.getTransformationValues = function(xmlTag, transformation){
+	pos = [];
+	if(transformation != "rotate"){
+		pos[0]=this.reader.getFloat(xmlTag, "x", true);
+		pos[1]=this.reader.getFloat(xmlTag, "y", true);
+		pos[2]=this.reader.getFloat(xmlTag, "z", true);
+	}
+	else{
+		var axis = this.reader.getString(xmlTag, "axis", true);
+		var angle = this.reader.getString(xmlTag, "angle", true);
+		pos[0] = angle * Math.PI / 180;
+		pos[1] = pos[2] = pos[3] = 0;
+		switch(axis){
+			case "x": pos[1] = 1; break;
+			case "y": pos[2] = 1; break;
+			case "z": pos[3] = 1; break;
+		}
+	}
+	return pos;
+};
+
+MySceneGraph.prototype.parseTransformation = function(transformationBlock) {
+	this.scene.pushMatrix();
+	var transfValues = [];
+	for(var i = 0; i < transformationBlock.childNodes.length; i++){
+		transfValues = this.getTransformationValues(transformationBlock.childNodes[i]);
+		switch(childNodes[i].tagName){
+			case "translate":
+				this.scene.translate(transfValues[0], transfValues[1], transfValues[2]);
+				break;
+			case "scale":
+				this.scene.scale(transfValues[0], transfValues[1], transfValues[2]);
+				break;
+			case "rotate":
+				this.scene.rotate(transfValues[0], transfValues[1], transfValues[2], transfValues[3]);
+				break;
+			default:
+				return "error wrong transformation tag " + childNodes[i].tagName;
+		}
+	}
+	var transformationMatrix = this.scene.getMatrix();
+	this.scene.popMatrix();
+	return transformationMatrix;
+};
+
+MySceneGraph.prototype.parseTransformations = function(rootElement) {
+	this.scene.transformations = {};
+
+
+	var transfs = rootElement.getElementsByTagName('transformation');
+	for(var i = 0; i < transfs.length; i++){
+		var id = this.reader.getString(transfs[i], "id", true);
+		this.scene.transformations[id] = this.parseTransformation(transfs[i]);
+	}
+};
+
+MySceneGraph.prototype.parseComponentTransformations = function(rootElement, component) {
 	var transfRef = rootElement.getElementsByTagName('transformationref');
 	component.transformation = [];
 

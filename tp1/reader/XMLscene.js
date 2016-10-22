@@ -17,7 +17,7 @@ XMLscene.prototype.init = function (application) {
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
-	this.gl.enable(this.gl.CULL_FACE);
+	  this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
@@ -25,15 +25,15 @@ XMLscene.prototype.init = function (application) {
 	this.enableTextures(true);
 
 	//scene primitives
-    this.grass = new MyRectangle(this, "grass", -1, -1, 1, 1);
-    this.poolTop = new MyRectangle(this, "poolTop", -1, -1, 1, 1);
-    this.poolEdge = new MyRectangle(this, "poolEdge", -1, -1, 1, 1, 0, 5, 0, 1);
-    this.ball = new MySphere(this, "ball", 0.5, 40, 40);
-    //this.table = new MyCylinder(this, "table", 4, 12, 1, 40, 40);
-    //this.towel = new MyPolygon(this, 30, 12);
-    this.buoy = new MyTorus(this, 1, 2, 40, 40);
+  this.grass = new MyRectangle(this, "grass", -1, -1, 1, 1);
+  this.poolTop = new MyRectangle(this, "poolTop", -1, -1, 1, 1);
+  this.poolEdge = new MyRectangle(this, "poolEdge", -1, -1, 1, 1, 0, 5, 0, 1);
+  this.ball = new MySphere(this, "ball", 0.5, 40, 40);
+  //this.table = new MyCylinder(this, "table", 4, 12, 1, 40, 40);
+  //this.towel = new MyPolygon(this, 30, 12);
+  this.buoy = new MyTorus(this, 1, 2, 40, 40);
 
-    // Materials
+  // Materials
 	this.materialDefault = new CGFappearance(this);
 
 	this.grassMaterial = new CGFappearance(this);
@@ -92,14 +92,19 @@ XMLscene.prototype.init = function (application) {
 	this.buoyMaterial.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 };
 
+XMLscene.prototype.initCameras = function () {
+    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+};
+
 XMLscene.prototype.initLights = function () {
+  this.setGlobalAmbientLight(0, 0, 0, 1.0);
 
 	this.lights[0].setPosition(2, 5, 3, 1);
 	this.lights[0].setAmbient(0.7, 0.7, 0.7, 1);
-    this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
-    this.lights[0].update();
-
-    this.lights[1].setPosition(5, 5, 3, 1);
+  this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
+  this.lights[0].update();
+    
+  this.lights[1].setPosition(5, 5, 3, 1);
 	this.lights[1].setAmbient(0.7, 0.7, 0.7, 1);
 	this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
 	this.lights[1].update();
@@ -115,9 +120,10 @@ XMLscene.prototype.initLights = function () {
 	this.lights[3].update();
 };
 
-XMLscene.prototype.initCameras = function () {
-    this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-};
+XMLscene.prototype.updateLights = function() {
+  for (i = 0; i < this.lights.length; i++)
+    this.lights[i].update();
+}
 
 XMLscene.prototype.setDefaultAppearance = function () {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -132,16 +138,16 @@ XMLscene.prototype.onGraphLoaded = function ()
 {
 	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
 	this.lights[0].setVisible(true);
-    this.lights[0].enable();
+  this.lights[0].enable();
 
-    this.lights[1].setVisible(true);
-    this.lights[1].enable();
+  this.lights[1].setVisible(true);
+  this.lights[1].enable();
 
-    this.lights[2].setVisible(true);
-    this.lights[2].enable();
+  this.lights[2].setVisible(true);
+  this.lights[2].enable();
 
-    this.lights[3].setVisible(true);
-    this.lights[3].enable();
+  this.lights[3].setVisible(true);
+  this.lights[3].enable();
 };
 
 XMLscene.prototype.display = function () {

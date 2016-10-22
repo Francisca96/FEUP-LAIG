@@ -27,9 +27,9 @@ XMLscene.prototype.init = function (application) {
 	//scene primitives
     this.grass = new MyRectangle(this, "grass", -1, -1, 1, 1);
     this.poolTop = new MyRectangle(this, "poolTop", -1, -1, 1, 1);
-    this.poolEdge = new MyRectangle(this, "poolEdge", -1, -1, 1, 1);
+    this.poolEdge = new MyRectangle(this, "poolEdge", -1, -1, 1, 1, 0, 5, 0, 1);
     this.ball = new MySphere(this, "ball", 0.5, 40, 40);
-    this.table = new MyCylinder(this, "table", 4, 12, 1, 40, 40);
+    //this.table = new MyCylinder(this, "table", 4, 12, 1, 40, 40);
     //this.towel = new MyPolygon(this, 30, 12);
     this.buoy = new MyTorus(this, 1, 2, 40, 40);
 
@@ -57,7 +57,7 @@ XMLscene.prototype.init = function (application) {
 	this.poolEdgeMaterial.setSpecular(0.8,0.8,0.8,1);
 	this.poolEdgeMaterial.setShininess(100);
 	this.poolEdgeMaterial.loadTexture("../resources/images/poolEdge.png");
-	this.poolEdgeMaterial.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.poolEdgeMaterial.setTextureWrap("REPEAT", "REPEAT");
 
 	this.ballMaterial = new CGFappearance(this);
 	this.ballMaterial.setAmbient(0.3,0.3,0.3,1);
@@ -177,7 +177,7 @@ XMLscene.prototype.display = function () {
 	};
 
 	this.pushMatrix();
-		this.scale(5, 0, 3);
+		this.scale(4.5, 1, 2.5);
 		this.translate(1, 0, 1);
 		this.rotate(-Math.PI/2, 1, 0, 0);
 		this.grassMaterial.apply();
@@ -186,154 +186,105 @@ XMLscene.prototype.display = function () {
 
     //POOL
     this.pushMatrix();
-		this.scale(2.5, 0, 1.5);
-		this.translate(1.4, 0.15, 1.7);
+		this.translate(3.5, 0.05, 2.5);
+		this.scale(2.5, 1, 1.5);
 		this.rotate(-Math.PI/2, 1, 0, 0);
 		this.poolTopMaterial.apply();
         this.poolTop.display();
     this.popMatrix();
 
-    //EDGE
+ 	//EDGE 1
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(3, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+     	this.translate(3.5, 0.1, 0.8);
+     	this.scale(2.5, 1, 0.2);
+        this.rotate(-Math.PI/2, 1, 0, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
 
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(5, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+     	this.translate(3.5, -0.1, 0.8);
+     	this.scale(2.5, 1, 0.2);
+        this.rotate(Math.PI/2, 1, 0, 0);
+		this.poolEdgeMaterial.apply();
+        this.poolEdge.display();
+    this.popMatrix();
+
+	this.pushMatrix();
+     	this.translate(3.5, 0, 1);
+     	this.scale(2.5, 0.1, 1);
+		this.poolEdgeMaterial.apply();
+        this.poolEdge.display();
+    this.popMatrix();    
+
+    this.pushMatrix();
+     	this.translate(3.5, 0, 0.6);
+     	this.scale(2.5, 0.1, 1);
+        this.rotate(Math.PI, 1, 0, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
 
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(7, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+    	this.translate(6, 0, 0.8);
+    	this.scale(1, 0.1, 0.2);
+     	this.rotate(Math.PI/2, 0, 1, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
 
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(9, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+    	this.translate(1, 0, 0.8);
+    	this.scale(1, 0.1, 0.2);
+     	this.rotate(-Math.PI/2, 0, 1, 0);
+		this.poolEdgeMaterial.apply();
+        this.poolEdge.display();
+    this.popMatrix();
+
+    //EDGE 2
+    this.pushMatrix();
+     	this.translate(3.5, 0.1, 4.2);
+     	this.scale(2.5, 1, 0.2);
+        this.rotate(-Math.PI/2, 1, 0, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
 
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(11, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+     	this.translate(3.5, -0.1, 4.2);
+     	this.scale(2.5, 1, 0.2);
+        this.rotate(Math.PI/2, 1, 0, 0);
+		this.poolEdgeMaterial.apply();
+        this.poolEdge.display();
+    this.popMatrix();
+
+	this.pushMatrix();
+     	this.translate(3.5, 0, 4.4);
+     	this.scale(2.5, 0.1, 1);
+		this.poolEdgeMaterial.apply();
+        this.poolEdge.display();
+    this.popMatrix();    
+
+    this.pushMatrix();
+     	this.translate(3.5, 0, 4);
+     	this.scale(2.5, 0.1, 1);
+        this.rotate(Math.PI, 1, 0, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
 
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(3, 0.15, 21.2);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+    	this.translate(6, 0, 4.2);
+    	this.scale(1, 0.1, 0.2);
+     	this.rotate(Math.PI/2, 0, 1, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
 
     this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(5, 0.15, 21.2);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(7, 0.15, 21.2);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(9, 0.15, 21.2);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.5, 0, 0.2);
-		this.translate(11, 0.15, 21.2);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(4.2, 0.15, 2.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(4.2, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(4.2, 0.15, 6.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(4.2, 0.15, 7.9);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(31, 0.15, 2.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(31, 0.15, 4.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(31, 0.15, 6.3);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.poolEdgeMaterial.apply();
-        this.poolEdge.display();
-    this.popMatrix();
-
-    this.pushMatrix();
-		this.scale(0.2, 0, 0.5);
-		this.translate(31, 0.15, 7.9);
-		this.rotate(-Math.PI/2, 1, 0, 0);
+    	this.translate(1, 0, 4.2);
+    	this.scale(1, 0.1, 0.2);
+     	this.rotate(-Math.PI/2, 0, 1, 0);
 		this.poolEdgeMaterial.apply();
         this.poolEdge.display();
     this.popMatrix();
@@ -346,26 +297,26 @@ XMLscene.prototype.display = function () {
         this.ball.display();
     this.popMatrix();
 
-    //TABLE
-  	this.pushMatrix();
-		this.translate(8.5, 0.05, 2);
-		this.scale(0.05, 0.7, 0.05);
-		this.rotate(-Math.PI/2, 1, 0, 0);
-		this.tableMaterial.apply();
-        this.table.display();
-    this.popMatrix();
-
-  //   this.pushMatrix();
-		// this.translate(8.5, 0.76, 2);
+  //   //TABLE
+  // 	this.pushMatrix();
+		// this.translate(8.5, 0.05, 2);
 		// this.scale(0.05, 0.7, 0.05);
 		// this.rotate(-Math.PI/2, 1, 0, 0);
-		// this.tableTowelMaterial.apply();
-  //       this.towel.display();
+		// this.tableMaterial.apply();
+  //       this.table.display();
   //   this.popMatrix();
+
+  // //   this.pushMatrix();
+		// // this.translate(8.5, 0.76, 2);
+		// // this.scale(0.05, 0.7, 0.05);
+		// // this.rotate(-Math.PI/2, 1, 0, 0);
+		// // this.tableTowelMaterial.apply();
+  // //       this.towel.display();
+  // //   this.popMatrix();
 
     //BUOY
     this.pushMatrix();
-		this.translate(5, 0.05, 3.5);
+		this.translate(5, 0.05, 3);
 		this.scale(0.15, 0.15, 0.15);
 		this.rotate(-Math.PI/2, 1, 0, 0);
 		this.buoyMaterial.apply();
@@ -374,18 +325,18 @@ XMLscene.prototype.display = function () {
 
 
 
-    /////////////////////////////////////////////////////////
-    this.pushMatrix();
-         //this.triangle.display();
-    this.popMatrix();
+  //   /////////////////////////////////////////////////////////
+  //   this.pushMatrix();
+  //        //this.triangle.display();
+  //   this.popMatrix();
  
-    this.pushMatrix();
-        //this.cylinder.display();
-    this.popMatrix();
+  //   this.pushMatrix();
+  //       //this.cylinder.display();
+  //   this.popMatrix();
  
-    this.pushMatrix();
-        //this.sphere.display();
-    this.popMatrix();
+  //   this.pushMatrix();
+  //       //this.sphere.display();
+  //   this.popMatrix();
  
     // this.pushMatrix();
     //     this.torus.display();

@@ -20,10 +20,10 @@ MyRectangle.prototype.constructor=MyRectangle;
 
 MyRectangle.prototype.initBuffers = function () {
 	this.vertices = [
-            x0, y0, 0,
-            x1, y0, 0,
-            x0, y1, 0,
-            x1, y1, 0,
+            this.x0, this.y0, 0,
+            this.x1, this.y0, 0,
+            this.x0, this.y1, 0,
+            this.x1, this.y1, 0,
 	];
 
 	this.indices = [

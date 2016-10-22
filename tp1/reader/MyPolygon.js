@@ -3,10 +3,10 @@
  * @param gl {WebGLRenderingContext}
  * @constructor
  */
-function MyPolygon(scene, slices, radis) {
+function MyPolygon(scene, slices, radius) {
 	CGFobject.call(this,scene);
 	this.slices = slices;
-    this.radis = radis;
+    this.radius = radius;
 
 	this.initBuffers();
 };
@@ -27,11 +27,11 @@ MyPolygon.prototype.initBuffers = function () {
  	this.texCoords.push(0.5, 0.5);
 
     for(i=0; i< this.slices; i++){
-    	this.vertices.push(Math.cos(this.ang*i)*radis, Math.sin(this.ang*i)*radis, 0);
+    	this.vertices.push(this.radius*Math.cos(this.ang*i), this.radius*Math.sin(this.ang*i), 0);  	
     	this.normals.push(0, 0, 1);
     	this.texCoords.push((Math.cos(-this.ang*i)+1)/2, (Math.sin(-this.ang*i)+1)/2);
     }
-
+    
     for(i=1; i<= this.slices; i++){
     	this.indices.push(i, i%this.slices+1, 0);
     }

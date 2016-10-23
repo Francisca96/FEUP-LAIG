@@ -17,7 +17,7 @@ XMLscene.prototype.init = function (application) {
 
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
-	this.gl.enable(this.gl.CULL_FACE);
+	  this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
@@ -45,8 +45,9 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function ()
 {
-	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
-	this.lights[0].setVisible(true);
+//	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+this.gl.clearColor(0,0,0,1);
+  this.lights[0].setVisible(true);
     this.lights[0].enable();
 };
 
@@ -77,5 +78,42 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.lights[0].update();
-	};
+
+    this.processGraph("root");
+	}
+};
+
+XMLscene.prototype.processGraph = function (nodeName)
+{
+
+  var material = null;
+  if(nodeName != null){
+    // console.log("component " + nodeName);
+    var node = this.graph.components[nodeName];
+    console.log(node);
+    // console.log(node); return
+    // console.log(this.getMatrix())
+    if(node.material != null){
+      material = node.materials[0];
+      material.setTexture(node.textures[0]);
+      if(material != null)
+        material.apply();
+    }
+    if(node.transformations.length > 0){
+      // console.log("component " + nodeName);
+      // this.pushMatrix();
+      this.multMatrix(node.transformations[0]);
+      // this.popMatrix();
+      // console.log(node.transformations[0]);
+    }
+    for(var i = 0; i < node.primitives.length; i++){
+      this.graph.primitives[node.primitives[i]].display();
+    }
+    for(i = 0; i < node.subComponents.length; i++){
+      this.pushMatrix();
+      if(material != null) material.apply();
+      this.processGraph(node.subComponents[i]);
+      this.popMatrix();
+    }
+  }
 };

@@ -37,7 +37,7 @@ main=function()
 	var myGraph = new MySceneGraph(filename, myScene);
 
 	// start
-    app.run();
+  app.run();
 }
 
 ]);

@@ -29,3 +29,41 @@ MyInterface.prototype.init = function(application) {
 
 	return true;
 };
+
+/**
+ * processKeyboard
+ * @param event {Event}
+ */
+MyInterface.prototype.processKeyDown = function(event) {
+	
+	CGFinterface.prototype.processKeyDown.call(this,event);
+
+	switch (event.keyCode)
+	{
+		case (109): //m
+		case (77):
+			
+			break;
+		case (118): //v
+		case(86):
+			
+			break;	
+	};
+};
+
+MyInterface.prototype.processKeyUp = function(event) {
+	
+	CGFinterface.prototype.processKeyUp.call(this,event);
+
+	switch (event.keyCode)
+	{
+		case (109): //M
+		case (77):
+			
+			break;
+		case (118): //V
+		case(86):
+			
+			break;
+	};
+};

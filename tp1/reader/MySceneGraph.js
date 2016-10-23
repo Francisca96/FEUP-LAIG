@@ -40,6 +40,110 @@ MySceneGraph.prototype.onXMLReady=function()
 	this.scene.onGraphLoaded();
 };
 
+// ===================================================================================================================================
+// ================================================ Parse Individual Parts ===========================================================
+// ===================================================================================================================================
+
+// ====================================================== Textures ===================================================================
+
+MySceneGraph.prototype.parseTextures = function(rootElement){
+	this.textures={};
+
+	var textures = rootElement.getElementsByTagName('texture');
+
+	for(var i=0; i < textures.length; i++){
+		var id = this.reader.getString(textures[i], 'id', true);
+		var file = this.reader.getString(textures[i], 'file', true);
+		var myTexture = new CGFtexture(this.scene, file);
+		myTexture.length_s = this.reader.getInteger(textures[i], 'length_s', true);
+		myTexture.length_t = this.reader.getInteger(textures[i], 'length_t', true);
+		this.textures[id] = myTexture;
+	}
+};
+
+// ===================================================================================================================================
+
+// ====================================================== Materials ==================================================================
+
+MySceneGraph.prototype.parseMaterials = function(rootElement){
+	this.materials={};
+
+	var materials = rootElement.getElementsByTagName('material');
+
+	for(var i=0; i < materials.length; i++){
+		var id = this.reader.getString(materials[i], 'id', true);
+		var myMaterial = this.getMaterial(materials[i]);
+		if(myMaterial == null){
+			return 'Error, invalid format on tag ' + materials[i];
+		}
+		this.materials[id] = myMaterial;
+	}
+};
+
+// ===================================================================================================================================
+
+// ==================================================== Transformations ==============================================================
+
+MySceneGraph.prototype.getTransformationValues = function(transformation){
+	pos = [];
+
+	if(transformation.tagName != 'rotate'){
+		pos[0]=this.reader.getFloat(transformation, 'x', true);
+		pos[1]=this.reader.getFloat(transformation, 'y', true);
+		pos[2]=this.reader.getFloat(transformation, 'z', true);
+	}
+	else{
+		var axis = this.reader.getString(transformation, 'axis', true);
+		var angle = this.reader.getString(transformation, 'angle', true);
+		pos[0] = angle * Math.PI / 180;
+		pos[1] = pos[2] = pos[3] = 0;
+		switch(axis){
+			case 'x': pos[1] = 1; break;
+			case 'y': pos[2] = 1; break;
+			case 'z': pos[3] = 1; break;
+		}
+	}
+	return pos;
+};
+
+MySceneGraph.prototype.parseTransformation = function(transformationBlock) {
+	var transfValues = [];
+	var transformationMatrix = mat4.create();
+
+	for(var i = 0; i < transformationBlock.children.length; i++){
+		transfValues = this.getTransformationValues(transformationBlock.children[i]);
+		switch(transformationBlock.children[i].tagName){
+			case 'translate':
+
+				mat4.translate(transformationMatrix, transformationMatrix, transfValues);
+				break;
+			case 'scale':
+				mat4.scale(transformationMatrix, transformationMatrix, transfValues);
+				break;
+			case 'rotate':
+				mat4.rotate(transformationMatrix, transformationMatrix, transfValues[0], [transfValues[1], transfValues[2], transfValues[3]]);
+				break;
+			default:
+				return null;
+		}
+	}
+	return transformationMatrix;
+};
+
+MySceneGraph.prototype.parseTransformations = function(rootElement) {
+	this.transformations = {};
+
+	var transfs = rootElement.getElementsByTagName('transformation');
+	for(var i = 0; i < transfs.length; i++){
+		var id = this.reader.getString(transfs[i], 'id', true);
+		this.transformations[id] = this.parseTransformation(transfs[i]);
+	}
+};
+
+// ===================================================================================================================================
+
+// ===================================================== Primitives ==================================================================
+
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	var primitives = rootElement.getElementsByTagName('primitive');
 
@@ -51,10 +155,10 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 			return 'Wrong number of primitive types - must be one!';
 		switch(primitives[i].children[0].tagName){
 			case 'rectangle':
-				x1 = this.reader.getFloat(primitives[i].children[0], 'x1', true);
-				y1 = this.reader.getFloat(primitives[i].children[0], 'y1', true);
-				x2 = this.reader.getFloat(primitives[i].children[0], 'x2', true);
-				y2 = this.reader.getFloat(primitives[i].children[0], 'y2', true);
+				var x1 = this.reader.getFloat(primitives[i].children[0], 'x1', true);
+				var y1 = this.reader.getFloat(primitives[i].children[0], 'y1', true);
+				var x2 = this.reader.getFloat(primitives[i].children[0], 'x2', true);
+				var y2 = this.reader.getFloat(primitives[i].children[0], 'y2', true);
 				this.primitives[id] = new MyRectangle(this.scene, id, x1, y1, x2, y2);
 				break;
 			case 'triangle':
@@ -64,23 +168,23 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				x2 = this.reader.getFloat(primitives[i].children[0], 'x2', true);
 				y2 = this.reader.getFloat(primitives[i].children[0], 'y2', true);
 				z2 = this.reader.getFloat(primitives[i].children[0], 'z2', true);
-				x3 = this.reader.getFloat(primitives[i].children[0], 'x3', true);
-				y3 = this.reader.getFloat(primitives[i].children[0], 'y3', true);
-				z3 = this.reader.getFloat(primitives[i].children[0], 'z3', true);
+				var x3 = this.reader.getFloat(primitives[i].children[0], 'x3', true);
+				var y3 = this.reader.getFloat(primitives[i].children[0], 'y3', true);
+				var z3 = this.reader.getFloat(primitives[i].children[0], 'z3', true);
 				this.primitives[id] = new MyTriangle(this.scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 				break;
 			case 'cylinder':
-				base = this.reader.getFloat(primitives[i].children[0], 'base', true);
-				top = this.reader.getFloat(primitives[i].children[0], 'top', true);
-				height = this.reader.getFloat(primitives[i].children[0], 'height', true);
-				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
-				stacks = this.reader.getInteger(primitives[i].children[0], 'stacks', true);
-				this.primitives[id] = new MyCylinder(this.scene, id, base, top, height, slices, stacks);
+				var base = this.reader.getFloat(primitives[i].children[0], 'base', true);
+				var top = this.reader.getFloat(primitives[i].children[0], 'top', true);
+				var height = this.reader.getFloat(primitives[i].children[0], 'height', true);
+				var slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
+				var stacks = this.reader.getInteger(primitives[i].children[0], 'stacks', true);
+				this.primitives[id] = new MyCylinder(this.scene, base, top, height, slices, stacks);
 				break;
 			case 'sphere':
-				radius = this.reader.getFloat(primitives[i].children[0], 'radius', true);
-				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
-				stacks = this.reader.getInteger(primitives[i].children[0], 'stacks', true);
+				var radius = this.reader.getFloat(primitives[i].children[0], 'radius', true);
+			  slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
+			  stacks = this.reader.getInteger(primitives[i].children[0], 'stacks', true);
 				this.primitives[id] = new MySphere(this.scene, id, radius, slices, stacks);
 				break;
 			case 'torus':
@@ -96,6 +200,12 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	}
 };
 
+// ===================================================================================================================================
+
+// ===================================================================================================================================
+// ===================================================== Components ==================================================================
+// ===================================================================================================================================
+
 MySceneGraph.prototype.parseComponents = function(rootElement) {
 	this.components = {};
 	var components = rootElement.getElementsByTagName('component');
@@ -108,11 +218,8 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 		this.parseComponentTransformations(components[i], myComponent);
 		this.components[id] = myComponent;
 	}
-
-	// if (elems == null) {
-	// 	//return 'component element is missing.';
-	// }
 };
+
 
 MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 	var primRefs = rootElement.getElementsByTagName('primitiveref');
@@ -124,6 +231,7 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 		primId = this.reader.getString(primRefs[i], 'id', true);
 		if (!this.primitives.hasOwnProperty(primId))
 			return 'Reference to undefined primitive ' + primId;
+
 		component.primitives.push(primId);
 	}
 
@@ -133,6 +241,7 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 	}
 };
 
+
 MySceneGraph.prototype.getRGBA = function(xmlTag){
 	rgba = [];
 	rgba[0]=this.reader.getFloat(xmlTag, 'r', true);
@@ -141,6 +250,7 @@ MySceneGraph.prototype.getRGBA = function(xmlTag){
 	rgba[3]=this.reader.getFloat(xmlTag, 'a', true);
 	return rgba;
 };
+
 
 MySceneGraph.prototype.getMaterial = function(rootElement){
 	if(rootElement.children.length != 5){
@@ -166,21 +276,6 @@ MySceneGraph.prototype.getMaterial = function(rootElement){
 	return newMaterial;
 };
 
-MySceneGraph.prototype.parseMaterials = function(rootElement){
-	this.materials={};
-
-	var materials = rootElement.getElementsByTagName('material');
-
-	for(var i=0; i < materials.length; i++){
-		var id = this.reader.getString(materials[i], 'id', true);
-		var myMaterial = this.getMaterial(materials[i]);
-		if(myMaterial == null){
-			return 'Error, invalid format on tag ' + materials[i];
-		}
-		this.materials[id] = myMaterial;
-	}
-};
-
 
 MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component) {
 	var materials = rootElement.getElementsByTagName('material');
@@ -195,21 +290,6 @@ MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component
 	}
 };
 
-MySceneGraph.prototype.parseTextures = function(rootElement){
-	this.textures={};
-
-	var textures = rootElement.getElementsByTagName('texture');
-
-	for(var i=0; i < textures.length; i++){
-		var id = this.reader.getString(textures[i], 'id', true);
-		var file = this.reader.getString(textures[i], 'file', true);
-		var myTexture = new CGFtexture(this.scene, file);
-		myTexture.file = file;
-		myTexture.length_s = this.reader.getString(textures[i], 'length_s', true);
-		myTexture.length_t = this.reader.getString(textures[i], 'length_t', true);
-		this.textures[id] = myTexture;
-	}
-};
 
 MySceneGraph.prototype.parseComponentTextures = function(rootElement, component) {
 	var textures = rootElement.getElementsByTagName('texture');
@@ -224,64 +304,6 @@ MySceneGraph.prototype.parseComponentTextures = function(rootElement, component)
 	}
 };
 
-MySceneGraph.prototype.getTransformationValues = function(transformation){
-	pos = [];
-
-	if(transformation.tagName != 'rotate'){
-		pos[0]=this.reader.getFloat(transformation, 'x', true);
-		pos[1]=this.reader.getFloat(transformation, 'y', true);
-		pos[2]=this.reader.getFloat(transformation, 'z', true);
-	}
-	else{
-		var axis = this.reader.getString(transformation, 'axis', true);
-		var angle = this.reader.getString(transformation, 'angle', true);
-		pos[0] = angle * Math.PI / 180;
-		pos[1] = pos[2] = pos[3] = 0;
-		switch(axis){
-			case 'x': pos[1] = 1; break;
-			case 'y': pos[2] = 1; break;
-			case 'z': pos[3] = 1; break;
-		}
-	}
-	return pos;
-};
-
-MySceneGraph.prototype.parseTransformation = function(transformationBlock) {
-	// this.scene.pushMatrix();
-	var transfValues = [];
-	var transformationMatrix = mat4.create();
-
-	for(var i = 0; i < transformationBlock.children.length; i++){
-		transfValues = this.getTransformationValues(transformationBlock.children[i]);
-		switch(transformationBlock.children[i].tagName){
-			case 'translate':
-
-				mat4.translate(transformationMatrix, transformationMatrix, transfValues);
-				break;
-			case 'scale':
-				mat4.scale(transformationMatrix, transformationMatrix, transfValues);
-				break;
-			case 'rotate':
-				mat4.rotate(transformationMatrix, transformationMatrix, transfValues[0], [transfValues[1], transfValues[2], transfValues[3]]);
-				break;
-			default:
-				return null;
-		}
-	}
-	// var transformationMatrix = this.scene.getMatrix();
-	// this.scene.popMatrix();
-	return transformationMatrix;
-};
-
-MySceneGraph.prototype.parseTransformations = function(rootElement) {
-	this.transformations = {};
-
-	var transfs = rootElement.getElementsByTagName('transformation');
-	for(var i = 0; i < transfs.length; i++){
-		var id = this.reader.getString(transfs[i], 'id', true);
-		this.transformations[id] = this.parseTransformation(transfs[i]);
-	}
-};
 
 MySceneGraph.prototype.transformationKind = function(componentTransformations) {
 	var hasRefs = 0, hasSpecifics = 0;
@@ -316,6 +338,7 @@ MySceneGraph.prototype.transformationKind = function(componentTransformations) {
 	}
 };
 
+
 MySceneGraph.prototype.parseTransformationRefs = function(rootElement, component) {
 	var transfRefs = rootElement.getElementsByTagName('transformationref');
 
@@ -326,6 +349,7 @@ MySceneGraph.prototype.parseTransformationRefs = function(rootElement, component
 		component.transformations.push(this.transformations[transfRefId]);
 	}
 };
+
 
 MySceneGraph.prototype.parseComponentTransformations = function(rootElement, component) {
 	component.transformations = [];
@@ -345,6 +369,7 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 	}
 };
 
+
 MySceneGraph.prototype.parseXML = function(rootElement) {
 
 	this.parseTextures(rootElement.getElementsByTagName('textures')[0]);
@@ -363,24 +388,14 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 		console.log("everythingloadedok!!!");
 };
 
+// ===================================================================================================================================
+// ===================================================================================================================================
+// ===================================================================================================================================
+
 /*
  * Callback to be executed on any read error
  */
 MySceneGraph.prototype.onXMLError=function (message) {
 	console.error('XML Loading Error: '+message);
 	this.loadedOk=false;
-};
-
-
-MySceneGraph.prototype.displayComponent=function(component) {
-	for (var i=0; i < component.subComponents; i++){
-		var subComponentID = component.subComponents[i];
-		this.displayComponent(this.components[subComponentID]);
-	}
-
-	for(i=0; i < component.primitives; i++){
-		var primitiveID = component.primitives[i];
-		this.primitives[primitiveID].display();
-	}
-
 };

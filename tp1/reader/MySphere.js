@@ -11,7 +11,7 @@
 	this.stacks = stacks;
 
  	this.initBuffers();
- };
+ }
 
  MySphere.prototype = Object.create(CGFobject.prototype);
  MySphere.prototype.constructor = MySphere;

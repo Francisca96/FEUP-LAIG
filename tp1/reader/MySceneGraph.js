@@ -88,7 +88,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				outer = this.reader.getFloat(primitives[i].children[0], 'outer', true);
 				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
 				loops = this.reader.getInteger(primitives[i].children[0], 'loops', true);
-				this.primitives[id] = new MyTorus(this.scene, id, inner, outer, slices, loops);
+				this.primitives[id] = new MyTorus(this.scene, inner, outer, slices, loops);
 				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;
@@ -153,17 +153,17 @@ MySceneGraph.prototype.getMaterial = function(rootElement){
 			case 'ambient': materialParams[1] = this.getRGBA(rootElement.children[i]); break;
 			case 'diffuse': materialParams[2] = this.getRGBA(rootElement.children[i]); break;
 			case 'specular': materialParams[3] = this.getRGBA(rootElement.children[i]); break;
-			case 'shininess': materialParams[4] = getInteger(rootElement.children[i], 'value', true); break;
+			case 'shininess': materialParams[4] = this.reader.getInteger(rootElement.children[i], 'value', true); break;
 			default: return null;
 		}
-		var newMaterial = new CGFappearance(this.scene);
-		newMaterial.setEmission(materialParams[0][0], materialParams[0][1], materialParams[0][2], materialParams[0][3], materialParams[0][4]);
-		newMaterial.setAmbient(materialParams[1][0], materialParams[1][1], materialParams[1][2], materialParams[1][3], materialParams[1][4]);
-		newMaterial.setDiffuse(materialParams[2][0], materialParams[2][1], materialParams[2][2], materialParams[2][3], materialParams[2][4]);
-		newMaterial.setSpecular(materialParams[3][0], materialParams[3][1], materialParams[3][2], materialParams[3][3], materialParams[3][4]);
-		newMaterial.setShininess(materialParams[4]);
-		return newMaterial;
 	}
+	var newMaterial = new CGFappearance(this.scene);
+	newMaterial.setEmission(materialParams[0][0], materialParams[0][1], materialParams[0][2], materialParams[0][3], materialParams[0][4]);
+	newMaterial.setAmbient(materialParams[1][0], materialParams[1][1], materialParams[1][2], materialParams[1][3], materialParams[1][4]);
+	newMaterial.setDiffuse(materialParams[2][0], materialParams[2][1], materialParams[2][2], materialParams[2][3], materialParams[2][4]);
+	newMaterial.setSpecular(materialParams[3][0], materialParams[3][1], materialParams[3][2], materialParams[3][3], materialParams[3][4]);
+	newMaterial.setShininess(materialParams[4]);
+	return newMaterial;
 };
 
 MySceneGraph.prototype.parseMaterials = function(rootElement){
@@ -188,8 +188,9 @@ MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component
 
 	for(i = 0; i < materials.length; i++){
 		materialId = this.reader.getString(materials[i], 'id', true);
-		if (!this.primitives.hasOwnProperty(materialId))
+		if (!this.materials.hasOwnProperty(materialId)){
 			return 'Reference to undefined material ' + materialId;
+		}
 		component.materials.push(this.materials[materialId]);
 	}
 };
@@ -201,8 +202,9 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 
 	for(var i=0; i < textures.length; i++){
 		var id = this.reader.getString(textures[i], 'id', true);
-		var myTexture = {};
-		myTexture.file = this.reader.getString(textures[i], 'file', true);
+		var file = this.reader.getString(textures[i], 'file', true);
+		var myTexture = new CGFtexture(this.scene, file);
+		myTexture.file = file;
 		myTexture.length_s = this.reader.getString(textures[i], 'length_s', true);
 		myTexture.length_t = this.reader.getString(textures[i], 'length_t', true);
 		this.textures[id] = myTexture;
@@ -215,16 +217,15 @@ MySceneGraph.prototype.parseComponentTextures = function(rootElement, component)
 
 	for(i = 0; i < textures.length; i++){
 		textureId = this.reader.getString(textures[i], 'id', true);
-		if (!this.primitives.hasOwnProperty(textureId))
+		if (!this.textures.hasOwnProperty(textureId)){
 			return 'Reference to undefined texture ' + textureId;
+		}
 		component.textures.push(this.textures[textureId]);
 	}
 };
 
 MySceneGraph.prototype.getTransformationValues = function(transformation){
 	pos = [];
-	// console.log("values:")
-	// console.log(transformation);
 
 	if(transformation.tagName != 'rotate'){
 		pos[0]=this.reader.getFloat(transformation, 'x', true);
@@ -359,7 +360,7 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 	error = this.parseComponents(rootElement.getElementsByTagName('components')[0]);
 	if(error != null)
 		return error;
-	console.log("everythingloadedok!!!");
+		console.log("everythingloadedok!!!");
 };
 
 /*

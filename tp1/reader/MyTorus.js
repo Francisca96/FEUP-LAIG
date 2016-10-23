@@ -11,7 +11,7 @@ function MyTorus(scene, inner, outer, slices, loops) {
     this.stacks = loops;
 
     this.initBuffers();
-};
+}
 
 MyTorus.prototype = Object.create(CGFobject.prototype);
 MyTorus.prototype.constructor = MyTorus;

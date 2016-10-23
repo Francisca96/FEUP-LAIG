@@ -21,6 +21,7 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+  this.enableTextures(true);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -88,23 +89,18 @@ XMLscene.prototype.processGraph = function (nodeName)
 
   var material = null;
   if(nodeName != null){
-    // console.log("component " + nodeName);
     var node = this.graph.components[nodeName];
-    console.log(node);
-    // console.log(node); return
-    // console.log(this.getMatrix())
-    if(node.material != null){
+    if(node.materials != null && node.materials.length > 0){
       material = node.materials[0];
+      if(node.textures != null && node.textures.length > 0){
       material.setTexture(node.textures[0]);
-      if(material != null)
+      }
+      if(material != null){
         material.apply();
+      }
     }
     if(node.transformations.length > 0){
-      // console.log("component " + nodeName);
-      // this.pushMatrix();
       this.multMatrix(node.transformations[0]);
-      // this.popMatrix();
-      // console.log(node.transformations[0]);
     }
     for(var i = 0; i < node.primitives.length; i++){
       this.graph.primitives[node.primitives[i]].display();

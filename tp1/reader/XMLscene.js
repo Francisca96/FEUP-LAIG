@@ -78,5 +78,42 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{
 		this.lights[0].update();
-	};
+
+    this.processGraph("root");
+	}
+};
+
+XMLscene.prototype.processGraph = function (nodeName)
+{
+
+  var material = null;
+  if(nodeName != null){
+    // console.log("component " + nodeName);
+    var node = this.graph.components[nodeName];
+    console.log(node);
+    // console.log(node); return
+    // console.log(this.getMatrix())
+    if(node.material != null){
+      material = node.materials[0];
+      material.setTexture(node.textures[0]);
+      if(material != null)
+        material.apply();
+    }
+    if(node.transformations.length > 0){
+      // console.log("component " + nodeName);
+      // this.pushMatrix();
+      this.multMatrix(node.transformations[0]);
+      // this.popMatrix();
+      // console.log(node.transformations[0]);
+    }
+    for(var i = 0; i < node.primitives.length; i++){
+      this.graph.primitives[node.primitives[i]].display();
+    }
+    for(i = 0; i < node.subComponents.length; i++){
+      this.pushMatrix();
+      if(material != null) material.apply();
+      this.processGraph(node.subComponents[i]);
+      this.popMatrix();
+    }
+  }
 };

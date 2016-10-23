@@ -43,7 +43,7 @@ MySceneGraph.prototype.onXMLReady=function()
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	var primitives = rootElement.getElementsByTagName('primitive');
 
-	this.scene.primitives = {};
+	this.primitives = {};
 
 	for(var i = 0; i < primitives.length; i++){
 		id = this.reader.getString(primitives[i], 'id', true); //TODO: ver que erro dá se não existir
@@ -55,7 +55,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				y1 = this.reader.getFloat(primitives[i].children[0], 'y1', true);
 				x2 = this.reader.getFloat(primitives[i].children[0], 'x2', true);
 				y2 = this.reader.getFloat(primitives[i].children[0], 'y2', true);
-				this.scene.primitives[id] = new MyRectangle(this.scene, id, x1, y1, x2, y2);
+				this.primitives[id] = new MyRectangle(this.scene, id, x1, y1, x2, y2);
 				break;
 			case 'triangle':
 				x1 = this.reader.getFloat(primitives[i].children[0], 'x1', true);
@@ -67,7 +67,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				x3 = this.reader.getFloat(primitives[i].children[0], 'x3', true);
 				y3 = this.reader.getFloat(primitives[i].children[0], 'y3', true);
 				z3 = this.reader.getFloat(primitives[i].children[0], 'z3', true);
-				this.scene.primitives[id] = new MyTriangle(this.scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+				this.primitives[id] = new MyTriangle(this.scene, id, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 				break;
 			case 'cylinder':
 				base = this.reader.getFloat(primitives[i].children[0], 'base', true);
@@ -75,20 +75,20 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				height = this.reader.getFloat(primitives[i].children[0], 'height', true);
 				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
 				stacks = this.reader.getInteger(primitives[i].children[0], 'stacks', true);
-				this.scene.primitives[id] = new MyCylinder(this.scene, id, base, top, height, slices, stacks);
+				this.primitives[id] = new MyCylinder(this.scene, id, base, top, height, slices, stacks);
 				break;
 			case 'sphere':
 				radius = this.reader.getFloat(primitives[i].children[0], 'radius', true);
 				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
 				stacks = this.reader.getInteger(primitives[i].children[0], 'stacks', true);
-				this.scene.primitives[id] = new MySphere(this.scene, id, radius, slices, stacks);
+				this.primitives[id] = new MySphere(this.scene, id, radius, slices, stacks);
 				break;
 			case 'torus':
 				inner = this.reader.getFloat(primitives[i].children[0], 'inner', true);
 				outer = this.reader.getFloat(primitives[i].children[0], 'outer', true);
 				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
 				loops = this.reader.getInteger(primitives[i].children[0], 'loops', true);
-				this.scene.primitives[id] = new MyTorus(this.scene, id, inner, outer, slices, loops);
+				this.primitives[id] = new MyTorus(this.scene, id, inner, outer, slices, loops);
 				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;
@@ -97,16 +97,16 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 };
 
 MySceneGraph.prototype.parseComponents = function(rootElement) {
-	this.scene.components = {};
+	this.components = {};
 	var components = rootElement.getElementsByTagName('component');
 	for(var i = 0; i < components.length; i++){
 		var myComponent = {};
 		var id = this.reader.getString(components[i], 'id', true);
-		this.parseChildren(rootElement, myComponent);
+		this.parseChildren(components[i], myComponent);
 		this.parseComponentMaterials(components[i], myComponent);
 		this.parseComponentTextures(components[i], myComponent);
 		this.parseComponentTransformations(components[i], myComponent);
-		this.scene.components[id] = myComponent;
+		this.components[id] = myComponent;
 	}
 
 	// if (elems == null) {
@@ -122,7 +122,7 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 
 	for(i = 0; i < primRefs.length; i++){
 		primId = this.reader.getString(primRefs[i], 'id', true);
-		if (!this.scene.primitives.hasOwnProperty(primId))
+		if (!this.primitives.hasOwnProperty(primId))
 			return 'Reference to undefined primitive ' + primId;
 		component.primitives.push(primId);
 	}
@@ -167,7 +167,7 @@ MySceneGraph.prototype.getMaterial = function(rootElement){
 };
 
 MySceneGraph.prototype.parseMaterials = function(rootElement){
-	this.scene.materials={};
+	this.materials={};
 
 	var materials = rootElement.getElementsByTagName('material');
 
@@ -177,7 +177,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 		if(myMaterial == null){
 			return 'Error, invalid format on tag ' + materials[i];
 		}
-		this.scene.materials[id] = myMaterial;
+		this.materials[id] = myMaterial;
 	}
 };
 
@@ -188,14 +188,14 @@ MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component
 
 	for(i = 0; i < materials.length; i++){
 		materialId = this.reader.getString(materials[i], 'id', true);
-		if (!this.scene.primitives.hasOwnProperty(materialId))
+		if (!this.primitives.hasOwnProperty(materialId))
 			return 'Reference to undefined material ' + materialId;
-		component.materials.push(this.scene.materials[materialId]);
+		component.materials.push(this.materials[materialId]);
 	}
 };
 
 MySceneGraph.prototype.parseTextures = function(rootElement){
-	this.scene.textures={};
+	this.textures={};
 
 	var textures = rootElement.getElementsByTagName('texture');
 
@@ -205,7 +205,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 		myTexture.file = this.reader.getString(textures[i], 'file', true);
 		myTexture.length_s = this.reader.getString(textures[i], 'length_s', true);
 		myTexture.length_t = this.reader.getString(textures[i], 'length_t', true);
-		this.scene.textures[id] = myTexture;
+		this.textures[id] = myTexture;
 	}
 };
 
@@ -215,14 +215,16 @@ MySceneGraph.prototype.parseComponentTextures = function(rootElement, component)
 
 	for(i = 0; i < textures.length; i++){
 		textureId = this.reader.getString(textures[i], 'id', true);
-		if (!this.scene.primitives.hasOwnProperty(textureId))
+		if (!this.primitives.hasOwnProperty(textureId))
 			return 'Reference to undefined texture ' + textureId;
-		component.textures.push(this.scene.textures[textureId]);
+		component.textures.push(this.textures[textureId]);
 	}
 };
 
 MySceneGraph.prototype.getTransformationValues = function(transformation){
 	pos = [];
+	// console.log("values:")
+	// console.log(transformation);
 
 	if(transformation.tagName != 'rotate'){
 		pos[0]=this.reader.getFloat(transformation, 'x', true);
@@ -244,44 +246,47 @@ MySceneGraph.prototype.getTransformationValues = function(transformation){
 };
 
 MySceneGraph.prototype.parseTransformation = function(transformationBlock) {
-	this.scene.pushMatrix();
+	// this.scene.pushMatrix();
 	var transfValues = [];
+	var transformationMatrix = mat4.create();
 
 	for(var i = 0; i < transformationBlock.children.length; i++){
 		transfValues = this.getTransformationValues(transformationBlock.children[i]);
 		switch(transformationBlock.children[i].tagName){
 			case 'translate':
-				this.scene.translate(transfValues[0], transfValues[1], transfValues[2]);
+
+				mat4.translate(transformationMatrix, transformationMatrix, transfValues);
 				break;
 			case 'scale':
-				this.scene.scale(transfValues[0], transfValues[1], transfValues[2]);
+				mat4.scale(transformationMatrix, transformationMatrix, transfValues);
 				break;
 			case 'rotate':
-				this.scene.rotate(transfValues[0], transfValues[1], transfValues[2], transfValues[3]);
+				mat4.rotate(transformationMatrix, transformationMatrix, transfValues[0], [transfValues[1], transfValues[2], transfValues[3]]);
 				break;
 			default:
 				return null;
 		}
 	}
-	var transformationMatrix = this.scene.getMatrix();
-	this.scene.popMatrix();
+	// var transformationMatrix = this.scene.getMatrix();
+	// this.scene.popMatrix();
 	return transformationMatrix;
 };
 
 MySceneGraph.prototype.parseTransformations = function(rootElement) {
-	this.scene.transformations = {};
+	this.transformations = {};
 
 	var transfs = rootElement.getElementsByTagName('transformation');
 	for(var i = 0; i < transfs.length; i++){
 		var id = this.reader.getString(transfs[i], 'id', true);
-		this.scene.transformations[id] = this.parseTransformation(transfs[i]);
+		this.transformations[id] = this.parseTransformation(transfs[i]);
 	}
 };
 
 MySceneGraph.prototype.transformationKind = function(componentTransformations) {
 	var hasRefs = 0, hasSpecifics = 0;
-	for(var i = 0; i < componentTransformations; i++){
-		if(componentTransformations[i] == 'transformationref'){
+
+	for(var i = 0; i < componentTransformations.children.length; i++){
+		if(componentTransformations.children[i].tagName == 'transformationref'){
 			if(hasSpecifics != 0){
 				return -1;
 			}
@@ -315,23 +320,23 @@ MySceneGraph.prototype.parseTransformationRefs = function(rootElement, component
 
 	for(i = 0; i < transfRefs.length; i++){
 		transfRefId = this.reader.getString(transfRefs[i], 'id', true);
-		if (!this.scene.transformations.hasOwnProperty(transfId))
-			return 'Reference to undefined transformation ' + transfId;
-		component.transformations.push(this.scene.transformations[transfId]);
+		if (!this.transformations.hasOwnProperty(transfRefId))
+			return 'Reference to undefined transformation ' + transfRefId;
+		component.transformations.push(this.transformations[transfRefId]);
 	}
 };
 
 MySceneGraph.prototype.parseComponentTransformations = function(rootElement, component) {
 	component.transformations = [];
-	var typeOfTransf = this.transformationKind(rootElement);
+	var typeOfTransf = this.transformationKind(rootElement.getElementsByTagName('transformation')[0]);
 	if(typeOfTransf == -1){
 		return 'error, mixed tags in ' + rootElement.tagName;
 	}
 	if(typeOfTransf == 0){
-			this.parseTransformationRefs(rootElement, component);
+			this.parseTransformationRefs(rootElement.getElementsByTagName('transformation')[0], component);
 	}
 	else if (typeOfTransf == 1) {
-		var matrix = this.parseTransformation(rootElement);
+		var matrix = this.parseTransformation(rootElement.getElementsByTagName('transformation')[0]);
 		if(matrix == null){
 			return 'unknown tag in transformation';
 		}
@@ -355,9 +360,6 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 	if(error != null)
 		return error;
 	console.log("everythingloadedok!!!");
-	console.log(this.scene.primitives);
-	console.log(this.scene.components);
-
 };
 
 /*
@@ -372,12 +374,12 @@ MySceneGraph.prototype.onXMLError=function (message) {
 MySceneGraph.prototype.displayComponent=function(component) {
 	for (var i=0; i < component.subComponents; i++){
 		var subComponentID = component.subComponents[i];
-		this.displayComponent(this.scene.components[subComponentID]);
+		this.displayComponent(this.components[subComponentID]);
 	}
 
 	for(i=0; i < component.primitives; i++){
 		var primitiveID = component.primitives[i];
-		this.scene.primitives[primitiveID].display();
+		this.primitives[primitiveID].display();
 	}
 
 };

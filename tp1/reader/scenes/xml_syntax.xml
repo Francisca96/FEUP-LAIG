@@ -179,141 +179,84 @@
         <!-- Deve existir um ou mais blocos "transformation" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <transformation id="1">
-            <scale x="5" y="0" z="3" />
+            <scale x="5" y="1" z="3" />
             <translate x="1" y="0" z="1" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="2">
-            <scale x="2.5" y="0" z="1.5" />
-            <translate x="1.4" y="0.15" z="1.7" />
+            <translate x="3.5" y="0.05" z="2.5" />
+            <scale x="2.5" y="1" z="1.5" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="3">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="3" y="0.15" z="4.3" />
+            <translate x="3.5" y="0.1" z="0.8" />
+            <scale x="2.5" y="1" z="0.2" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="4">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="5" y="0.15" z="4.3" />
-            <rotate axis="x" angle="-90" />
+            <translate x="3.5" y="-0.1" z="0.8" />
+            <scale x="2.5" y="1" z="0.2" />
+            <rotate axis="x" angle="90" />
         </transformation>
 
         <transformation id="5">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="7" y="0.15" z="4.3" />
-            <rotate axis="x" angle="-90" />
+            <translate x="3.5" y="0" z="1" />
+            <scale x="2.5" y="0.1" z="1" />
         </transformation>
 
         <transformation id="6">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="9" y="0.15" z="4.3" />
-            <rotate axis="x" angle="-90" />
+            <translate x="3.5" y="0" z="0.6" />
+            <scale x="2.5" y="0.1" z="1" />
+            <rotate axis="x" angle="180" />
         </transformation>
 
-        <transformation id="7">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="11" y="0.15" z="4.3" />
-            <rotate axis="x" angle="-90" />
+         <transformation id="7">
+            <translate x="6" y="0" z="0.8" />
+            <scale x="1" y="0.1" z="0.2" />
+            <rotate axis="y" angle="90" />
         </transformation>
-
+       
         <transformation id="8">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="3" y="0.15" z="21.2" />
-            <rotate axis="x" angle="-90" />
+            <translate x="1" y="0" z="0.8" />
+            <scale x="1" y="0.1" z="0.2" />
+            <rotate axis="y" angle="-90" />
         </transformation>
 
         <transformation id="9">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="5" y="0.15" z="21.2" />
-            <rotate axis="x" angle="-90" />
+            <translate x="0" y="0" z="3" />
         </transformation>
 
         <transformation id="10">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="7" y="0.15" z="21.2" />
-            <rotate axis="x" angle="-90" />
+            <translate x="1.6" y="0" z="-0.08" />
+            <scale x="1" y="1" z="0.68" />
+            <rotate axis="y" angle="-90" />
         </transformation>
 
         <transformation id="11">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="9" y="0.15" z="21.2" />
-            <rotate axis="x" angle="-90" />
+            <translate x="7" y="0" z="-0.08" />
+            <scale x="1" y="1" z="0.68" />
+            <rotate axis="y" angle="-90" />
         </transformation>
 
-        <transformation id="12">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="11" y="0.15" z="21.2" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-        <transformation id="13">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="4.2" y="0.15" z="2.3" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="14">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="4.2" y="0.15" z="4.3" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="15">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="4.2" y="0.15" z="6.3" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="16">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="4.2" y="0.15" z="7.9" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-        <transformation id="17">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="31" y="0.15" z="2.3" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="18">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="31" y="0.15" z="4.3" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="19">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="31" y="0.15" z="6.3" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="20">
-            <scale x="0.5" y="0" z="0.2" />
-            <translate x="31" y="0.15" z="7.9" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
-         <transformation id="21">
+        <transformation id="21">
             <scale x="0.7" y="0.7" z="0.7" />
             <translate x="2.5" y="0.35" z="3" />
         </transformation>
 
         <transformation id="22">
-            <translate x="5" y="0.05" z="3.5" />
+            <translate x="5" y="0.05" z="3" />
             <scale x="0.15" y="0.15" z="0.15" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
-        <transformation id="23">
+        <!-- <transformation id="23">
             <translate x="8.5" y="0.05" z="2" />
             <scale x="0.05" y="0.7" z="0.05" />
             <rotate axis="x" angle="-90" />
-        </transformation>
+        </transformation>  --> 
 
     </transformations>
 
@@ -326,19 +269,19 @@
 
         </primitive>
 
-        <primitive id="ball">
+        <primitive id="sphere">
 
             <sphere radius="0.5" slices="40" stacks="40" />
 
         </primitive>
 
-        <primitive id="table">
+        <primitive id="cylinder">
 
             <cylinder base="4" top="12" height="1" slices="40" stacks="40" />
 
         </primitive>
 
-        <primitive id="buoy">
+        <primitive id="torus">
 
            <torus inner="1" outer="2" slices="40" loops="40" />
 
@@ -373,18 +316,9 @@
                 <componentref id="poolSide7"/>
                 <componentref id="poolSide8"/>
                 <componentref id="poolSide9"/>
-                <componentref id="poolSide10"/>
-                <componentref id="poolSide11"/>
-                <componentref id="poolSide12"/>
-                <componentref id="poolSide13"/>
-                <componentref id="poolSide14"/>
-                <componentref id="poolSide15"/>
-                <componentref id="poolSide16"/>
-                <componentref id="poolSide17"/>
-                <componentref id="poolSide18"/>
                 <componentref id="ball" />
-                <componentref id="buoy" />
-                <componentref id="table"/>
+                <componentref id="buoy" /> 
+               <!--  <componentref id="table"/> -->
             </children>
 
         </component>
@@ -546,7 +480,12 @@
             <texture id="poolEdge" />
 
             <children>
-                <primitiveref id="rectangle" />
+                <componentref id="poolSide1" />
+                <componentref id="poolSide2" />
+                <componentref id="poolSide3" />
+                <componentref id="poolSide4" />
+                <componentref id="poolSide5" />
+                <componentref id="poolSide6" />
             </children>
 
         </component>
@@ -564,7 +503,12 @@
             <texture id="poolEdge" />
 
             <children>
-                <primitiveref id="rectangle" />
+                <componentref id="poolSide1" />
+                <componentref id="poolSide2" />
+                <componentref id="poolSide3" />
+                <componentref id="poolSide4" />
+                <componentref id="poolSide5" />
+                <componentref id="poolSide6" />
             </children>
 
         </component>
@@ -582,169 +526,12 @@
             <texture id="poolEdge" />
 
             <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="poolSide10">
-
-            <transformation>
-                <transformationref id="12" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="poolSide11">
-
-            <transformation>
-                <transformationref id="13" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="poolSide12">
-
-            <transformation>
-                <transformationref id="14" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="poolSide13">
-
-            <transformation>
-                <transformationref id="15" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="poolSide14">
-
-            <transformation>
-                <transformationref id="16" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-         <component id="poolSide15">
-
-            <transformation>
-                <transformationref id="17" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-         <component id="poolSide16">
-
-            <transformation>
-                <transformationref id="18" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-         <component id="poolSide17">
-
-            <transformation>
-                <transformationref id="19" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="poolSide18">
-
-            <transformation>
-                <transformationref id="20" />
-            </transformation>
-
-            <materials>
-                <material id="poolEdgeMaterial" />
-            </materials>
-
-            <texture id="poolEdge" />
-
-            <children>
-                <primitiveref id="rectangle" />
+                <componentref id="poolSide1" />
+                <componentref id="poolSide2" />
+                <componentref id="poolSide3" />
+                <componentref id="poolSide4" />
+                <componentref id="poolSide5" />
+                <componentref id="poolSide6" />
             </children>
 
         </component>
@@ -762,7 +549,7 @@
             <texture id="ball" />
 
             <children>
-                <primitiveref id="ball" />
+                <primitiveref id="sphere" />
             </children>
 
         </component>
@@ -780,12 +567,12 @@
             <texture id="buoy" />
 
             <children>
-                <primitiveref id="buoy" />
+                <primitiveref id="torus" />
             </children>
 
         </component>
 
-        <component id="table">
+        <!-- <component id="table">
 
             <transformation>
                 <transformationref id="23" />
@@ -800,7 +587,7 @@
             <children>
                 <primitiveref id="table" />
             </children>
-        </component>
+        </component> -->
 
     </components>
 

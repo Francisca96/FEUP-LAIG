@@ -2,15 +2,17 @@
  * MyCylinder
  * @constructor
  */
- function MyOpenCylinder(scene, height, slices, stacks) {
+ function MyOpenCylinder(scene, base, top, height, slices, stacks) {
  	CGFobject.call(this,scene);
 
+  this.base = base;
+  this.top = top;
 	this.height = height;
 	this.slices = slices;
 	this.stacks = stacks;
 
  	this.initBuffers();
- };
+ }
 
  MyOpenCylinder.prototype = Object.create(CGFobject.prototype);
  MyOpenCylinder.prototype.constructor = MyOpenCylinder;
@@ -18,8 +20,9 @@
  MyOpenCylinder.prototype.initBuffers = function() {
 	this.ang = Math.PI*2/this.slices;
 	this.stackSize = this.height/this.stacks;
+  var radiusDifference = (this.base - this.top)/this.stacks;
 
-	this.vertices = [];
+  this.vertices = [];
 	this.indices = [];
 	this.normals = [];
 	this.texCoords = [];
@@ -32,8 +35,8 @@
 			var x2 = Math.cos(this.ang*(i+1));
 			var y2 = Math.sin(this.ang*(i+1));
 			for(j = this.stacks, k = 0; j >= 0; j--, k++){
-				this.vertices.push(x1, y1, j*this.stackSize);
-				this.vertices.push(x2, y2, j*this.stackSize);
+				this.vertices.push(x1 * (this.top + radiusDifference*k), y1 * (this.top + radiusDifference*k), j*this.stackSize);
+				this.vertices.push(x2 * (this.top + radiusDifference*k), y2 * (this.top + radiusDifference*k), j*this.stackSize);
 				this.texCoords.push(x1, y1);
 				this.texCoords.push(x2, y2);
 				this.normals.push(x1, y1, 0);

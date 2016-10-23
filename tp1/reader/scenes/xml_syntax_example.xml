@@ -79,13 +79,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="grass" file="../resources/images/grass.png" length_s="1" length_t="1" />
-        <texture id="poolTop" file="../resources/images/poolTop.png" length_s="1" length_t="1" />
-        <texture id="poolEdge" file="../resources/images/poolEdge.png" length_s="1" length_t="1" />
-        <texture id="ball" file="../resources/images/ball.png" length_s="1" length_t="1" />
-        <texture id="wood" file="../resources/images/wood.png" length_s="1" length_t="1" />
-        <texture id="towel" file="../resources/images/towel.png" length_s="1" length_t="1" />
-        <texture id="buoy" file="../resources/images/buoy.png" length_s="1" length_t="1" />
+        <texture id="ss" file="ss" length_s="ff" length_t="ff" />
 
     </textures>
 
@@ -94,60 +88,12 @@
 
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="grassMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="poolTopMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="poolEdgeMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="ballMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="tableMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="tableTowelMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="buoyMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
+        <material id="ss" >
+            <emission r="ff" g="ff" b="ff" a="ff" />
+            <ambient r="ff" g="ff" b="ff" a="ff" />
+            <diffuse r="ff" g="ff" b="ff" a="ff" />
+            <specular r="ff" g="ff" b="ff" a="ff" />
+            <shininess value="ff" />
         </material>
 
     </materials>
@@ -172,63 +118,17 @@
 
         <!-- Deve existir um ou mais blocos "primitive" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <primitive id="grass">
+        <primitive id="ss">
 
             <!-- apenas pode existir UMA das seguintes tags: -->
             <!--     rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente como-->
             <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
-
-        </primitive>
-
-        <primitive id="poolTop">
-
-            <!-- apenas pode existir UMA das seguintes tags: -->
-            <!--     rectangle, triangle, cylinder, sphere, torus -->
-            <!-- os parametros devem ser interpretados, genericamente como-->
-            <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
-
-        </primitive>
-
-        <primitive id="poolEdge">
-
-            <!-- apenas pode existir UMA das seguintes tags: -->
-            <!--     rectangle, triangle, cylinder, sphere, torus -->
-            <!-- os parametros devem ser interpretados, genericamente como-->
-            <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
-
-        </primitive>
-
-        <primitive id="ball">
-
-            <!-- apenas pode existir UMA das seguintes tags: -->
-            <!--     rectangle, triangle, cylinder, sphere, torus -->
-            <!-- os parametros devem ser interpretados, genericamente como-->
-            <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-            <sphere radius="0.5" slices="40" stacks="40" />
-
-        </primitive>
-
-        <primitive id="table">
-
-            <!-- apenas pode existir UMA das seguintes tags: -->
-            <!--     rectangle, triangle, cylinder, sphere, torus -->
-            <!-- os parametros devem ser interpretados, genericamente como-->
-            <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-            <cylinder base="4" top="12" height="1" slices="40" stacks="40" />
-
-        </primitive>
-
-        <primitive id="buoy">
-
-            <!-- apenas pode existir UMA das seguintes tags: -->
-            <!--     rectangle, triangle, cylinder, sphere, torus -->
-            <!-- os parametros devem ser interpretados, genericamente como-->
-            <!-- em OpenGL/GLUT; o cilindro deve adicionalmente ter tampas -->
-           <torus inner="1" outer="2" slices="40" loops="40" />
+            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
+            <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" />
+            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+            <sphere radius="ff" slices="ii" stacks="ii" />
+            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
 
         </primitive>
 

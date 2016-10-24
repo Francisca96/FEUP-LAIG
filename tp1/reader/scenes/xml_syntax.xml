@@ -20,7 +20,7 @@
     <scene root="root" axis_length="3" />
 
 
-    <views default="ss" >
+    <views default="view1" >
 
         <!-- declaracao obrigatoria de pelo menos uma vista; -->
         <!-- se varias vistas declaradas, o default e' a -->
@@ -216,67 +216,67 @@
 
         <transformation id="table">
             <translate x="8" y="0.7" z="2.5" />
-            <scale x="0.5" y="0.05" z="0.7" /> 
+            <scale x="0.5" y="0.05" z="0.7" />
         </transformation>
 
         <transformation id="leg1">
             <translate x="8.25" y="0.35" z="3" />
-            <scale x="0.04" y="0.3" z="0.04" /> 
+            <scale x="0.04" y="0.3" z="0.04" />
         </transformation>
 
         <transformation id="leg2">
             <translate x="7.75" y="0.35" z="3" />
-            <scale x="0.04" y="0.3" z="0.04" /> 
+            <scale x="0.04" y="0.3" z="0.04" />
         </transformation>
 
         <transformation id="leg3">
             <translate x="7.75" y="0.35" z="2" />
-            <scale x="0.04" y="0.3" z="0.04" /> 
+            <scale x="0.04" y="0.3" z="0.04" />
         </transformation>
 
         <transformation id="leg4">
             <translate x="8.25" y="0.35" z="2" />
-            <scale x="0.04" y="0.3" z="0.04" /> 
+            <scale x="0.04" y="0.3" z="0.04" />
         </transformation>
 
         <transformation id="towel">
             <translate x="8" y="0.75" z="2.5" />
-            <scale x="0.5" y="0" z="0.7" /> 
+            <scale x="0.5" y="0" z="0.7" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="towel1">
             <translate x="7.5" y="0.75" z="1.8" />
-            <scale x="1" y="0.3" z="0" /> 
+            <scale x="1" y="0.3" z="0" />
         </transformation>
 
         <transformation id="towel2">
             <translate x="8.5" y="0.75" z="3.2" />
-            <scale x="1" y="0.3" z="0" /> 
+            <scale x="1" y="0.3" z="0" />
             <rotate axis="y" angle="180" />
         </transformation>
 
         <transformation id="towel3">
             <translate x="7.5" y="0.75" z="3.21" />
-            <scale x="0" y="0.3" z="1.4" /> 
+            <scale x="0" y="0.3" z="1.4" />
             <rotate axis="y" angle="90" />
         </transformation>
 
         <transformation id="towel4">
             <translate x="8.5" y="0.75" z="1.80" />
-            <scale x="0" y="0.3" z="1.4" /> 
+            <scale x="0" y="0.3" z="1.4" />
             <rotate axis="y" angle="-90" />
         </transformation>
 
         <transformation id="jar">
             <translate x="8" y="0.7" z="2.5" />
-            <scale x="0.4" y="0.4" z="0.4" /> 
+            <scale x="0.4" y="0.4" z="0.4" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="leafs">
             <translate x="8" y="1" z="2.5" />
-            <scale x="0.25" y="0.25" z="0.25" /> 
+            <scale x="0.25" y="0.25" z="0.25" />
         </transformation>
 
         <transformation id="ball">
@@ -363,7 +363,7 @@
                 <componentref id="jar" />
                 <componentref id="leafs" />
                 <componentref id="ball" />
-                <componentref id="buoy" /> 
+                <componentref id="buoy" />
             </children>
 
         </component>
@@ -478,7 +478,7 @@
                 <componentref id="cube5" />
                 <componentref id="cube6" />
             </children>
-            
+
         </component>
 
         <component id="cube1">

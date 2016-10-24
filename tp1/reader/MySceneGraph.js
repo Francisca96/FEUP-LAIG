@@ -44,6 +44,40 @@ MySceneGraph.prototype.onXMLReady=function()
 // ================================================ Parse Individual Parts ===========================================================
 // ===================================================================================================================================
 
+// ======================================================= Scene =====================================================================
+
+MySceneGraph.prototype.parseScene = function(rootElement){
+	this.scene.root = this.reader.getString(rootElement, "root", true);
+	this.scene.axisLength = this.reader.getFloat(rootElement, "axis_length", true);
+};
+
+// ===================================================================================================================================
+
+// ================================================= Views & Perspectives ============================================================
+
+MySceneGraph.prototype.parseViews = function(rootElement){
+	this.scene.defaultView = this.reader.getString(rootElement, "default", true);
+	this.perspectives = {};
+	this.scene.perspectives = [];
+	var perspectives = rootElement.getElementsByTagName("perspective");
+
+	for(var i = 0; i < perspectives.length; i++){
+		var myPerspective = {};
+		var id = this.reader.getString(perspectives[i], "id", true);
+		var near = this.reader.getFloat(perspectives[i], "near", true);
+		var far = this.reader.getFloat(perspectives[i], "far", true);
+		var angle = this.reader.getFloat(perspectives[i], "angle", true);
+		var position = this.getFloats(perspectives[i].getElementsByTagName('from')[0], ['x', 'y', 'z']);
+		var target = this.getFloats(perspectives[i].getElementsByTagName('to')[0], ['x', 'y', 'z']);
+		this.perspectives[id] = new CGFcamera(angle*Math.PI/180, near, far, position, target);
+		myPerspective.index = this.scene.perspectives.length;
+		this.scene.perspectives.push(myPerspective);
+	}
+};
+
+// ===================================================================================================================================
+
+
 // ==================================================== Illumination =================================================================
 
 MySceneGraph.prototype.parseIllumination = function(rootElement){
@@ -466,6 +500,11 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 
 
 MySceneGraph.prototype.parseXML = function(rootElement) {
+
+	this.parseScene(rootElement.getElementsByTagName('scene')[0]);
+
+	this.parseViews(rootElement.getElementsByTagName('views')[0]);
+	console.log(this.scene.perspectives);
 
 	this.parseIllumination(rootElement.getElementsByTagName('illumination')[0]);
 

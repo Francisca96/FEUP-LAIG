@@ -1,6 +1,7 @@
 
-function XMLscene() {
+function XMLscene(myInterface) {
     CGFscene.call(this);
+    this.interface = myInterface;
 }
 
 XMLscene.prototype = Object.create(CGFscene.prototype);
@@ -73,7 +74,12 @@ XMLscene.prototype.onGraphLoaded = function ()
 {
 	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
   this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
-  // this.gl.clearColor(0,0,0,1);
+
+  this.axis = new CGFaxis(this, this.axisLength);
+
+  cameraIndex = this.graph.perspectives[this.defaultView].index;
+  this.camera = this.graph.perspectives[this.defaultView];
+  // this.interface.setActive
 
   this.loadLights();
 };
@@ -87,7 +93,7 @@ XMLscene.prototype.display = function () {
 
 	// Initialize Model-View matrix as identity (no transformation
 	this.updateProjectionMatrix();
-    this.loadIdentity();
+  this.loadIdentity();
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	this.applyViewMatrix();

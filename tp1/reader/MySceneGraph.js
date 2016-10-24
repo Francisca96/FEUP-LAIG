@@ -44,6 +44,102 @@ MySceneGraph.prototype.onXMLReady=function()
 // ================================================ Parse Individual Parts ===========================================================
 // ===================================================================================================================================
 
+// ==================================================== Illumination =================================================================
+
+MySceneGraph.prototype.parseIllumination = function(rootElement){
+	this.background = [];
+	this.ambient = [];
+
+	var ambientTag = rootElement.getElementsByTagName("ambient")[0];
+	var backgroundTag = rootElement.getElementsByTagName("background")[0];
+
+	this.background = this.getFloats(backgroundTag, ['r', 'g', 'b', 'a']);
+	this.ambient = this.getFloats(ambientTag, ['r', 'g', 'b', 'a']);
+};
+
+// ===================================================================================================================================
+
+// ====================================================== Lights =====================================================================
+
+MySceneGraph.prototype.getOmniLight = function(omniBlock){
+	omniLightParams = [0,0,0,0];
+	var id = this.reader.getString(omniBlock, 'id', true);
+	var enabled = this.reader.getBoolean(omniBlock, 'enabled', true);
+	for(var i = 0; i < omniBlock.children.length; i++){
+		switch(omniBlock.children[i].tagName){
+			case 'location': omniLightParams[0] = this.getFloats(omniBlock.children[i], ['x', 'y', 'z', 'w']); break;
+			case 'ambient': omniLightParams[1] = this.getFloats(omniBlock.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'diffuse': omniLightParams[2] = this.getFloats(omniBlock.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'specular': omniLightParams[3] = this.getFloats(omniBlock.children[i], ['r', 'g', 'b', 'a']); break;
+			default: return null;
+		}
+	}
+
+	var myLight = {};
+	myLight.type = "omni";
+	myLight.id = id;
+	myLight.enabled = enabled;
+	myLight.position = [omniLightParams[0][0], omniLightParams[0][1], omniLightParams[0][2], omniLightParams[0][3]];
+	myLight.ambient = [omniLightParams[1][0], omniLightParams[1][1], omniLightParams[1][2], omniLightParams[1][3]];
+	myLight.diffuse = [omniLightParams[2][0], omniLightParams[2][1], omniLightParams[2][2], omniLightParams[2][3]];
+	myLight.specular = [omniLightParams[3][0], omniLightParams[3][1], omniLightParams[3][2], omniLightParams[3][3]];
+	return myLight;
+};
+
+MySceneGraph.prototype.getSpotLight = function(spotBlock){
+	spotLightParams = [0,0,0,0, 0];
+	var id = this.reader.getString(spotBlock, 'id', true);
+	var enabled = this.reader.getBoolean(spotBlock, 'enabled', true);
+	var angle = this.reader.getFloat(spotBlock, "angle", true);
+	var exponent = this.reader.getFloat(spotBlock, "exponent", true);
+	for(var i = 0; i < spotBlock.children.length; i++){
+		switch(spotBlock.children[i].tagName){
+			case 'target': omniLightParams[0] = this.getFloats(spotBlock.children[i], ['x', 'y', 'z']); break;
+			case 'location': omniLightParams[1] = this.getFloats(spotBlock.children[i], ['x', 'y', 'z', 'w']); break;
+			case 'ambient': omniLightParams[2] = this.getFloats(spotBlock.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'diffuse': omniLightParams[3] = this.getFloats(spotBlock.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'specular': omniLightParams[4] = this.getFloats(spotBlock.children[i], ['r', 'g', 'b', 'a']); break;
+			default: return null;
+		}
+	}
+	var direction = [];
+	direction[0] = omniLightParams[1][0] - omniLightParams[0][0];
+	direction[1] = omniLightParams[1][1] - omniLightParams[0][1];
+	direction[2] = omniLightParams[1][2] - omniLightParams[0][2];
+
+	var myLight = {};
+	myLight.type = "spot";
+	myLight.id = id;
+	myLight.enabled = enabled;
+	myLight.spotCutOff= angle*Math.PI/180;
+	myLight.spotDirection = direction;
+	myLight.spotExponent = exponent;
+	myLight.position = [omniLightParams[1][0], omniLightParams[1][1], omniLightParams[1][2], omniLightParams[1][3]];
+	myLight.ambient = [omniLightParams[2][0], omniLightParams[2][1], omniLightParams[2][2], omniLightParams[2][3]];
+	myLight.diffuse = [omniLightParams[3][0], omniLightParams[3][1], omniLightParams[3][2], omniLightParams[3][3]];
+	myLight.specular = [omniLightParams[4][0], omniLightParams[4][1], omniLightParams[4][2], omniLightParams[4][3]];
+	return myLight;
+};
+
+MySceneGraph.prototype.parseLights = function(rootElement){
+	this.lights = [];
+	for(var i=0; i < rootElement.children.length; i++){
+		var myLight = null;
+		if(rootElement.children[i].tagName == 'omni'){
+			this.lights.push(this.getOmniLight(rootElement.children[i]));
+		}
+		else if(rootElement.children[i].tagName == 'spot'){
+			this.lights.push(this.getSpotLight(rootElement.children[i]));
+		}
+		else{
+			console.log("Unrecognized light tag :" + rootElement.children[i].tagName);
+			return null;
+		}
+	}
+};
+
+// ===================================================================================================================================
+
 // ====================================================== Textures ===================================================================
 
 MySceneGraph.prototype.parseTextures = function(rootElement){
@@ -242,13 +338,12 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 };
 
 
-MySceneGraph.prototype.getRGBA = function(xmlTag){
-	rgba = [];
-	rgba[0]=this.reader.getFloat(xmlTag, 'r', true);
-	rgba[1]=this.reader.getFloat(xmlTag, 'g', true);
-	rgba[2]=this.reader.getFloat(xmlTag, 'b', true);
-	rgba[3]=this.reader.getFloat(xmlTag, 'a', true);
-	return rgba;
+MySceneGraph.prototype.getFloats = function(xmlTag, getTags){
+	caughtValues = [];
+	for(var i = 0; i < getTags.length; i++){
+		caughtValues.push(this.reader.getFloat(xmlTag, getTags[i], true));
+	}
+	return caughtValues;
 };
 
 
@@ -259,10 +354,10 @@ MySceneGraph.prototype.getMaterial = function(rootElement){
 	var materialParams = [0, 0, 0, 0, 0];
 	for(var i = 0; i < rootElement.children.length; i++){
 		switch(rootElement.children[i].tagName){
-			case 'emission': materialParams[0] = this.getRGBA(rootElement.children[i]); break;
-			case 'ambient': materialParams[1] = this.getRGBA(rootElement.children[i]); break;
-			case 'diffuse': materialParams[2] = this.getRGBA(rootElement.children[i]); break;
-			case 'specular': materialParams[3] = this.getRGBA(rootElement.children[i]); break;
+			case 'emission': materialParams[0] = this.getFloats(rootElement.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'ambient': materialParams[1] = this.getFloats(rootElement.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'diffuse': materialParams[2] = this.getFloats(rootElement.children[i], ['r', 'g', 'b', 'a']); break;
+			case 'specular': materialParams[3] = this.getFloats(rootElement.children[i], ['r', 'g', 'b', 'a']); break;
 			case 'shininess': materialParams[4] = this.reader.getInteger(rootElement.children[i], 'value', true); break;
 			default: return null;
 		}
@@ -371,6 +466,10 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 
 
 MySceneGraph.prototype.parseXML = function(rootElement) {
+
+	this.parseIllumination(rootElement.getElementsByTagName('illumination')[0]);
+
+	this.parseLights(rootElement.getElementsByTagName('lights')[0]);
 
 	this.parseTextures(rootElement.getElementsByTagName('textures')[0]);
 

@@ -144,7 +144,7 @@ XMLscene.prototype.processGraph = function (nodeName)
   var material = null;
   if(nodeName != null){
     var node = this.graph.components[nodeName];
-    if(node.materials != null && node.materials.length > 0 && node.materials[node.currentMaterial] != "inherit" && node.materials[node.currentMaterial] != "null"){
+    if(node.materials != null && node.materials.length > 0 && node.materials[node.currentMaterial] != "inherit" && typeof node.materials[node.currentMaterial] != "undefined"){
       material = node.materials[node.currentMaterial];
       if(node.textures != null && node.textures.length > 0){
         material.setTexture(node.textures[0]);

@@ -70,6 +70,8 @@ MySceneGraph.prototype.parseViews = function(rootElement){
 		var target = this.getFloats(perspectives[i].getElementsByTagName('to')[0], ['x', 'y', 'z']);
 		var myPerspective = new CGFcamera(angle*Math.PI/180, near, far, position, target);
 		myPerspective.index = this.scene.perspectives.length;
+		if(this.perspectives.hasOwnProperty(id))
+			return "Non-Unique perspective id: " + id;
 		this.perspectives[id] = myPerspective;
 		this.scene.perspectives.push(myPerspective);
 	}
@@ -98,6 +100,9 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 MySceneGraph.prototype.getOmniLight = function(omniBlock){
 	omniLightParams = [0,0,0,0];
 	var id = this.reader.getString(omniBlock, 'id', true);
+	if(this.lightIDs.indexOf(id) != -1)
+		return null;
+  this.lightIDs.push(id);
 	var enabled = this.reader.getBoolean(omniBlock, 'enabled', true);
 	for(var i = 0; i < omniBlock.children.length; i++){
 		switch(omniBlock.children[i].tagName){
@@ -123,6 +128,9 @@ MySceneGraph.prototype.getOmniLight = function(omniBlock){
 MySceneGraph.prototype.getSpotLight = function(spotBlock){
 	spotLightParams = [0,0,0,0, 0];
 	var id = this.reader.getString(spotBlock, 'id', true);
+	if(this.lightIDs.indexOf(id) != -1)
+		return null;
+	this.lightIDs.push(id);
 	var enabled = this.reader.getBoolean(spotBlock, 'enabled', true);
 	var angle = this.reader.getFloat(spotBlock, "angle", true);
 	var exponent = this.reader.getFloat(spotBlock, "exponent", true);
@@ -157,17 +165,23 @@ MySceneGraph.prototype.getSpotLight = function(spotBlock){
 
 MySceneGraph.prototype.parseLights = function(rootElement){
 	this.lights = [];
+	this.lightIDs = [];
 	for(var i=0; i < rootElement.children.length; i++){
 		var myLight = null;
 		if(rootElement.children[i].tagName == 'omni'){
-			this.lights.push(this.getOmniLight(rootElement.children[i]));
+			myLight = this.getOmniLight(rootElement.children[i]);
+			if(myLight == null)
+				return "error parsing light nr " + i;
+			this.lights.push(myLight);
 		}
 		else if(rootElement.children[i].tagName == 'spot'){
-			this.lights.push(this.getSpotLight(rootElement.children[i]));
+			myLight = this.getSpotLight(rootElement.children[i]);
+			if(myLight == null)
+				return "error parsing light nr " + i;
+			this.lights.push(myLight);
 		}
 		else{
-			console.log("Unrecognized light tag :" + rootElement.children[i].tagName);
-			return null;
+			return "Unrecognized light tag :" + rootElement.children[i].tagName;
 		}
 	}
 };
@@ -183,6 +197,8 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 
 	for(var i=0; i < textures.length; i++){
 		var id = this.reader.getString(textures[i], 'id', true);
+		if(this.textures.hasOwnProperty(id))
+			return "Non-Unique texture id " + id;
 		var file = this.reader.getString(textures[i], 'file', true);
 		var myTexture = new CGFtexture(this.scene, file);
 		myTexture.length_s = this.reader.getInteger(textures[i], 'length_s', true);
@@ -202,6 +218,8 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 
 	for(var i=0; i < materials.length; i++){
 		var id = this.reader.getString(materials[i], 'id', true);
+		if(this.materials.hasOwnProperty(id))
+			return "Non-Unique material id " + id;
 		var myMaterial = this.getMaterial(materials[i]);
 		if(myMaterial == null){
 			return 'Error, invalid format on tag ' + materials[i];
@@ -266,6 +284,8 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	var transfs = rootElement.getElementsByTagName('transformation');
 	for(var i = 0; i < transfs.length; i++){
 		var id = this.reader.getString(transfs[i], 'id', true);
+		if(this.transformations.hasOwnProperty(id))
+			return "Non-Unique transformation id " + id;
 		this.transformations[id] = this.parseTransformation(transfs[i]);
 	}
 };
@@ -281,6 +301,8 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 	for(var i = 0; i < primitives.length; i++){
 		id = this.reader.getString(primitives[i], 'id', true); //TODO: ver que erro dá se não existir
+		if(this.primitives.hasOwnProperty(id))
+			return "Non-Unique primitive id " + id;
 		if (primitives[i].children.length != 1)
 			return 'Wrong number of primitive types - must be one!';
 		switch(primitives[i].children[0].tagName){
@@ -342,10 +364,24 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	for(var i = 0; i < components.length; i++){
 		var myComponent = {};
 		var id = this.reader.getString(components[i], 'id', true);
-		this.parseChildren(components[i], myComponent);
-		this.parseComponentMaterials(components[i], myComponent);
-		this.parseComponentTextures(components[i], myComponent);
-		this.parseComponentTransformations(components[i], myComponent);
+		if(this.components.hasOwnProperty(id))
+			return "Non-Unique component id " + id;
+		var error = this.parseChildren(components[i], myComponent);
+		if(error != null){
+			return error;
+		}
+		error = this.parseComponentMaterials(components[i], myComponent);
+		if(error != null){
+			return error;
+		}
+		error = this.parseComponentTextures(components[i], myComponent);
+		if(error != null){
+			return error;
+		}
+		error = this.parseComponentTransformations(components[i], myComponent);
+		if(error != null){
+			return error;
+		}
 		myComponent.currentMaterial = 0;
 		this.components[id] = myComponent;
 	}
@@ -413,7 +449,7 @@ MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component
 
 	for(i = 0; i < materials.length; i++){
 		materialId = this.reader.getString(materials[i], 'id', true);
-		if (!this.materials.hasOwnProperty(materialId)){
+		if (!this.materials.hasOwnProperty(materialId) && materialId != "null" && materialId != "inherit"){
 			return 'Reference to undefined material ' + materialId;
 		}
 		component.materials.push(this.materials[materialId]);
@@ -427,7 +463,7 @@ MySceneGraph.prototype.parseComponentTextures = function(rootElement, component)
 
 	for(i = 0; i < textures.length; i++){
 		textureId = this.reader.getString(textures[i], 'id', true);
-		if (!this.textures.hasOwnProperty(textureId)){
+		if (!this.textures.hasOwnProperty(textureId) && textureId != "null"){
 			return 'Reference to undefined texture ' + textureId;
 		}
 		component.textures.push(this.textures[textureId]);
@@ -507,34 +543,79 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 
 MySceneGraph.prototype.parseXML = function(rootElement) {
 
+	if(!this.hasCorrectTags(rootElement)){
+		console.log("Error, wrong tag order / number");
+		return "ERROR";
+	}
+
 	this.parseScene(rootElement.getElementsByTagName('scene')[0]);
 
-	this.parseViews(rootElement.getElementsByTagName('views')[0]);
-	console.log(this.scene.perspectives);
+	error = this.parseViews(rootElement.getElementsByTagName('views')[0]);
+	if(error != null){
+		console.log(error);
+		return error;
+	}
 
 	this.parseIllumination(rootElement.getElementsByTagName('illumination')[0]);
 
-	this.parseLights(rootElement.getElementsByTagName('lights')[0]);
+	error = this.parseLights(rootElement.getElementsByTagName('lights')[0]);
+	if(error != null){
+		console.log(error);
+		return error;
+	}
 
-	this.parseTextures(rootElement.getElementsByTagName('textures')[0]);
+	error = this.parseTextures(rootElement.getElementsByTagName('textures')[0]);
+	if(error != null){
+		console.log(error);
+		return error;
+	}
 
-	this.parseMaterials(rootElement.getElementsByTagName('materials')[0]);
+	error = this.parseMaterials(rootElement.getElementsByTagName('materials')[0]);
+	if(error != null){
+		console.log(error);
+		return error;
+	}
 
-	this.parseTransformations(rootElement.getElementsByTagName('transformations')[0]);
+	error = this.parseTransformations(rootElement.getElementsByTagName('transformations')[0]);
+	if(error != null){
+		console.log(error);
+		return error;
+	}
 
 	error = this.parsePrimitives(rootElement.getElementsByTagName('primitives')[0]);
-	if(error != null)
+	if(error != null){
+		console.log(error);
 		return error;
-
+}
 	error = this.parseComponents(rootElement.getElementsByTagName('components')[0]);
-	if(error != null)
+	if(error != null){
+		console.log(error);
 		return error;
-		console.log("everythingloadedok!!!");
+	}
+	console.log("everythingloadedok!!!");
 };
 
 // ===================================================================================================================================
 // ===================================================== Error Checking ==============================================================
 // ===================================================================================================================================
+
+MySceneGraph.prototype.hasCorrectTags = function(rootElement){
+	var correctTags = ["scene", "views", "illumination", "lights", "textures", "materials", "transformations", "primitives", "components"];
+
+	if(rootElement.children.length != correctTags.length)
+		return false;
+
+	for(var i = 0; i < rootElement.children.length; i++){
+		if(rootElement.children[i].tagName != correctTags[i])
+			return false;
+	}
+	return true;
+};
+
+// ===================================================================================================================================
+// ===================================================================================================================================
+// ===================================================================================================================================
+
 
 /*
  * Callback to be executed on any read error

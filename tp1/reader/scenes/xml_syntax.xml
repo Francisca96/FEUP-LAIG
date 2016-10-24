@@ -417,24 +417,6 @@
 
         </component>
 
-        <component id="roof">
-
-            <transformation>
-                <transformationref id="roof" />
-            </transformation>
-
-            <materials>
-                <material id="defaultMaterial" />
-            </materials>
-
-            <texture id="roof" />
-
-            <children>
-                <primitiveref id="triangle" />
-            </children>
-
-        </component>
-
         <component id="grass">
 
             <transformation>

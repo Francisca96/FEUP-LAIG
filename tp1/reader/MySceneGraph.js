@@ -62,15 +62,15 @@ MySceneGraph.prototype.parseViews = function(rootElement){
 	var perspectives = rootElement.getElementsByTagName("perspective");
 
 	for(var i = 0; i < perspectives.length; i++){
-		var myPerspective = {};
 		var id = this.reader.getString(perspectives[i], "id", true);
 		var near = this.reader.getFloat(perspectives[i], "near", true);
 		var far = this.reader.getFloat(perspectives[i], "far", true);
 		var angle = this.reader.getFloat(perspectives[i], "angle", true);
 		var position = this.getFloats(perspectives[i].getElementsByTagName('from')[0], ['x', 'y', 'z']);
 		var target = this.getFloats(perspectives[i].getElementsByTagName('to')[0], ['x', 'y', 'z']);
-		this.perspectives[id] = new CGFcamera(angle*Math.PI/180, near, far, position, target);
+		var myPerspective = new CGFcamera(angle*Math.PI/180, near, far, position, target);
 		myPerspective.index = this.scene.perspectives.length;
+		this.perspectives[id] = myPerspective;
 		this.scene.perspectives.push(myPerspective);
 	}
 };
@@ -346,6 +346,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 		this.parseComponentMaterials(components[i], myComponent);
 		this.parseComponentTextures(components[i], myComponent);
 		this.parseComponentTransformations(components[i], myComponent);
+		myComponent.currentMaterial = 0;
 		this.components[id] = myComponent;
 	}
 };
@@ -498,6 +499,11 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 	}
 };
 
+// ===================================================================================================================================
+// ===================================================================================================================================
+// ===================================================================================================================================
+
+
 
 MySceneGraph.prototype.parseXML = function(rootElement) {
 
@@ -527,7 +533,7 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 };
 
 // ===================================================================================================================================
-// ===================================================================================================================================
+// ===================================================== Error Checking ==============================================================
 // ===================================================================================================================================
 
 /*

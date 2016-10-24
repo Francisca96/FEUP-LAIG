@@ -21,8 +21,10 @@ XMLscene.prototype.init = function (application) {
 	  this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
-	this.axis=new CGFaxis(this);
-  this.enableTextures(true);
+    this.lightStatus = [false, false, false, false, false, false, false, false, false];
+    this.cameraIndex = 0;
+	  this.axis=new CGFaxis(this);
+    this.enableTextures(true);
 };
 
 XMLscene.prototype.initLights = function () {
@@ -36,6 +38,7 @@ XMLscene.prototype.loadLights = function() {
   for(var i = 0; i < this.graph.lights.length; i++){
     var myLight = this.graph.lights[i];
 
+    this.lights[i].lightID = myLight.id;
     this.lights[i].setPosition(myLight.position[0], myLight.position[1], myLight.position[2], myLight.position[3]);
     this.lights[i].setAmbient(myLight.ambient[0], myLight.ambient[1], myLight.ambient[2], myLight.ambient[3]);
     this.lights[i].setDiffuse(myLight.diffuse[0], myLight.diffuse[1], myLight.diffuse[2], myLight.diffuse[3]);
@@ -54,6 +57,11 @@ XMLscene.prototype.loadLights = function() {
     }
     this.lights[i].setVisible(false);
     this.lights[i].update();
+  }
+
+  for(i = 0; i < this.graph.lights.length; i++){
+    this.lightStatus[i] = this.lights[i].enabled;
+    this.interface.addLightButton(i, this.lights[i].lightID);
   }
 };
 
@@ -77,9 +85,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 
   this.axis = new CGFaxis(this, this.axisLength);
 
-  cameraIndex = this.graph.perspectives[this.defaultView].index;
-  this.camera = this.graph.perspectives[this.defaultView];
-  // this.interface.setActive
+  this.cameraIndex = this.graph.perspectives[this.defaultView].index;
+  this.camera = this.perspectives[this.cameraIndex];
+  this.interface.setActiveCamera(this.camera);
 
   this.loadLights();
 };
@@ -118,9 +126,16 @@ XMLscene.prototype.display = function () {
 
 XMLscene.prototype.updateLights = function ()
 {
-  for(var i = 0; i < this.lights.length; i++){
-    this.lights[i].setVisible(true);
+  for(var i = 0; i < this.graph.lights.length; i++){
+    if(this.lightStatus[i]){
+      // console.log("enabled");
+      this.lights[i].enable();
+    }
+    else {
+      this.lights[i].disable();
+    }
     this.lights[i].update();
+    this.lights[i].setVisible(true);
   }
 };
 
@@ -129,8 +144,8 @@ XMLscene.prototype.processGraph = function (nodeName)
   var material = null;
   if(nodeName != null){
     var node = this.graph.components[nodeName];
-    if(node.materials != null && node.materials.length > 0){
-      material = node.materials[0];
+    if(node.materials != null && node.materials.length > 0 && node.materials[node.currentMaterial] != "inherit" && node.materials[node.currentMaterial] != "null"){
+      material = node.materials[node.currentMaterial];
       if(node.textures != null && node.textures.length > 0){
         material.setTexture(node.textures[0]);
       }

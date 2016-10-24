@@ -24,6 +24,7 @@ MyInterface.prototype.init = function(application) {
 	return true;
 };
 
+// Adds a button with name id connected to the index i of the lightstatus array.
 MyInterface.prototype.addLightButton = function(i, id){
 	this.lights.add(this.scene.lightStatus, i, this.scene.lightStatus[i]).name(id);
 };

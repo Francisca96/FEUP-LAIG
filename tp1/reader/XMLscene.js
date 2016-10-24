@@ -7,6 +7,7 @@ function XMLscene(myInterface) {
 XMLscene.prototype = Object.create(CGFscene.prototype);
 XMLscene.prototype.constructor = XMLscene;
 
+// Initializes needed values for the scene
 XMLscene.prototype.init = function (application) {
     CGFscene.prototype.init.call(this, application);
 
@@ -27,6 +28,7 @@ XMLscene.prototype.init = function (application) {
     this.enableTextures(true);
 };
 
+// Initializes lights
 XMLscene.prototype.initLights = function () {
 
 	this.lights[0].setPosition(2, 3, 3, 1);
@@ -34,6 +36,7 @@ XMLscene.prototype.initLights = function () {
     this.lights[0].update();
 };
 
+// Loads lights from the graph
 XMLscene.prototype.loadLights = function() {
   for(var i = 0; i < this.graph.lights.length; i++){
     var myLight = this.graph.lights[i];
@@ -124,6 +127,7 @@ XMLscene.prototype.display = function () {
 	}
 };
 
+// Updates lights states
 XMLscene.prototype.updateLights = function ()
 {
   for(var i = 0; i < this.graph.lights.length; i++){
@@ -139,6 +143,7 @@ XMLscene.prototype.updateLights = function ()
   }
 };
 
+// Processes the graph components
 XMLscene.prototype.processGraph = function (nodeName)
 {
   var material = null;

@@ -46,6 +46,7 @@ MySceneGraph.prototype.onXMLReady=function()
 
 // ======================================================= Scene =====================================================================
 
+// Retrieves and saves the information of the root component id and length of the axis
 MySceneGraph.prototype.parseScene = function(rootElement){
 	this.scene.root = this.reader.getString(rootElement, "root", true);
 	this.scene.axisLength = this.reader.getFloat(rootElement, "axis_length", true);
@@ -55,6 +56,7 @@ MySceneGraph.prototype.parseScene = function(rootElement){
 
 // ================================================= Views & Perspectives ============================================================
 
+// Retrives information from the view tag and all perspective tags
 MySceneGraph.prototype.parseViews = function(rootElement){
 	this.scene.defaultView = this.reader.getString(rootElement, "default", true);
 	this.perspectives = {};
@@ -82,6 +84,7 @@ MySceneGraph.prototype.parseViews = function(rootElement){
 
 // ==================================================== Illumination =================================================================
 
+// Gets the information about the general illumination
 MySceneGraph.prototype.parseIllumination = function(rootElement){
 	this.background = [];
 	this.ambient = [];
@@ -97,6 +100,7 @@ MySceneGraph.prototype.parseIllumination = function(rootElement){
 
 // ====================================================== Lights =====================================================================
 
+// Reads and returns an omni light from an omni light tag block
 MySceneGraph.prototype.getOmniLight = function(omniBlock){
 	omniLightParams = [0,0,0,0];
 	var id = this.reader.getString(omniBlock, 'id', true);
@@ -125,6 +129,7 @@ MySceneGraph.prototype.getOmniLight = function(omniBlock){
 	return myLight;
 };
 
+// Reads and returns a spot light from a spot light tag block
 MySceneGraph.prototype.getSpotLight = function(spotBlock){
 	spotLightParams = [0,0,0,0, 0];
 	var id = this.reader.getString(spotBlock, 'id', true);
@@ -163,6 +168,7 @@ MySceneGraph.prototype.getSpotLight = function(spotBlock){
 	return myLight;
 };
 
+// Reads all lights from the omni and spot tags in the lights tag block
 MySceneGraph.prototype.parseLights = function(rootElement){
 	this.lights = [];
 	this.lightIDs = [];
@@ -190,6 +196,7 @@ MySceneGraph.prototype.parseLights = function(rootElement){
 
 // ====================================================== Textures ===================================================================
 
+// Reads all textures from the textures tag block
 MySceneGraph.prototype.parseTextures = function(rootElement){
 	this.textures={};
 
@@ -211,6 +218,7 @@ MySceneGraph.prototype.parseTextures = function(rootElement){
 
 // ====================================================== Materials ==================================================================
 
+// Reads all materials from the materials tag block
 MySceneGraph.prototype.parseMaterials = function(rootElement){
 	this.materials={};
 
@@ -232,6 +240,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement){
 
 // ==================================================== Transformations ==============================================================
 
+// Gets the needed parameters for each kind of transformation
 MySceneGraph.prototype.getTransformationValues = function(transformation){
 	pos = [];
 
@@ -254,6 +263,7 @@ MySceneGraph.prototype.getTransformationValues = function(transformation){
 	return pos;
 };
 
+// Reads a transformation and saves it as the corresponding matrix
 MySceneGraph.prototype.parseTransformation = function(transformationBlock) {
 	var transfValues = [];
 	var transformationMatrix = mat4.create();
@@ -278,6 +288,7 @@ MySceneGraph.prototype.parseTransformation = function(transformationBlock) {
 	return transformationMatrix;
 };
 
+// Reads all transformations from the transformations tag block
 MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	this.transformations = {};
 
@@ -294,6 +305,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 
 // ===================================================== Primitives ==================================================================
 
+// Reads all primitives from the primitives tag block
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	var primitives = rootElement.getElementsByTagName('primitive');
 
@@ -358,6 +370,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 // ===================================================== Components ==================================================================
 // ===================================================================================================================================
 
+// Reads all components from the components tag block
 MySceneGraph.prototype.parseComponents = function(rootElement) {
 	this.components = {};
 	var components = rootElement.getElementsByTagName('component');
@@ -387,7 +400,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	}
 };
 
-
+// Reads all children of a component
 MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 	var primRefs = rootElement.getElementsByTagName('primitiveref');
 	var compRefs = rootElement.getElementsByTagName('componentref');
@@ -408,7 +421,7 @@ MySceneGraph.prototype.parseChildren = function(rootElement, component) {
 	}
 };
 
-
+// Reads a float value from xmlTag for each entry in getTags
 MySceneGraph.prototype.getFloats = function(xmlTag, getTags){
 	caughtValues = [];
 	for(var i = 0; i < getTags.length; i++){
@@ -417,7 +430,7 @@ MySceneGraph.prototype.getFloats = function(xmlTag, getTags){
 	return caughtValues;
 };
 
-
+// Retrieves a material given the material block
 MySceneGraph.prototype.getMaterial = function(rootElement){
 	if(rootElement.children.length != 5){
 		return null;
@@ -442,7 +455,7 @@ MySceneGraph.prototype.getMaterial = function(rootElement){
 	return newMaterial;
 };
 
-
+// Reads all materials existing in a component
 MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component) {
 	var materials = rootElement.getElementsByTagName('material');
 	component.materials = [];
@@ -456,7 +469,7 @@ MySceneGraph.prototype.parseComponentMaterials = function(rootElement, component
 	}
 };
 
-
+// Reads the given texture for a component
 MySceneGraph.prototype.parseComponentTextures = function(rootElement, component) {
 	var textures = rootElement.getElementsByTagName('texture');
 	component.textures = [];
@@ -470,7 +483,7 @@ MySceneGraph.prototype.parseComponentTextures = function(rootElement, component)
 	}
 };
 
-
+// Checks if the transformation tag is correct, either if it has the specific transformation tags or just a ref or both which gives an error
 MySceneGraph.prototype.transformationKind = function(componentTransformations) {
 	var hasRefs = 0, hasSpecifics = 0;
 
@@ -504,7 +517,7 @@ MySceneGraph.prototype.transformationKind = function(componentTransformations) {
 	}
 };
 
-
+// Reads the transformation ref fror a component
 MySceneGraph.prototype.parseTransformationRefs = function(rootElement, component) {
 	var transfRefs = rootElement.getElementsByTagName('transformationref');
 
@@ -516,7 +529,7 @@ MySceneGraph.prototype.parseTransformationRefs = function(rootElement, component
 	}
 };
 
-
+// Reads all transformations for a component
 MySceneGraph.prototype.parseComponentTransformations = function(rootElement, component) {
 	component.transformations = [];
 	var typeOfTransf = this.transformationKind(rootElement.getElementsByTagName('transformation')[0]);
@@ -540,7 +553,7 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 // ===================================================================================================================================
 
 
-
+// Reads all attributes and components from the xml file
 MySceneGraph.prototype.parseXML = function(rootElement) {
 
 	if(!this.hasCorrectTags(rootElement)){
@@ -599,6 +612,7 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 // ===================================================== Error Checking ==============================================================
 // ===================================================================================================================================
 
+// Checks if te xml has the correct tags in the correct order
 MySceneGraph.prototype.hasCorrectTags = function(rootElement){
 	var correctTags = ["scene", "views", "illumination", "lights", "textures", "materials", "transformations", "primitives", "components"];
 

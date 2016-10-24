@@ -107,6 +107,10 @@
         <texture id="wood" file="../resources/images/wood.png" length_s="1" length_t="1" />
         <texture id="towel" file="../resources/images/towel.png" length_s="1" length_t="1" />
         <texture id="buoy" file="../resources/images/buoy.png" length_s="1" length_t="1" />
+        <texture id="jar" file="../resources/images/jar.png" length_s="1" length_t="1" />
+        <texture id="leafs" file="../resources/images/leafs.png" length_s="1" length_t="1" />
+        <texture id="wall1" file="../resources/images/wall1.png" length_s="1" length_t="1" />
+        <texture id="wall2" file="../resources/images/wall2.png" length_s="1" length_t="1" />
 
     </textures>
 
@@ -115,59 +119,19 @@
 
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <material id="grassMaterial" >
+        <material id="defaultMaterial" >
             <emission r="0.2" g="0.2" b="0.2" a="0.2" />
             <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
+            <shininess value="50" />
         </material>
 
-        <material id="poolTopMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="poolEdgeMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="ballMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="tableMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="tableTowelMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
-            <shininess value="100" />
-        </material>
-
-        <material id="buoyMaterial" >
-            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
-            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        <material id="trianglesTowelMaterial" >
+            <emission r="1" g="0" b="0" a="0.2" />
+            <ambient r="1" g="0" b="0" a="1.0" />
+            <diffuse r="1" g="0" b="0" a="1.0" />
+            <specular r="1" g="0" b="0" a="1.0" />
             <shininess value="100" />
         </material>
 
@@ -178,8 +142,19 @@
 
         <!-- Deve existir um ou mais blocos "transformation" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
+        <transformation id="wall1">
+            <scale x="4.5" y="1.7" z="3" />
+            <translate x="1" y="1" z="0" />
+        </transformation>
+
+        <transformation id="wall2">
+            <scale x="0" y="1.7" z="3" />
+            <translate x="0" y="1" z="1" />
+            <rotate axis="y" angle="90" />
+        </transformation>
+
         <transformation id="grass">
-            <scale x="5" y="1" z="3" />
+            <scale x="4.5" y="1" z="3" />
             <translate x="1" y="0" z="1" />
             <rotate axis="x" angle="-90" />
         </transformation>
@@ -239,8 +214,73 @@
             <scale x="0.2" y="0.1" z="1.9" />
         </transformation>
 
+        <transformation id="table">
+            <translate x="8" y="0.7" z="2.5" />
+            <scale x="0.5" y="0.05" z="0.7" /> 
+        </transformation>
+
+        <transformation id="leg1">
+            <translate x="8.25" y="0.35" z="3" />
+            <scale x="0.04" y="0.3" z="0.04" /> 
+        </transformation>
+
+        <transformation id="leg2">
+            <translate x="7.75" y="0.35" z="3" />
+            <scale x="0.04" y="0.3" z="0.04" /> 
+        </transformation>
+
+        <transformation id="leg3">
+            <translate x="7.75" y="0.35" z="2" />
+            <scale x="0.04" y="0.3" z="0.04" /> 
+        </transformation>
+
+        <transformation id="leg4">
+            <translate x="8.25" y="0.35" z="2" />
+            <scale x="0.04" y="0.3" z="0.04" /> 
+        </transformation>
+
+        <transformation id="towel">
+            <translate x="8" y="0.75" z="2.5" />
+            <scale x="0.5" y="0" z="0.7" /> 
+            <rotate axis="x" angle="-90" />
+        </transformation>
+
+        <transformation id="towel1">
+            <translate x="7.5" y="0.75" z="1.8" />
+            <scale x="1" y="0.3" z="0" /> 
+        </transformation>
+
+        <transformation id="towel2">
+            <translate x="8.5" y="0.75" z="3.2" />
+            <scale x="1" y="0.3" z="0" /> 
+            <rotate axis="y" angle="180" />
+        </transformation>
+
+        <transformation id="towel3">
+            <translate x="7.5" y="0.75" z="3.21" />
+            <scale x="0" y="0.3" z="1.4" /> 
+            <rotate axis="y" angle="90" />
+        </transformation>
+
+        <transformation id="towel4">
+            <translate x="8.5" y="0.75" z="1.80" />
+            <scale x="0" y="0.3" z="1.4" /> 
+            <rotate axis="y" angle="-90" />
+        </transformation>
+
+        <transformation id="jar">
+            <translate x="8" y="0.7" z="2.5" />
+            <scale x="0.4" y="0.4" z="0.4" /> 
+            <rotate axis="x" angle="-90" />
+        </transformation>
+
+        <transformation id="leafs">
+            <translate x="8" y="1" z="2.5" />
+            <scale x="0.25" y="0.25" z="0.25" /> 
+        </transformation>
+
         <transformation id="ball">
-            <scale x="0.7" y="0.7" z="0.7" />
+            <scale x="0.6" y="0.6" z="0.6" />
             <translate x="2.5" y="0.35" z="3" />
         </transformation>
 
@@ -260,6 +300,12 @@
 
         </primitive>
 
+        <primitive id="triangle">
+
+            <triangle x1="0" y1="0" z1="0" x2="1" y2="0" z2="0" x3="0.5" y3="-1" z3="0" />
+
+        </primitive>
+
         <primitive id="sphere">
 
             <sphere radius="0.5" slices="40" stacks="40" />
@@ -268,7 +314,7 @@
 
         <primitive id="cylinder">
 
-            <cylinder base="4" top="12" height="1" slices="40" stacks="40" />
+            <cylinder base="0.1" top="0.2" height="0.5" slices="40" stacks="40" />
 
         </primitive>
 
@@ -296,14 +342,82 @@
             <texture id="null"/>
 
             <children>
+                <componentref id="wall1" />
+                <componentref id="wall2" />
                 <componentref id="grass" />
                 <componentref id="pool" />
                 <componentref id="poolEdge1" />
                 <componentref id="poolEdge2" />
                 <componentref id="poolEdge3" />
                 <componentref id="poolEdge4" />
+                <componentref id="table" />
+                <componentref id="leg1" />
+                <componentref id="leg2" />
+                <componentref id="leg3" />
+                <componentref id="leg4" />
+                <componentref id="towel" />
+                <componentref id="towel1" />
+                <componentref id="towel2" />
+                <componentref id="towel3" />
+                <componentref id="towel4" />
+                <componentref id="jar" />
+                <componentref id="leafs" />
                 <componentref id="ball" />
                 <componentref id="buoy" /> 
+            </children>
+
+        </component>
+
+        <component id="wall1">
+
+            <transformation>
+                <transformationref id="wall1" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wall1" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="wall2">
+
+            <transformation>
+                <transformationref id="wall2" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wall2" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="roof">
+
+            <transformation>
+                <transformationref id="roof" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="roof" />
+
+            <children>
+                <primitiveref id="triangle" />
             </children>
 
         </component>
@@ -315,7 +429,7 @@
             </transformation>
 
             <materials>
-                <material id="grassMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="grass" />
@@ -333,7 +447,7 @@
             </transformation>
 
             <materials>
-                <material id="poolTopMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="poolTop" />
@@ -351,7 +465,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -374,7 +488,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -392,7 +506,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -410,7 +524,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -428,7 +542,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -446,7 +560,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -464,7 +578,7 @@
             </transformation>
 
             <materials>
-                <material id="null" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="null" />
@@ -482,7 +596,7 @@
             </transformation>
 
             <materials>
-                <material id="poolEdgeMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="poolEdge" />
@@ -500,7 +614,7 @@
             </transformation>
 
             <materials>
-                <material id="poolEdgeMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="poolEdge" />
@@ -518,7 +632,7 @@
             </transformation>
 
             <materials>
-                <material id="poolEdgeMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="poolEdge" />
@@ -536,7 +650,7 @@
             </transformation>
 
             <materials>
-                <material id="poolEdgeMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="poolEdge" />
@@ -547,6 +661,223 @@
 
         </component>
 
+        <component id="table">
+
+            <transformation>
+                <transformationref id="table" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wood" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+
+        </component>
+
+        <component id="leg1">
+
+            <transformation>
+                <transformationref id="leg1" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wood" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+
+        </component>
+
+        <component id="leg2">
+
+            <transformation>
+                <transformationref id="leg2" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wood" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+
+        </component>
+
+        <component id="leg3">
+
+            <transformation>
+                <transformationref id="leg3" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wood" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+
+        </component>
+
+        <component id="leg4">
+
+            <transformation>
+                <transformationref id="leg4" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wood" />
+
+            <children>
+                <componentref id="cube"/>
+            </children>
+
+        </component>
+
+        <component id="towel">
+
+            <transformation>
+                <transformationref id="towel" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="towel" />
+
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+
+        </component>
+
+        <component id="towel1">
+
+            <transformation>
+                <transformationref id="towel1" />
+            </transformation>
+
+            <materials>
+                <material id="trianglesTowelMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+                <primitiveref id="triangle"/>
+            </children>
+
+        </component>
+
+         <component id="towel2">
+
+            <transformation>
+                <transformationref id="towel2" />
+            </transformation>
+
+            <materials>
+                <material id="trianglesTowelMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+                <primitiveref id="triangle"/>
+            </children>
+
+        </component>
+
+         <component id="towel3">
+
+            <transformation>
+                <transformationref id="towel3" />
+            </transformation>
+
+            <materials>
+                <material id="trianglesTowelMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+                <primitiveref id="triangle"/>
+            </children>
+
+        </component>
+
+         <component id="towel4">
+
+            <transformation>
+                <transformationref id="towel4" />
+            </transformation>
+
+            <materials>
+                <material id="trianglesTowelMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+                <primitiveref id="triangle"/>
+            </children>
+
+        </component>
+
+        <component id="jar">
+
+            <transformation>
+                <transformationref id="jar" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="jar" />
+
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+
+        </component>
+
+        <component id="leafs">
+
+            <transformation>
+                <transformationref id="leafs" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="leafs" />
+
+            <children>
+                <primitiveref id="sphere"/>
+            </children>
+
+        </component>
+
+
         <component id="ball">
 
             <transformation>
@@ -554,7 +885,7 @@
             </transformation>
 
             <materials>
-                <material id="ballMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="ball" />
@@ -572,7 +903,7 @@
             </transformation>
 
             <materials>
-                <material id="buoyMaterial" />
+                <material id="defaultMaterial" />
             </materials>
 
             <texture id="buoy" />

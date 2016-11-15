@@ -22,6 +22,7 @@ XMLscene.prototype.init = function (application) {
 	  this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+    this.parentMaterials = [];
     this.lightStatus = [false, false, false, false, false, false, false, false, false];
     this.cameraIndex = 0;
 	  this.axis=new CGFaxis(this);
@@ -146,17 +147,23 @@ XMLscene.prototype.updateLights = function ()
 // Processes the graph components
 XMLscene.prototype.processGraph = function (nodeName)
 {
+  
   var material = null;
   if(nodeName != null){
     var node = this.graph.components[nodeName];
-    if(node.materials != null && node.materials.length > 0 && node.materials[node.currentMaterial] != "inherit" && typeof node.materials[node.currentMaterial] != "undefined"){
-      material = node.materials[node.currentMaterial];
+    if(node.materials != null && node.materials.length > 0 && node.materials[node.currentMaterial] != "inherit" && node.materials[node.currentMaterial] != "null"){
+      material = this.graph.materials[node.materials[node.currentMaterial]];
       if(node.textures != null && node.textures.length > 0){
         material.setTexture(node.textures[0]);
       }
       if(material != null){
         material.apply();
       }
+      this.parentMaterials.push(node.materials[node.currentMaterial]);
+    }
+    else if(node.materials[node.currentMaterial] == "inherit"){
+      material = this.graph.materials[this.parentMaterials[this.parentMaterials.length-1]];
+      material.apply();
     }
     if(node.transformations.length > 0){
       this.multMatrix(node.transformations[0]);

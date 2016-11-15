@@ -47,9 +47,9 @@ MyInterface.prototype.processKeyDown = function(event) {
 			break;
 		case (118): //v
 		case(86):
-				this.scene.cameraIndex = (this.scene.cameraIndex + 1) % this.scene.perspectives.length;
-			  this.scene.camera = this.scene.perspectives[this.scene.cameraIndex];
-			  this.setActiveCamera(this.scene.camera);
+			this.scene.cameraIndex = (this.scene.cameraIndex + 1) % this.scene.perspectives.length;
+			this.scene.camera = this.scene.perspectives[this.scene.cameraIndex];
+			this.setActiveCamera(this.scene.camera);
 			break;
 	}
 };

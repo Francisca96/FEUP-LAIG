@@ -6,7 +6,7 @@
  	CGFobject.call(this,scene);
 
 
-  this.height = height;
+    this.height = height;
 	this.base = new MyPolygon(scene, slices, base);
 	this.top = new MyPolygon(scene, slices, top);
 	this.tube = new MyOpenCylinder(scene, base, top, height, slices, stacks);

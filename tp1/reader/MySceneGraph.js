@@ -358,14 +358,6 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				loops = this.reader.getInteger(primitives[i].children[0], 'loops', true);
 				this.primitives[id] = new MyTorus(this.scene, inner, outer, slices, loops);
 				break;
-			case 'diamond':
-				slices = this.reader.getInteger(primitives[i].children[0], 'slices', true);
-				this.primitives[id] = new MyDiamond(this.scene, slices);
-				break;
-			case 'square':
-				texangle = this.reader.getInteger(primitives[i].children[0], 'texangle', true);
-				this.primitives[id] = new MySquare(this.scene, texangle);
-				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;
 		}

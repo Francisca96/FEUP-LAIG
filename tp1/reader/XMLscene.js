@@ -27,6 +27,8 @@ XMLscene.prototype.init = function (application) {
     this.cameraIndex = 0;
 	  this.axis=new CGFaxis(this);
     this.enableTextures(true);
+    this.time = -1;
+    this.setUpdatePeriod(100/6);
 };
 
 // Initializes lights
@@ -144,10 +146,14 @@ XMLscene.prototype.updateLights = function ()
   }
 };
 
+XMLscene.prototype.update = function(currTime) {
+  this.time = currTime;
+};
+
 // Processes the graph components
 XMLscene.prototype.processGraph = function (nodeName)
 {
-  
+
   var material = null;
   if(nodeName != null){
     var node = this.graph.components[nodeName];
@@ -168,7 +174,12 @@ XMLscene.prototype.processGraph = function (nodeName)
     if(node.transformations.length > 0){
       this.multMatrix(node.transformations[0]);
     }
-    for(var i = 0; i < node.primitives.length; i++){
+    for(var i = 0; i < node.animations.length; i++){
+      this.multMatrix(node.animations[i].calculateTransformation(this.time));
+      if(!node.animations[i].isComplete)
+        break;
+    }
+    for(i = 0; i < node.primitives.length; i++){
       this.graph.primitives[node.primitives[i]].display();
     }
     for(i = 0; i < node.subComponents.length; i++){

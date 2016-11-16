@@ -312,7 +312,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	this.primitives = {};
 
 	for(var i = 0; i < primitives.length; i++){
-		id = this.reader.getString(primitives[i], 'id', true); //TODO: ver que erro dá se não existir
+		var id = this.reader.getString(primitives[i], 'id', true); //TODO: ver que erro dá se não existir
 		if(this.primitives.hasOwnProperty(id))
 			return "Non-Unique primitive id " + id;
 		if (primitives[i].children.length != 1)
@@ -366,6 +366,37 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 // ===================================================================================================================================
 
+MySceneGraph.prototype.parseControlPoints = function(rootElement) {
+	var controlPoints = rootElement.getElementsByTagName('controlpoint');
+
+	var points = [];
+	for(var i = 0; i < controlPoints.length; i++){
+		var x = this.reader.getFloat(controlPoints[i], 'xx', true);
+		var y = this.reader.getFloat(controlPoints[i], 'yy', true);
+		var z = this.reader.getFloat(controlPoints[i], 'zz', true);
+		points.push([x, y, z]);
+	}
+	return points;
+};
+
+// Reads all components from the components tag block
+MySceneGraph.prototype.parseAnimations = function(rootElement) {
+	var animations = rootElement.getElementsByTagName('animation');
+
+	this.animations = {};
+
+	for(var i = 0; i < animations.length; i++){
+		var id = this.reader.getString(animations[i], 'id', true);
+		var span = this.reader.getFloat(animations[i], 'span', true);
+		var type = this.reader.getString(animations[i], 'type', true);
+		if(type == 'linear'){
+			var controlPoints = this.parseControlPoints(animations[i]);
+			this.animations[id] = new MyLinearAnimation(span, controlPoints);
+		}
+		else if(type == 'circular'){}
+	}
+};
+
 // ===================================================================================================================================
 // ===================================================== Components ==================================================================
 // ===================================================================================================================================
@@ -392,6 +423,10 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 			return error;
 		}
 		error = this.parseComponentTransformations(components[i], myComponent);
+		if(error != null){
+			return error;
+		}
+		error = this.parseComponentAnimations(components[i], myComponent);
 		if(error != null){
 			return error;
 		}
@@ -548,6 +583,19 @@ MySceneGraph.prototype.parseComponentTransformations = function(rootElement, com
 	}
 };
 
+MySceneGraph.prototype.parseComponentAnimations = function(rootElement, component){
+	var animations = rootElement.getElementsByTagName('animationref');
+	component.animations = [];
+
+	for(i = 0; i < animations.length; i++){
+		animationId = this.reader.getString(animations[i], 'id', true);
+		if (!this.animations.hasOwnProperty(animationId)){
+			return 'Reference to undefined animation ' + animationId;
+		}
+		component.animations.push(this.animations[animationId]);
+	}
+};
+
 // ===================================================================================================================================
 // ===================================================================================================================================
 // ===================================================================================================================================
@@ -595,6 +643,12 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 		return error;
 	}
 
+	error = this.parseAnimations(rootElement.getElementsByTagName('animations')[0]);
+	if(error != null){
+		console.log(error);
+		return error;
+	}
+
 	error = this.parsePrimitives(rootElement.getElementsByTagName('primitives')[0]);
 	if(error != null){
 		console.log(error);
@@ -614,7 +668,7 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 
 // Checks if te xml has the correct tags in the correct order
 MySceneGraph.prototype.hasCorrectTags = function(rootElement){
-	var correctTags = ["scene", "views", "illumination", "lights", "textures", "materials", "transformations", "primitives", "components"];
+	var correctTags = ["scene", "views", "illumination", "lights", "textures", "materials", "transformations", "animations", "primitives", "components"];
 
 	if(rootElement.children.length != correctTags.length)
 		return false;

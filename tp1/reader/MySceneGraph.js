@@ -393,7 +393,16 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 			var controlPoints = this.parseControlPoints(animations[i]);
 			this.animations[id] = new MyLinearAnimation(span, controlPoints);
 		}
-		else if(type == 'circular'){}
+		else if(type == 'circular'){
+			var center = [];
+			center.push(this.reader.getFloat(animations[i], 'centerx', true));
+			center.push(this.reader.getFloat(animations[i], 'centery', true));
+			center.push(this.reader.getFloat(animations[i], 'centerz', true));
+			var radius = this.reader.getFloat(animations[i], 'radius', true);
+			var initialAngle = this.reader.getFloat(animations[i], 'startang', true);
+			var rotationAngle = this.reader.getFloat(animations[i], 'rotang', true);
+			this.animations[id] = new MyCircularAnimation(span, center, radius, initialAngle, rotationAngle);
+		}
 	}
 };
 

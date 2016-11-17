@@ -304,6 +304,29 @@
         </transformation>
     </transformations>
 
+    <animations>
+    <!-- podem existir zero ou mais nós "animation" -->
+    <!-- span é o tempo, em segundos, que a animação deve -->
+    <!-- demorar. Nesta versão do formato DSX, type pode ter -->
+    <!-- o valor "linear" ou "circular"; na animacao circular -->
+    <!-- os angulos sao expressos em graus  -->
+      <animation id="testanim" span="5" type="linear">
+            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="2" yy="2" zz="0" />
+            <controlpoint xx="0" yy="4" zz="0" />
+      </animation>
+      <animation id="testanim1" span="2.5" type="linear">
+            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="2" yy="2" zz="0" />
+            <controlpoint xx="0" yy="4" zz="0" />
+      </animation>
+      <animation id="testanim2" span="5" type="linear">
+            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="2" yy="2" zz="0" />
+            <controlpoint xx="0" yy="4" zz="0" />
+      </animation>
+    </animations>
+
 
     <primitives>
 
@@ -892,6 +915,12 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+
+            <animation>
+                <animationref id="testanim"/>
+                <animationref id="testanim1"/>
+                <animationref id="testanim2"/>
+            </animation>
 
         </component>
 

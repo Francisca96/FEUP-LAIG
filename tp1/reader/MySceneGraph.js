@@ -358,6 +358,24 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				loops = this.reader.getInteger(primitives[i].children[0], 'loops', true);
 				this.primitives[id] = new MyTorus(this.scene, inner, outer, slices, loops);
 				break;
+			case 'plane':
+				dimX = this.reader.getFloat(primitives[i].children[0], 'dimX', true);
+				dimY = this.reader.getFloat(primitives[i].children[0], 'dimY', true);
+				partsX = this.reader.getInteger(primitives[i].children[0], 'partsX', true);
+				partsY = this.reader.getInteger(primitives[i].children[0], 'partsY', true);
+				this.primitives[id] = new MyPlane(this.scene, dimX, dimY, partsX, partsY);
+				break;
+			case 'patch':
+				orderU = this.reader.getInteger(primitives[i].children[0], 'orderU', true);
+				orderV = this.reader.getInteger(primitives[i].children[0], 'orderV', true);
+				partsU = this.reader.getInteger(primitives[i].children[0], 'partsU', true);
+				partsV = this.reader.getInteger(primitives[i].children[0], 'partsV', true);
+
+				var patch = rootElement.getElementsByTagName('patch');
+				var controlPoints = parseControlPoints(patch);
+
+				this.primitives[id] = new MyPatch(this.scene, orderU, orderV, partsU, partsV, controlpoints);
+				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;
 		}

@@ -363,6 +363,21 @@
 
         </primitive>
 
+        <primitive id="plane">
+
+            <plane dimX="5" dimY="7" partsX="5" partsY="7"/>
+
+        </primitive>
+
+        <primitive id="plane">
+
+            <patch orderU="2" orderV="3" partsU="3" partsV="4" >    
+                <controlpoint x="5" y="5" z="5" />
+            </patch>
+
+        </primitive>
+
+
     </primitives>
 
 

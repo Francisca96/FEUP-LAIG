@@ -31,7 +31,7 @@ MyPatch.prototype = Object.create(CGFobject.prototype);
 MyPatch.prototype.constructor=MyPatch;
 
 MyPatch.prototype.display = function () {
-		this.patch.display();
+		this.surface.display();
 };
 
 MyPatch.prototype.getKnots = function(order){

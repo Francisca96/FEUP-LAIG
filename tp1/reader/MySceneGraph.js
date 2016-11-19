@@ -358,6 +358,23 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				loops = this.reader.getInteger(primitives[i].children[0], 'loops', true);
 				this.primitives[id] = new MyTorus(this.scene, inner, outer, slices, loops);
 				break;
+			case 'plane':
+				dimX = this.reader.getFloat(primitives[i].children[0], 'dimX', true);
+				dimY = this.reader.getFloat(primitives[i].children[0], 'dimY', true);
+				partsX = this.reader.getInteger(primitives[i].children[0], 'partsX', true);
+				partsY = this.reader.getInteger(primitives[i].children[0], 'partsY', true);
+				this.primitives[id] = new MyPlane(this.scene, dimX, dimY, partsX, partsY);
+				break;
+			case 'patch':
+				orderU = this.reader.getInteger(primitives[i].children[0], 'orderU', true);
+				orderV = this.reader.getInteger(primitives[i].children[0], 'orderV', true);
+				partsU = this.reader.getInteger(primitives[i].children[0], 'partsU', true);
+				partsV = this.reader.getInteger(primitives[i].children[0], 'partsV', true);
+				var controlPoints = this.parseControlPoints(primitives[i].children[0], ['x', 'y', 'z']);
+				if(controlPoints.length != (orderU+1) * (orderV+1))
+					return 'Incoherent number of control points for patch ' + id + ' - (noControlPoints  = (orderU+1) * (orderV+1))';
+				this.primitives[id] = new MyPatch(this.scene, orderU, orderV, partsU, partsV, controlPoints);
+				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;
 		}
@@ -366,15 +383,12 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 
 // ===================================================================================================================================
 
-MySceneGraph.prototype.parseControlPoints = function(rootElement) {
+MySceneGraph.prototype.parseControlPoints = function(rootElement, attributes) {
 	var controlPoints = rootElement.getElementsByTagName('controlpoint');
-
 	var points = [];
 	for(var i = 0; i < controlPoints.length; i++){
-		var x = this.reader.getFloat(controlPoints[i], 'xx', true);
-		var y = this.reader.getFloat(controlPoints[i], 'yy', true);
-		var z = this.reader.getFloat(controlPoints[i], 'zz', true);
-		points.push([x, y, z]);
+		var point = this.getFloats(controlPoints[i], attributes);
+		points.push(point);
 	}
 	return points;
 };
@@ -390,7 +404,7 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
 		var span = this.reader.getFloat(animations[i], 'span', true);
 		var type = this.reader.getString(animations[i], 'type', true);
 		if(type == 'linear'){
-			var controlPoints = this.parseControlPoints(animations[i]);
+			var controlPoints = this.parseControlPoints(animations[i], ['xx', 'yy', 'zz']);
 			this.animations[id] = new MyLinearAnimation(span, controlPoints);
 		}
 		else if(type == 'circular'){

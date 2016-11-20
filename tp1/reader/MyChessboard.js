@@ -29,7 +29,7 @@
 
  MyChessboard.prototype.display = function() {
     this.scene.pushMatrix();
-      this.rotate(-Math.PI/2, 1, 0, 0);
+      this.scene.rotate(-Math.PI/2, 1, 0, 0);
       this.scene.setActiveShader(this.shader);
       this.texture.bind(0);
       this.chess.display();

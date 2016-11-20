@@ -3,10 +3,9 @@
  * @param gl {WebGLRenderingContext}
  * @constructor
  */
-function MyRectangle(scene, id, x0, y0, x1, y1) {
+function MyRectangle(scene, x0, y0, x1, y1) {
 	CGFobject.call(this,scene);
 
-	this.id=id;
 	this.x0=x0;
 	this.x1=x1;
 	this.y0=y0;

@@ -399,7 +399,7 @@
             <texture id="null"/>
 
             <children>
-                <componentref id="wall1" />
+                <!-- <componentref id="wall1" />
                 <componentref id="wall2" />
                 <componentref id="grass" />
                 <componentref id="pool" />
@@ -420,7 +420,7 @@
                 <componentref id="jar" />
                 <componentref id="leafs" />
                 <componentref id="ball" />
-                <componentref id="buoy" />
+                <componentref id="buoy" /> -->
             </children>
 
         </component>

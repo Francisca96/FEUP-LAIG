@@ -29,6 +29,7 @@ XMLscene.prototype.init = function (application) {
     this.enableTextures(true);
     this.time = -1;
     this.setUpdatePeriod(100/6);
+    this.vehicle = new MyVehicle(this);
 };
 
 // Initializes lights
@@ -118,6 +119,8 @@ XMLscene.prototype.display = function () {
 	this.setDefaultAppearance();
 
 	// ---- END Background, camera and axis setup
+
+  this.vehicle.display();
 
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.

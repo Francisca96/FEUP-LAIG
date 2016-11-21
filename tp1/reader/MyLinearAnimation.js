@@ -30,7 +30,10 @@ MyLinearAnimation.prototype.getCurrentMovement = function(distance){
 };
 
 MyLinearAnimation.prototype.getAngle = function(point1, point2) {
-	return Math.atan2(point2[0] - point1[0], point2[2] - point1[2]);
+  var angle = Math.atan2(point2[2] - point1[2], point2[0] - point1[0]);
+  if (point2[2] - point1[2] < 0)
+		angle += Math.PI;
+	return angle;
 };
 
 MyLinearAnimation.prototype.getTranslation = function(point1, point2, ratio){

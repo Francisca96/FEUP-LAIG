@@ -323,7 +323,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				var y1 = this.reader.getFloat(primitives[i].children[0], 'y1', true);
 				var x2 = this.reader.getFloat(primitives[i].children[0], 'x2', true);
 				var y2 = this.reader.getFloat(primitives[i].children[0], 'y2', true);
-				this.primitives[id] = new MyRectangle(this.scene, id, x1, y1, x2, y2);
+				this.primitives[id] = new MyRectangle(this.scene, x1, y1, x2, y2);
 				break;
 			case 'triangle':
 				x1 = this.reader.getFloat(primitives[i].children[0], 'x1', true);
@@ -394,6 +394,9 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 					 }
 				else
 					return "Invalid tag name(s) for chessboard colors! (should be c1 c2 and cs)";
+				break;
+			case 'vehicle':
+				this.primitives[id] = new MyVehicle(this.scene);
 				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;

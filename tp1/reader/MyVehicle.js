@@ -24,14 +24,14 @@
 			[0.4, 1.7, 0],
 			[1.7, 2.2, 0],
 			[2, 0.7, 0]
-		]
+		];
 
 		var controlPoints2 = [
 			[0, 0, 1],
 			[0.25, 0.7, 1],
 			[3, 0, 1],
 			[2.7, 0.7, 1]
-		]
+		];
 
 		this.patch1 = new MyPatch(this.scene, 3, 3, 40, 40, controlPoints1);
 		this.patch2 = new MyPatch(this.scene, 1, 1, 40, 40, controlPoints2);
@@ -48,7 +48,7 @@
 		this.hoodMaterial.loadTexture("../resources/images/hood.png");
 
 		this.cylinderMaterial = new CGFappearance(this.scene);
-		this.cylinderMaterial.loadTexture("../resources/images/cylinder.png");
+		this.cylinderMaterial.loadTexture("../resources/images/wheel.png");
 
 		this.benchMaterial = new CGFappearance(this.scene);
 		this.benchMaterial.loadTexture("../resources/images/bench.png");
@@ -58,6 +58,8 @@
 	MyVehicle.prototype.constructor=MyVehicle;
 
 	MyVehicle.prototype.display = function () {
+		this.scene.pushMatrix();
+		this.scene.translate(-1.35, -0.7, -0.5);
 		this.scene.pushMatrix();
 			this.hoodMaterial.apply();
 			this.patch1.display();

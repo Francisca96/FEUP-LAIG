@@ -319,24 +319,24 @@
     <!-- demorar. Nesta versão do formato DSX, type pode ter -->
     <!-- o valor "linear" ou "circular"; na animacao circular -->
     <!-- os angulos sao expressos em graus  -->
-      <!-- <animation id="testanim" span="5" type="linear">
+      <animation id="flyingcar1" span="2" type="linear">
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="2" yy="2" zz="0" />
-            <controlpoint xx="0" yy="4" zz="0" />
+            <controlpoint xx="2" yy="2" zz="2" />
       </animation>
-      <animation id="testanim1" span="2.5" type="linear">
+
+      <animation id="rotatingcar" span="3" type="circular"
+                centerx="-0.5" centery="0" centerz="0"
+                radius="1" startang="0" rotang="-90"/>
+
+      <animation id="flyingcar2" span="4" type="linear">
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="2" yy="2" zz="0" />
-            <controlpoint xx="0" yy="4" zz="0" />
+            <controlpoint xx="2" yy="0" zz="0" />
       </animation>
-      <animation id="testanim2" span="5" type="linear">
-            <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="2" yy="2" zz="0" />
-            <controlpoint xx="0" yy="4" zz="0" />
-      </animation> -->
-      <animation id="testanim" span="10" type="circular"
+
+      <animation id="ballanim" span="10" type="circular"
                 centerx="0" centery="0" centerz="0"
                 radius="1.5" startang="0" rotang="360"/>
+
     </animations>
 
 
@@ -405,6 +405,9 @@
             </chessboard>
         </primitive>
 
+        <primitive id="vehicle">
+            <vehicle />
+        </primitive>
 
     </primitives>
 
@@ -424,7 +427,7 @@
             <texture id="null"/>
 
             <children>
-                <!-- <componentref id="wall1" />
+                <componentref id="wall1" />
                 <componentref id="wall2" />
                 <componentref id="grass" />
                 <componentref id="pool" />
@@ -432,7 +435,32 @@
                 <componentref id="ball" />
                 <componentref id="buoy" />
                 <componentref id="wall_chessboard" />
+                <componentref id="vehicle" />
             </children>
+
+        </component>
+
+        <component id="vehicle">
+          <transformation>
+              <translate x="1" y="1" z="1"/>
+              <scale x="0.5" y="0.5" z="0.5" />
+          </transformation>
+
+          <materials>
+            <material id="defaultMaterial"/>
+          </materials>
+
+          <texture id="null" />
+
+          <children>
+              <primitiveref id="vehicle" />
+          </children>
+
+          <animation>
+            <animationref id="flyingcar1"/>
+            <animationref id="rotatingcar"/>
+            <animationref id="flyingcar2"/>
+          </animation>
 
         </component>
 
@@ -1123,9 +1151,7 @@
             </children>
 
             <animation>
-                <animationref id="testanim"/>
-                <!-- <animationref id="testanim1"/> -->
-                <!-- <animationref id="testanim2"/> -->
+                <animationref id="ballanim"/>
             </animation>
 
         </component>

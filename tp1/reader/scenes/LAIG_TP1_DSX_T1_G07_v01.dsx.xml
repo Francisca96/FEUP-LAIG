@@ -117,6 +117,7 @@
         <texture id="wall1" file="../resources/images/wall1.png" length_s="1" length_t="1" />
         <texture id="wall2" file="../resources/images/wall2.png" length_s="1" length_t="1" />
         <texture id="chessboard1" file="../resources/images/chess_wood.jpg" length_s="1" length_t="1" />
+        <texture id="chessboard2" file="../resources/images/marble.png" length_s="1" length_t="1" />
 
     </textures>
 
@@ -173,12 +174,6 @@
             <rotate axis="x" angle="-90" />
         </transformation>
 
-        <transformation id="pool">
-            <translate x="3.5" y="0.05" z="2.5" />
-            <scale x="2.5" y="1" z="1.5" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
         <transformation id="cube1">
             <translate x="0" y="0" z="1" />
         </transformation>
@@ -208,94 +203,107 @@
             <rotate axis="x" angle="90" />
         </transformation>
 
-        <transformation id="poolEdge1">
-            <translate x="3.5" y="0" z="0.8" />
+        <transformation id="pool">
+            <translate x="3.5" y="0.05" z="2.5" />
+        </transformation>
+
+        <transformation id="poolWater">
+          <translate x="0" y="0.05" z="0" />
+          <scale x="2.5" y="1" z="1.5" />
+          <rotate axis="x" angle="-90" />
+        </transformation>
+
+        <transformation id="poolBorderWidthCommon">
+            <translate x="0" y="0" z="-1.7" />
             <scale x="2.5" y="0.1" z="0.2" />
         </transformation>
 
-        <transformation id="poolEdge2">
-            <translate x="3.5" y="0" z="4.2" />
-            <scale x="2.5" y="0.1" z="0.2" />
+        <transformation id="poolBorderWidthDistant">
+            <translate x="0" y="0" z="17.0"/>
         </transformation>
 
-        <transformation id="poolEdge3">
-            <translate x="6.2" y="0" z="2.5" />
+        <transformation id="poolBorderHeightCommon">
+            <translate x="-2.7" y="0" z="0" />
             <scale x="0.2" y="0.1" z="1.9" />
         </transformation>
 
-        <transformation id="poolEdge4">
-            <translate x="0.8" y="0" z="2.5" />
-            <scale x="0.2" y="0.1" z="1.9" />
+        <transformation id="poolBorderHeightDistant">
+            <translate x="27" y="0" z="0"/>
         </transformation>
 
         <transformation id="table">
             <translate x="8" y="0.7" z="2.5" />
+        </transformation>
+
+        <transformation id="tableTop">
             <scale x="0.5" y="0.05" z="0.7" />
         </transformation>
 
-        <transformation id="leg1">
-            <translate x="8.25" y="0.35" z="3" />
+        <transformation id="legs">
             <scale x="0.04" y="0.3" z="0.04" />
+        </transformation>
+
+        <transformation id="leg1">
+            <translate x="8" y="-1.16" z="12.5" />
         </transformation>
 
         <transformation id="leg2">
-            <translate x="7.75" y="0.35" z="3" />
-            <scale x="0.04" y="0.3" z="0.04" />
+            <translate x="-8" y="-1.16" z="12.5" />
         </transformation>
 
         <transformation id="leg3">
-            <translate x="7.75" y="0.35" z="2" />
-            <scale x="0.04" y="0.3" z="0.04" />
+            <translate x="-8" y="-1.16" z="-12.5" />
         </transformation>
 
         <transformation id="leg4">
-            <translate x="8.25" y="0.35" z="2" />
-            <scale x="0.04" y="0.3" z="0.04" />
+            <translate x="8" y="-1.16" z="-12.5" />
         </transformation>
 
         <transformation id="towel">
-            <translate x="8" y="0.75" z="2.5" />
+            <translate x="0" y="0.05" z="0" />
             <scale x="0.5" y="0" z="0.7" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="towel1">
-            <translate x="7.5" y="0.75" z="1.8" />
+            <translate x="-0.5" y="0.05" z="-0.71" />
             <scale x="1" y="0.3" z="0" />
         </transformation>
 
         <transformation id="towel2">
-            <translate x="8.5" y="0.75" z="3.2" />
+            <translate x="0.5" y="0.05" z="0.71" />
             <scale x="1" y="0.3" z="0" />
             <rotate axis="y" angle="180" />
         </transformation>
 
         <transformation id="towel3">
-            <translate x="7.5" y="0.75" z="3.21" />
+            <translate x="-0.51" y="0.05" z="0.7" />
             <scale x="0" y="0.3" z="1.4" />
             <rotate axis="y" angle="90" />
         </transformation>
 
         <transformation id="towel4">
-            <translate x="8.5" y="0.75" z="1.80" />
+            <translate x="0.51" y="0.05" z="-0.7" />
             <scale x="0" y="0.3" z="1.4" />
             <rotate axis="y" angle="-90" />
         </transformation>
 
+        <!-- <transformation id="basil"> -->
+
+
         <transformation id="jar">
-            <translate x="8" y="0.7" z="2.5" />
             <scale x="0.4" y="0.4" z="0.4" />
             <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="leafs">
-            <translate x="8" y="1" z="2.5" />
+            <translate x="0" y="0.3" z="0" />
             <scale x="0.25" y="0.25" z="0.25" />
         </transformation>
 
         <transformation id="ball">
             <scale x="0.6" y="0.6" z="0.6" />
-            <translate x="2.5" y="0.35" z="3" />
+            <translate x="3.5" y="0.35" z="4" />
         </transformation>
 
         <transformation id="buoy">
@@ -328,7 +336,7 @@
       </animation> -->
       <animation id="testanim" span="10" type="circular"
                 centerx="0" centery="0" centerz="0"
-                radius="2" startang="0" rotang="360"/>
+                radius="1.5" startang="0" rotang="360"/>
     </animations>
 
 
@@ -381,11 +389,19 @@
 
         </primitive>
 
-        <primitive id="chessboard">
-            <chessboard du="8" dv="8" textureref="chessboard1" su="4" sv="4">
+        <primitive id="chessboard1">
+            <chessboard du="8" dv="8" textureref="chessboard1" su="6" sv="6">
                              <c1 r="1" g="1" b="1" a="1" />
                              <c2 r="0" g="0" b="0" a="1" />
                              <cs r="0.8" g="0.2" b="0.2" a="1" />
+            </chessboard>
+        </primitive>
+
+        <primitive id="chessboard2">
+            <chessboard du="16" dv="16" textureref="chessboard2" su="3" sv="6">
+                             <c1 r="0" g="0" b="1" a="1" />
+                             <c2 r="0" g="1" b="0" a="1" />
+                             <cs r="0.4" g="0.8" b="0.2" a="1" />
             </chessboard>
         </primitive>
 
@@ -408,36 +424,40 @@
             <texture id="null"/>
 
             <children>
-              <!-- <componentref id="test1"/> -->
                 <componentref id="wall1" />
                 <componentref id="wall2" />
                 <componentref id="grass" />
                 <componentref id="pool" />
-                <componentref id="poolEdge1" />
-                <componentref id="poolEdge2" />
-                <componentref id="poolEdge3" />
-                <componentref id="poolEdge4" />
                 <componentref id="table" />
-                <componentref id="leg1" />
-                <componentref id="leg2" />
-                <componentref id="leg3" />
-                <componentref id="leg4" />
-                <componentref id="towel" />
-                <componentref id="towel1" />
-                <componentref id="towel2" />
-                <componentref id="towel3" />
-                <componentref id="towel4" />
-                <componentref id="jar" />
-                <componentref id="leafs" />
                 <componentref id="ball" />
                 <componentref id="buoy" />
+                <componentref id="wall_chessboard" />
             </children>
 
         </component>
 
-        <component id="test1">
+        <component id="basil">
+            <transformation>
+              <translate x="0" y="0" z="0.4"/>
+            </transformation>
+
+            <materials>
+              <material id="defaultMaterial"/>
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+                <componentref id="leafs" />
+                <componentref id="jar" />
+            </children>
+        </component>
+
+        <component id="wall_chessboard">
 
             <transformation>
+              <translate x="0.01" y="2" z="5.1" />
+              <rotate axis="z" angle="-90" />
             </transformation>
 
             <materials>
@@ -447,7 +467,26 @@
             <texture id="null" />
 
             <children>
-                <primitiveref id="plane" />
+                <primitiveref id="chessboard2" />
+            </children>
+
+        </component>
+
+        <component id="table_chessboard">
+
+            <transformation>
+              <translate x="0" y="0.06" z="-0.25"/>
+              <scale x="0.5" y="0.5" z="0.5" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+                <primitiveref id="chessboard1" />
             </children>
 
         </component>
@@ -499,24 +538,6 @@
             </materials>
 
             <texture id="grass" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="pool">
-
-            <transformation>
-                <transformationref id="pool" />
-            </transformation>
-
-            <materials>
-                <material id="defaultMaterial" />
-            </materials>
-
-            <texture id="poolTop" />
 
             <children>
                 <primitiveref id="rectangle" />
@@ -655,17 +676,108 @@
 
         </component>
 
-        <component id="poolEdge1">
+        <component id="pool">
+
+          <transformation>
+              <transformationref id="pool" />
+          </transformation>
+
+          <materials>
+              <material id="defaultMaterial" />
+          </materials>
+
+          <texture id="null"/>
+
+          <children>
+              <componentref id="poolWater" />
+              <componentref id="poolBorder" />
+          </children>
+
+        </component>
+
+        <component id="poolWater">
 
             <transformation>
-                <transformationref id="poolEdge1" />
+                <transformationref id="poolWater" />
             </transformation>
 
             <materials>
                 <material id="defaultMaterial" />
             </materials>
 
-            <texture id="poolEdge" />
+            <texture id="poolTop" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="poolBorder">
+
+          <transformation>
+          </transformation>
+
+          <materials>
+              <material id="defaultMaterial"/>
+          </materials>
+
+
+          <texture id="poolEdge"/>
+
+          <children>
+            <componentref id="poolBorderHeight"/>
+            <componentref id="poolBorderWidth"/>
+          </children>
+
+        </component>
+
+        <component id="poolBorderWidth">
+          <transformation>
+            <transformationref id="poolBorderWidthCommon" />
+          </transformation>
+
+          <materials>
+              <material id="inherit"/>
+          </materials>
+
+          <texture id="null"/>
+
+          <children>
+            <componentref id="poolEdge1"/>
+            <componentref id="poolEdge2"/>
+          </children>
+
+        </component>
+
+        <component id="poolBorderHeight">
+          <transformation>
+            <transformationref id="poolBorderHeightCommon" />
+          </transformation>
+
+          <materials>
+              <material id="inherit"/>
+          </materials>
+
+          <texture id="null"/>
+
+          <children>
+            <componentref id="poolEdge3"/>
+            <componentref id="poolEdge4"/>
+          </children>
+
+        </component>
+
+        <component id="poolEdge1">
+
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="null" />
 
             <children>
                 <componentref id="cube"/>
@@ -676,14 +788,14 @@
         <component id="poolEdge2">
 
             <transformation>
-                <transformationref id="poolEdge2" />
+                <transformationref id="poolBorderWidthDistant" />
             </transformation>
 
             <materials>
-                <material id="defaultMaterial" />
+                <material id="inherit" />
             </materials>
 
-            <texture id="poolEdge" />
+            <texture id="null" />
 
             <children>
                 <componentref id="cube"/>
@@ -694,14 +806,13 @@
         <component id="poolEdge3">
 
             <transformation>
-                <transformationref id="poolEdge3" />
             </transformation>
 
             <materials>
-                <material id="defaultMaterial" />
+                <material id="inherit" />
             </materials>
 
-            <texture id="poolEdge" />
+            <texture id="null" />
 
             <children>
                 <componentref id="cube"/>
@@ -712,14 +823,14 @@
         <component id="poolEdge4">
 
             <transformation>
-                <transformationref id="poolEdge4" />
+                <transformationref id="poolBorderHeightDistant" />
             </transformation>
 
             <materials>
-                <material id="defaultMaterial" />
+                <material id="inherit" />
             </materials>
 
-            <texture id="poolEdge" />
+            <texture id="null" />
 
             <children>
                 <componentref id="cube"/>
@@ -729,8 +840,55 @@
 
         <component id="table">
 
+          <transformation>
+            <transformationref id="table"/>
+          </transformation>
+
+          <materials>
+            <material id="defaultMaterial"/>
+          </materials>
+
+          <texture id="wood"/>
+
+          <children>
+              <componentref id="table_chessboard" />
+              <componentref id="tableTop" />
+              <componentref id="legs" />
+              <componentref id="towel"/>
+              <componentref id="towel1"/>
+              <componentref id="towel2"/>
+              <componentref id="towel3"/>
+              <componentref id="towel4"/>
+              <componentref id="basil" />
+          </children>
+
+        </component>
+
+        <component id="legs">
+
+          <transformation>
+            <transformationref id="legs"/>
+          </transformation>
+
+          <materials>
+            <material id="defaultMaterial"/>
+          </materials>
+
+          <texture id="wood"/>
+
+          <children>
+              <componentref id="leg1"/>
+              <componentref id="leg2"/>
+              <componentref id="leg3"/>
+              <componentref id="leg4"/>
+          </children>
+
+        </component>
+
+        <component id="tableTop">
+
             <transformation>
-                <transformationref id="table" />
+                <transformationref id="tableTop" />
             </transformation>
 
             <materials>

@@ -35,8 +35,8 @@
 
 		this.patch1 = new MyPatch(this.scene, 3, 3, 40, 40, controlPoints1);
 		this.patch2 = new MyPatch(this.scene, 1, 1, 40, 40, controlPoints2);
-		this.wheel = new MyCylinder(this.scene, 0.3, 0.3, 1.2, 40, 40);
-		this.base = new MyRectangle(this.scene, 0, 0, 1, 1);
+		this.cylinder = new MyCylinder(this.scene, 0.3, 0.3, 1.2, 40, 40);
+		this.rectangle = new MyRectangle(this.scene, 0, 0, 1, 1);
 
 		//materials/textures
 		this.defaultMaterial = new CGFappearance(this.scene);
@@ -44,14 +44,14 @@
 		this.carMaterial = new CGFappearance(this.scene);
 		this.carMaterial.loadTexture("../resources/images/car.png");
 
-		this.capMaterial = new CGFappearance(this.scene);
-		this.capMaterial.loadTexture("../resources/images/capota.png");
+		this.hoodMaterial = new CGFappearance(this.scene);
+		this.hoodMaterial.loadTexture("../resources/images/hood.png");
 
-		this.wheelMaterial = new CGFappearance(this.scene);
-		this.wheelMaterial.loadTexture("../resources/images/wheel.png");
+		this.cylinderMaterial = new CGFappearance(this.scene);
+		this.cylinderMaterial.loadTexture("../resources/images/cylinder.png");
 
-		this.bancoMaterial = new CGFappearance(this.scene);
-		this.bancoMaterial.loadTexture("../resources/images/banco.png");
+		this.benchMaterial = new CGFappearance(this.scene);
+		this.benchMaterial.loadTexture("../resources/images/bench.png");
 	}
 
 	MyVehicle.prototype = Object.create(CGFobject.prototype);
@@ -59,7 +59,7 @@
 
 	MyVehicle.prototype.display = function () {
 		this.scene.pushMatrix();
-			this.capMaterial.apply();
+			this.hoodMaterial.apply();
 			this.patch1.display();
 		this.scene.popMatrix();
 
@@ -79,62 +79,57 @@
 			this.patch2.display();
 		this.scene.popMatrix();
 
-//PNEUS
 		this.scene.pushMatrix();
 			this.scene.translate(0.7, 0, -0.1);
-			this.wheelMaterial.apply();
-			this.wheel.display();
+			this.cylinderMaterial.apply();
+			this.cylinder.display();
 			this.scene.translate(1.2, 0, 0);
-			this.wheelMaterial.apply();
-			this.wheel.display();
+			this.cylinderMaterial.apply();
+			this.cylinder.display();
 		this.scene.popMatrix();
 
-//BANCO
 	this.scene.pushMatrix();
 		this.scene.scale(0.3, 0.75, 0.7);
 		this.scene.translate(1.35, 0.8, 0.1);
-		this.bancoMaterial.apply();
-		this.wheel.display();
+		this.benchMaterial.apply();
+		this.cylinder.display();
 		this.scene.translate(3, 0, 0);
-		this.wheel.display();
+		this.cylinder.display();
 	this.scene.popMatrix();
 
-//PARTE DE BAIXO
 		this.scene.pushMatrix();
 			this.scene.scale(2.55, 1, 1);
 			this.scene.translate(0.1, 0.3, 1);
 			this.scene.rotate(-Math.PI/2, 1, 0, 0);
 			this.carMaterial.apply();
-			this.base.display();
+			this.rectangle.display();
 		this.scene.popMatrix();
 
 		this.scene.pushMatrix();
 			this.scene.rotate(Math.PI/2, 1, 0, 0);
 			this.scene.scale(3, 1, 1);
-			this.base.display();
+			this.rectangle.display();
 		this.scene.popMatrix();
 
-//FRENTE
 		this.scene.pushMatrix();
 			this.scene.rotate(-Math.PI/2, 1, 0, 0);
 			this.scene.translate(2, -1, 0.7);
 			this.scene.scale(0.7, 1, 1);
 			this.carMaterial.apply();
-			this.base.display();
+			this.rectangle.display();
 			this.scene.translate(1, 0, 0);
 			this.scene.scale(1, 1, 0.8);
 			this.scene.rotate(Math.PI/2.7, 0, 1, 0);
 			this.carMaterial.apply();
-			this.base.display();
+			this.rectangle.display();
 		this.scene.popMatrix();
 
-//MALA
 		this.scene.pushMatrix();
 			this.scene.rotate(-Math.PI/8, 0, 0, 1);
 			this.scene.rotate(-Math.PI/2, 0, 1, 0);
 			this.scene.scale(1, 0.75, 1);
 			this.carMaterial.apply();
-			this.base.display();
+			this.rectangle.display();
 		this.scene.popMatrix();
 
 	};

@@ -375,6 +375,26 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 					return 'Incoherent number of control points for patch ' + id + ' - (noControlPoints  = (orderU+1) * (orderV+1))';
 				this.primitives[id] = new MyPatch(this.scene, orderU, orderV, partsU, partsV, controlPoints);
 				break;
+			case 'chessboard':
+				var du = this.reader.getInteger(primitives[i].children[0], 'du', true);
+				var dv = this.reader.getInteger(primitives[i].children[0], 'dv', true);
+				var textureref = this.reader.getString(primitives[i].children[0], 'textureref', true);
+				var texture = this.textures[textureref];
+				if(texture == null)
+					return "Unrecognized texture " + textureref;
+				var su = this.reader.getInteger(primitives[i].children[0], 'su', true);
+				var sv = this.reader.getInteger(primitives[i].children[0], 'sv', true);
+				if(primitives[i].children[0].children[0].tagName == 'c1' &&
+					 primitives[i].children[0].children[1].tagName == 'c2' &&
+					 primitives[i].children[0].children[2].tagName == 'cs'){
+						 var c1 = this.getFloats(primitives[i].children[0].children[0], ['r', 'g', 'b', 'a']);
+						 var c2 = this.getFloats(primitives[i].children[0].children[1], ['r', 'g', 'b', 'a']);
+						 var cs = this.getFloats(primitives[i].children[0].children[2], ['r', 'g', 'b', 'a']);
+						 this.primitives[id] = new MyChessboard(this.scene, du, dv, texture, su, sv, c1, c2, cs);
+					 }
+				else
+					return "Invalid tag name(s) for chessboard colors! (should be c1 c2 and cs)";
+				break;
 			default:
 				return 'Unrecognized type of primitive: ' + primitives[i].children[0].tagName;
 		}

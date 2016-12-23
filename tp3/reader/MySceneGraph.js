@@ -709,7 +709,6 @@ MySceneGraph.prototype.parseXML = function(rootElement) {
 		console.log(error);
 		return error;
 	}
-	console.log("everythingloadedok!!!");
 };
 
 // ===================================================================================================================================

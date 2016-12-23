@@ -138,7 +138,8 @@
         </transformation>
 
         <transformation id="chessboard">
-            <rotate axis="y" angle="-25" />
+            <!-- <rotate axis="x" angle="90" />
+            <rotate axis="y" angle="0e" /> -->
         </transformation>
 
         <transformation id="peca1">

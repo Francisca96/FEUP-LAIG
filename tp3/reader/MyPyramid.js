@@ -4,7 +4,6 @@ function MyPyramid(scene, size) {
 	this.size=size;
 
 	this.height = Math.sqrt(1 - 1/3);
-	console.log(this.height);
 
 	//virado para baixo
 	this.base = new MyTriangle(this.scene, -0.5, 0, -1/(2*Math.sqrt(3)), 0.5, 0, -1/(2*Math.sqrt(3)), 0, 0, Math.sqrt(0.75)-(1/(2*Math.sqrt(3))));

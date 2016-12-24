@@ -30,6 +30,16 @@
   //
   // this.texture = texture;
 
+  this.whiteMaterial = new CGFappearance(this.scene);
+  this.whiteMaterial.setDiffuse(1,1,1,1);
+  this.whiteMaterial.setSpecular(1,1,1,1);
+  this.whiteMaterial.setAmbient(1,1,1,1);
+
+  this.blackMaterial = new CGFappearance(this.scene);
+  this.blackMaterial.setDiffuse(0,0,0,1);
+  this.blackMaterial.setSpecular(0,0,0,1);
+  this.blackMaterial.setAmbient(0.2,0.2,0.2,1);
+
  	this.initBuffers();
  }
 
@@ -40,9 +50,12 @@
 
    for(k = 0; k < this.matrix.length; k++){
      this.scene.pushMatrix();
+      if(k % 2 == 0)
+        this.whiteMaterial.apply();
+      else
+        this.blackMaterial.apply();
       this.scene.translate(this.matrix[k].id, 0, 0);
       this.matrix[k].display();
-      console.log(this.matrix[k].id);
      this.scene.popMatrix();
    }
 };

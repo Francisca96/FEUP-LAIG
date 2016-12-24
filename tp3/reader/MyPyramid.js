@@ -1,7 +1,10 @@
-function MyPyramid(scene, size) {
+function MyPyramid(scene, id, size, x, y) {
 	CGFobject.call(this,scene);
 
+	this.id=id;
 	this.size=size;
+	this.x=x;
+	this.y=y;
 
 	this.height = Math.sqrt(1 - 1/3);
 

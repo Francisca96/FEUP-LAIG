@@ -33,10 +33,9 @@ XMLscene.prototype.init = function (application) {
 
 // Initializes lights
 XMLscene.prototype.initLights = function () {
-
-	this.lights[0].setPosition(2, 3, 3, 1);
-    this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
-    this.lights[0].update();
+  this.lights[0].setPosition(2, 3, 3, 1);
+  this.lights[0].setDiffuse(1.0,1.0,1.0,1.0);
+  this.lights[0].update();
 };
 
 // Loads lights from the graph

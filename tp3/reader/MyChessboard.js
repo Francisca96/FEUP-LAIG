@@ -11,8 +11,9 @@
   this.matrix=[];
 
   for(i = 0; i < this.dv; i++){
+    this.matrix.push([])
     for(j = 0; j < this.du; j++){
-      this.matrix.push(new MyTile(this.scene, id, 0));
+      this.matrix[i].push(new MyTile(this.scene, id, 0));
       id++;
     }
   }
@@ -38,7 +39,7 @@
   this.blackMaterial = new CGFappearance(this.scene);
   this.blackMaterial.setDiffuse(0,0,0,1);
   this.blackMaterial.setSpecular(0,0,0,1);
-  this.blackMaterial.setAmbient(0.2,0.2,0.2,1);
+  this.blackMaterial.setAmbient(0.1,0.1,0.1,1);
 
  	this.initBuffers();
  }
@@ -48,14 +49,21 @@
 
  MyChessboard.prototype.display = function() {
 
-   for(k = 0; k < this.matrix.length; k++){
-     this.scene.pushMatrix();
-      if(k % 2 == 0)
-        this.whiteMaterial.apply();
-      else
-        this.blackMaterial.apply();
-      this.scene.translate(this.matrix[k].id, 0, 0);
-      this.matrix[k].display();
-     this.scene.popMatrix();
-   }
+   this.scene.pushMatrix();
+   this.scene.translate(0.5,0,0.5);
+
+     for(var k = 0; k < this.matrix.length; k++){
+       for(var i = 0; i < this.matrix[k].length; i++){
+         this.scene.pushMatrix();
+          if((k+i) % 2 == 0)
+            this.whiteMaterial.apply();
+          else
+            this.blackMaterial.apply();
+          this.scene.translate(i, 0, k);
+          this.matrix[k][i].display();
+         this.scene.popMatrix();
+       }
+     }
+
+    this.scene.popMatrix();
 };

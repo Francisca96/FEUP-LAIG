@@ -2,11 +2,11 @@
  * MyTile
  * @constructor
  */
- function MyTile(scene, id, idPeca) {
+ function MyTile(scene, id, piece) {
  	CGFobject.call(this,scene);
 
   this.id = id;
-  this.idPeca = idPeca;
+  this.piece = piece;
   this.tile = new MyUnitCubeQuad(this.scene);
 
  	this.initBuffers();

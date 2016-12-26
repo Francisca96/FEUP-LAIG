@@ -61,6 +61,6 @@ MyInterface.prototype.processKeyDown = function(event) {
 MyInterface.prototype.processMouseDown = function(event) {
 
 	CGFinterface.prototype.processMouseDown.call(this,event);
-		console.log("x: ", event.x);
-		console.log("y: ", event.y);
+		// console.log("x: ", event.x);
+		// console.log("y: ", event.y);
 };

@@ -390,7 +390,8 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 						 var c1 = this.getFloats(primitives[i].children[0].children[0], ['r', 'g', 'b', 'a']);
 						 var c2 = this.getFloats(primitives[i].children[0].children[1], ['r', 'g', 'b', 'a']);
 						 var cs = this.getFloats(primitives[i].children[0].children[2], ['r', 'g', 'b', 'a']);
-						 this.primitives[id] = new MyChessboard(this.scene, du, dv, texture, su, sv, c1, c2, cs);
+						//  this.primitives[id] = new MyChessboard(this.scene, du, dv, texture, su, sv, c1, c2, cs);
+						this.primitives[id] = this.scene.game;
 					 }
 				else
 					return "Invalid tag name(s) for chessboard colors! (should be c1 c2 and cs)";

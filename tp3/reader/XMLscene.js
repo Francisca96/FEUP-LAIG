@@ -22,13 +22,38 @@ XMLscene.prototype.init = function (application) {
 	  this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
-    this.parentMaterials = [];
-    this.lightStatus = [false, false, false, false, false, false, false, false, false];
     this.cameraIndex = 0;
 	  this.axis=new CGFaxis(this);
-    this.enableTextures(true);
+
+    this.parentMaterials = [];
+    this.lightStatus = [false, false, false, false, false, false, false, false, false];
+
     this.time = -1;
     this.setUpdatePeriod(100/6);
+
+    this.enableTextures(true);
+    this.setPickEnabled(true);
+
+    this.game = new MyGameboard(this,8,4);
+    this.game.startGame();
+};
+
+XMLscene.prototype.logPicking = function ()
+{
+	if (this.pickMode == false) {
+		if (this.pickResults != null && this.pickResults.length > 0) {
+			for (var i=0; i< this.pickResults.length; i++) {
+				var obj = this.pickResults[i][0];
+				if (obj)
+				{
+					var customId = this.pickResults[i][1];
+					console.log("Picked object: " + obj + ", with pick id " + customId);
+          this.game.pickCell(customId);
+				}
+			}
+			this.pickResults.splice(0,this.pickResults.length);
+		}
+	}
 };
 
 // Initializes lights
@@ -100,6 +125,9 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 XMLscene.prototype.display = function () {
 	// ---- BEGIN Background, camera and axis setup
+
+  this.logPicking();
+	this.clearPickRegistration();
 
 	// Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);

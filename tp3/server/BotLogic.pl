@@ -13,7 +13,7 @@ add_valid_movement(_, _, _, _, _, _, _, Movs, Movs).
 valid_movements(Board, Xi, Yi, pawn, Player, Movs, NewMovs):-
     add_valid_movement(Board, Xi, Yi, 1, 1, pawn, Player, Movs, Movs1),
     add_valid_movement(Board, Xi, Yi, 1, -1, pawn, Player, Movs1, Movs2),
-    add_valid_movement(Board, Xi, Yi, 1, -1, pawn, Player, Movs2, Movs3),
+    add_valid_movement(Board, Xi, Yi, -1, 1, pawn, Player, Movs2, Movs3),
     add_valid_movement(Board, Xi, Yi, -1, -1, pawn, Player, Movs3, NewMovs).
 
 valid_movements(Board, Xi, Yi, drone, Player, Movs, NewMovs):-

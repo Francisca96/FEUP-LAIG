@@ -8,8 +8,8 @@
   this.id = id;
   this.piece = piece;
   this.tile = new MyUnitCubeQuad(this.scene);
-
- 	this.initBuffers();
+  this.selected=false;
+  this.highlighted=false;
  }
 
  MyTile.prototype = Object.create(CGFobject.prototype);

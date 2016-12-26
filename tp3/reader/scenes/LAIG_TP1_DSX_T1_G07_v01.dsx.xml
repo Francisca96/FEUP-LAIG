@@ -251,7 +251,7 @@
         <component id="chessboard">
 
             <transformation>
-              <transformationref id="chessboard" />
+              <!-- <transformationref id="chessboard" /> -->
             </transformation>
 
             <materials>
@@ -262,8 +262,8 @@
 
             <children>
               <componentref id="board" />
-              <componentref id="pecasRight" />
-              <componentref id="pecasLeft" />
+              <!-- <componentref id="pecasRight" /> -->
+              <!-- <componentref id="pecasLeft" /> -->
             </children>
 
         </component>

@@ -1,10 +1,7 @@
-function MyPyramid(scene, id, size, x, y) {
+function MyPyramid(scene, size) {
 	CGFobject.call(this,scene);
 
-	this.id=id;
 	this.size=size;
-	this.x=x;
-	this.y=y;
 
 	this.height = Math.sqrt(1 - 1/3);
 
@@ -20,14 +17,17 @@ function MyPyramid(scene, id, size, x, y) {
 	//materials/textures
 	this.defaultMaterial = new CGFappearance(this.scene);
 
+	// this.pyramidMaterial = new CGFappearance(this.scene);
+	// this.pyramidMaterial.loadTexture("../resources/images/wood.png");s
+
 	this.pyramidMaterial = new CGFappearance(this.scene);
-	this.pyramidMaterial.loadTexture("../resources/images/wood.png");
+	this.pyramidMaterial.setAmbient(0.5,0.5,0.5,1);
+	this.pyramidMaterial.setDiffuse(0.5,0.5,0.5,1);
+	this.pyramidMaterial.setSpecular(0.5,0.5,0.5,1);
+	this.pyramidMaterial.loadTexture("../resources/images/metal.png");
 
-	this.pyramidMaterial1 = new CGFappearance(this.scene);
-	this.pyramidMaterial1.loadTexture("../resources/images/metal.png");
-
-	this.pyramidMaterial2 = new CGFappearance(this.scene);
-	this.pyramidMaterial2.loadTexture("../resources/images/bench.png");
+	// this.pyramidMaterial2 = new CGFappearance(this.scene);
+	// this.pyramidMaterial2.loadTexture("../resources/images/bench.png");
 }
 
 MyPyramid.prototype = Object.create(CGFobject.prototype);
@@ -35,7 +35,9 @@ MyPyramid.prototype.constructor=MyPyramid;
 
 MyPyramid.prototype.display = function () {
 
-	this.scene.scale(this.size/2, this.size/2, this.size/2);
+	this.scene.pushMatrix();
+
+	this.scene.scale(this.size/3, this.size/3, this.size/3);
 
 	this.scene.pushMatrix();
 		this.pyramidMaterial.apply();
@@ -47,12 +49,15 @@ MyPyramid.prototype.display = function () {
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.pyramidMaterial1.apply();
+		this.pyramidMaterial.apply();
 		this.triangle2.display();
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.pyramidMaterial2.apply();
+		this.pyramidMaterial.apply();
 		this.triangle3.display();
 	this.scene.popMatrix();
-}
+
+	this.scene.popMatrix();
+
+};

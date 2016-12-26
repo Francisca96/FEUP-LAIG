@@ -14,6 +14,9 @@ MyPiece.prototype.constructor=MyPiece;
 
 MyPiece.prototype.display = function () {
 
-  this.pyramid.display();
+	this.scene.pushMatrix();
+		this.scene.scale(0.7, 1, 0.7);
+  	this.pyramid.display();
+	this.scene.popMatrix();
 
 };

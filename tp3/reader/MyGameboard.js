@@ -88,20 +88,23 @@ MyGameboard.prototype.hideMoves = function(){
   }
 };
 
+MyGameboard.prototype.controlsPiece = function(y){
+  return y >= this.currentPlayer*4 && y <= (this.currentPlayer+1)*4;
+};
+
 MyGameboard.prototype.pickCell = function(index){
   index--;
   var x = index % 4;
   var y = Math.floor(index / 4);
 
   if(this.currentStep === 0){
-    if(this.matrix[y][x].piece){
+    if(this.matrix[y][x].piece && this.controlsPiece(y)){
       this.initialCell = {x: x, y: y};
       this.highlightMoves();
       this.matrix[y][x].selected = true;
       this.nextStep();
     }
   }
-
   else if(this.currentStep === 1){
     if(x === this.initialCell.x && y === this.initialCell.y){
       this.matrix[y][x].selected=false;

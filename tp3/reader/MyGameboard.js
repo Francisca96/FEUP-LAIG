@@ -35,29 +35,45 @@ MyGameboard.prototype.addPieces = function(){
             this.scene.pieces.push(new MyPiece(this.scene, Math.floor(i/6)+1));
   }
 
-  this.matrix[1][2].piece = this.scene.pieces[0];
-  this.matrix[2][1].piece = this.scene.pieces[1];
-  this.matrix[2][2].piece = this.scene.pieces[2];
+  this.matchPieceTile(this.matrix[1][2], this.scene.pieces[0]);
+  this.matchPieceTile(this.matrix[2][1], this.scene.pieces[1]);
+  this.matchPieceTile(this.matrix[2][2], this.scene.pieces[2]);
 
-  this.matrix[this.du-2][this.dv-3].piece = this.scene.pieces[3];
-  this.matrix[this.du-3][this.dv-2].piece = this.scene.pieces[4];
-  this.matrix[this.du-3][this.dv-3].piece = this.scene.pieces[5];
+  this.matchPieceTile(this.matrix[this.du-2][this.dv-3],this.scene.pieces[3]);
+  this.matchPieceTile(this.matrix[this.du-3][this.dv-2],this.scene.pieces[4]);
+  this.matchPieceTile(this.matrix[this.du-3][this.dv-3],this.scene.pieces[5]);
 
-  this.matrix[2][0].piece = this.scene.pieces[6];
-  this.matrix[0][2].piece = this.scene.pieces[7];
-  this.matrix[1][1].piece = this.scene.pieces[8];
+  this.matchPieceTile(this.matrix[2][0], this.scene.pieces[6]);
+  this.matchPieceTile(this.matrix[0][2], this.scene.pieces[7]);
+  this.matchPieceTile(this.matrix[1][1], this.scene.pieces[8]);
 
-  this.matrix[this.du-3][this.dv-1].piece = this.scene.pieces[9];
-  this.matrix[this.du-1][this.dv-3].piece = this.scene.pieces[10];
-  this.matrix[this.du-2][this.dv-2].piece = this.scene.pieces[11];
+  this.matchPieceTile(this.matrix[this.du-3][this.dv-1],this.scene.pieces[9]);
+  this.matchPieceTile(this.matrix[this.du-1][this.dv-3],this.scene.pieces[10]);
+  this.matchPieceTile(this.matrix[this.du-2][this.dv-2],this.scene.pieces[11]);
 
-  this.matrix[1][0].piece = this.scene.pieces[12];
-  this.matrix[0][1].piece = this.scene.pieces[13];
-  this.matrix[0][0].piece = this.scene.pieces[14];
+  this.matchPieceTile(this.matrix[1][0], this.scene.pieces[12]);
+  this.matchPieceTile(this.matrix[0][1], this.scene.pieces[13]);
+  this.matchPieceTile(this.matrix[0][0], this.scene.pieces[14]);
 
-  this.matrix[this.du-2][this.dv-1].piece = this.scene.pieces[15];
-  this.matrix[this.du-1][this.dv-2].piece = this.scene.pieces[16];
-  this.matrix[this.du-1][this.dv-1].piece = this.scene.pieces[17];
+  this.matchPieceTile(this.matrix[this.du-2][this.dv-1],this.scene.pieces[15]);
+  this.matchPieceTile(this.matrix[this.du-1][this.dv-2],this.scene.pieces[16]);
+  this.matchPieceTile(this.matrix[this.du-1][this.dv-1],this.scene.pieces[17]);
+
+};
+
+MyGameboard.prototype.matchPieceTile = function(tile, piece){
+  piece.tile = tile;
+  tile.piece = piece;
+};
+
+MyGameboard.prototype.unmatchPieceTile = function(tile, piece){
+  piece.tile = null;
+  tile.piece = null;
+};
+
+MyGameboard.prototype.movePiece = function() {
+  matchPieceTile(this.matrix[this.finalCell.y][this.finalCell.x], this.matrix[this.finalCell.y][this.finalCell.x].piece);
+  unmatchPieceTile(this.matrix[this.initialCell.y][this.initialCell.x], this.matrix[this.initialCell.y][this.initialCell.x].piece);
 };
 
 MyGameboard.prototype.startGame = function(){

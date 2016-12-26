@@ -18,6 +18,8 @@
    this.initialCell = {};
    this.finalCell = {};
 
+   this.validMoves = [];
+
    this.addPieces();
  }
 
@@ -26,13 +28,17 @@ MyGameboard.prototype.constructor = MyGameboard;
 
 MyGameboard.prototype.nextStep = function(){
   this.currentStep = (this.currentStep + 1) % 2;
+  if(this.currentStep === 0){
+    //verify end game
+    this.currentPlayer = (this.currentPlayer + 1) % 2;
+  }
 };
 
 MyGameboard.prototype.addPieces = function(){
   this.scene.pieces = [];
 
   for(var i = 0; i < 18; i++){
-            this.scene.pieces.push(new MyPiece(this.scene, Math.floor(i/6)+1));
+    this.scene.pieces.push(new MyPiece(this.scene, Math.floor(i/6)+1, i));
   }
 
   this.matchPieceTile(this.matrix[1][2], this.scene.pieces[0]);
@@ -62,32 +68,28 @@ MyGameboard.prototype.addPieces = function(){
 };
 
 MyGameboard.prototype.matchPieceTile = function(tile, piece){
-  piece.tile = tile;
   tile.piece = piece;
-};
-
-MyGameboard.prototype.unmatchPieceTile = function(tile, piece){
-  piece.tile = null;
-  tile.piece = null;
+  piece.tile = tile;
 };
 
 MyGameboard.prototype.movePiece = function() {
-  matchPieceTile(this.matrix[this.finalCell.y][this.finalCell.x], this.matrix[this.finalCell.y][this.finalCell.x].piece);
-  unmatchPieceTile(this.matrix[this.initialCell.y][this.initialCell.x], this.matrix[this.initialCell.y][this.initialCell.x].piece);
+  var pieceId = this.matrix[this.initialCell.y][this.initialCell.x].piece.id;
+  this.matrix[this.initialCell.y][this.initialCell.x].piece = null;
+  this.matchPieceTile(this.matrix[this.finalCell.y][this.finalCell.x], this.scene.pieces[pieceId]);
+  // this.unmatchPieceTile(this.matrix[this.initialCell.y][this.initialCell.x], this.matrix[this.initialCell.y][this.initialCell.x].piece);
 };
 
 MyGameboard.prototype.startGame = function(){
    this.phase = 1;
    this.currentStep = 0;
    this.currentPlayer = 0;
-   this.getPrologRequest('start_game', this.getInitialBoard);
+   this.requestInitialBoard();
  };
 
 MyGameboard.prototype.highlightMoves = function(){
   for(var i = 0; i < this.validMoves.length; i++){
     var initialX = this.validMoves[i][0];
     var initialY = this.validMoves[i][1];
-    console.log('x: ' + initialX + ' y: ' + initialY);
     var finalX = this.validMoves[i][2];
     var finalY = this.validMoves[i][3];
     if(initialX == this.initialCell.x && initialY == this.initialCell.y){
@@ -129,14 +131,14 @@ MyGameboard.prototype.pickCell = function(index){
       return;
     }
     if(this.matrix[y][x].highlighted){
-      this.hideMoves();
       this.finalCell = {x: x, y: y};
+      this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
+      this.movePiece();
+      this.requestMovement();
+      this.hideMoves();
       this.nextStep();
-      var playerAtom = 'player' + Number(this.currentPlayer + 1);
-      this.getPrologRequest("get_moves("+this.prologBoard + ',' + playerAtom + ')', this.getMoves);
       //at animation end
       //check if validmove
-      this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
       //make move
     }
   }

@@ -115,5 +115,8 @@ parse_input(start_game, Board):-
 parse_input(get_moves(Board,Player), Moves):-
 	valid_moves(Board, Player, Moves).
 
+parse_input(move(Board,Xi,Xf,Yi,Yf,Player), NewBoard):-
+	move(Board,Xi,Yi,Xf,Yf,NewBoard,Player,0,_).
+
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

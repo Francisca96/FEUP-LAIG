@@ -1,10 +1,11 @@
-function MyPiece(scene, type) {
+function MyPiece(scene, type, id) {
 	CGFobject.call(this,scene);
 
   this.typeNames = ['pawn','drone','queen'];
   this.type = type;
   this.pyramid = new MyPyramid(this.scene, this.type);
 
+	this.id = id;
   this.tile = null;
 }
 

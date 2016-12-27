@@ -18,6 +18,7 @@
 
    this.gameModes = ['Player vs Player', 'Player vs CPU', 'CPU vs CPU'];
    this.players = [['Player', 'Player'], ['Player','CPU'], ['CPU', 'CPU']];
+   this.points = [-1,-1];
    this.gameMode = 0;
 
    this.botLevels = [1,1];
@@ -33,6 +34,41 @@
 
 MyGameboard.prototype = Object.create(MyBoard.prototype);
 MyGameboard.prototype.constructor = MyGameboard;
+
+MyGameboard.prototype.getCurrentPlayerType = function() {
+  return this.players[this.gameMode][this.currentPlayer];
+};
+
+MyGameboard.prototype.verifyEndGame = function() {
+  console.log('verifying endgame');
+  var ended = true;
+  for(var i = 0; i < this.matrix.length/2; i++){
+    for(var j = 0; j < this.matrix[i].length; j++){
+      if(this.matrix[i][j].piece){
+        ended = false;
+        break;
+      }
+    }
+  }
+
+  if(ended)
+    return this.points[0] > this.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
+
+  ended = true;
+  for(var i = this.matrix.length/2; i < this.matrix.length; i++){
+    for(var j = 0; j < this.matrix[i].length; j++){
+      if(this.matrix[i][j].piece){
+        ended = false;
+        break;
+      }
+    }
+  }
+
+  if(ended)
+    return this.points[0] > this.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
+  else
+    return null;
+};
 
 MyGameboard.prototype.nextStep = function(){
   this.currentStep = (this.currentStep + 1) % 2;
@@ -130,11 +166,17 @@ MyGameboard.prototype.movePiece = function() {
 };
 
 MyGameboard.prototype.startGame = function(){
-   this.phase = 1;
+   this.currentPhase = 1;
    this.startTime = this.scene.time;
    this.currentStep = 0;
    this.currentPlayer = 0;
    if(this.gameMode == 1) this.botLevels[1] = this.botLevels[0]; //This is needed to pass the correct level to prolog
+
+   this.scene.waitedTime = 0;
+   this.scene.MOVE_WAIT_TIME = 1000;
+
+   this.points = [0,0];
+
    this.requestInitialBoard();
  };
 
@@ -163,14 +205,37 @@ MyGameboard.prototype.controlsPiece = function(y){
 };
 
 MyGameboard.prototype.makeMovement = function(){
+  var initialTile = this.matrix[this.initialCell.y][this.initialCell.x];
+  var targetTile = this.matrix[this.finalCell.y][this.finalCell.x];
+  if(targetTile.piece){
+    if(!this.controlsPiece(this.finalCell.y)){
+      //make eat animation
+      this.points[this.currentPlayer] += targetTile.piece.type;
+    }
+    else{
+      //make_merge_animation
+      initialTile.piece.type += targetTile.piece.type;
+    }
+  }
+  initialTile.piece.moving = true;
+  var newAnim = new MyPieceAnimation(1, initialTile.piece,this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
+  this.scene.gameAnimations.push(newAnim);
+  initialTile.piece.animation = newAnim;
   this.movePiece();
-  this.matrix[this.finalCell.y][this.finalCell.x].piece.moving = true;
   // this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
   this.requestMovement();
   this.nextStep();
+  var endGame = this.verifyEndGame();
+
+  if(endGame){
+    alert(endGame);
+    this.currentPhase++;
+  }
 };
 
 MyGameboard.prototype.pickCell = function(index){
+  if(this.getCurrentPlayerType === 'CPU')
+    return;
   index--;
   var x = index % 4;
   var y = Math.floor(index / 4);

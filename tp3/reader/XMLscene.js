@@ -174,7 +174,20 @@ XMLscene.prototype.updateLights = function ()
 };
 
 XMLscene.prototype.update = function(currTime) {
+  var timePassed = currTime - this.time;
   this.time = currTime;
+
+  if(this.game){
+    if(this.game.currentPhase === 1 && this.game.getCurrentPlayerType() === 'CPU'){
+      if(this.waitedTime >= this.MOVE_WAIT_TIME){
+        this.game.requestAutomaticMovement();
+        this.waitedTime = 0;
+      }
+      else
+        this.waitedTime += timePassed;
+    }
+  }
+
 };
 
 // Processes the graph components

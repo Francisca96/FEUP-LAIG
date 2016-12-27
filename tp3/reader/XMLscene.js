@@ -35,7 +35,6 @@ XMLscene.prototype.init = function (application) {
     this.setPickEnabled(true);
 
     this.game = new MyGameboard(this,8,4);
-    this.game.startGame();
 };
 
 XMLscene.prototype.logPicking = function ()
@@ -121,6 +120,7 @@ XMLscene.prototype.onGraphLoaded = function ()
   this.interface.setActiveCamera(this.camera);
 
   this.loadLights();
+  this.game.addGameGUI();
 };
 
 XMLscene.prototype.display = function () {

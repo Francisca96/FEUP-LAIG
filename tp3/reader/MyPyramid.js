@@ -37,6 +37,7 @@ MyPyramid.prototype.display = function () {
 
 	this.scene.pushMatrix();
 
+	this.scene.scale(0.7, 1.3, 0.7);
 	this.scene.scale(this.size/3, this.size/3, this.size/3);
 
 	this.scene.pushMatrix();

@@ -7,6 +7,7 @@
    // 	CGFobject.call(this,scene);
    MyBoard.call(this, scene, du, dv);
 
+
    this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended'];
    this.steps = ['Waiting For Initial Cell Pick', 'Waiting For Final Cell Pick'];
 
@@ -14,6 +15,9 @@
    this.currentPlayer = -1;
    this.currentStep = -1;
    this.startTime = -1;
+
+   this.gameModes = ['Player vs Player', 'Player vs CPU', 'CPU vs CPU'];
+   this.gameMode = 0;
 
    this.moveHistory = [];
    this.initialCell = {};
@@ -37,9 +41,13 @@ MyGameboard.prototype.nextStep = function(){
 
 MyGameboard.prototype.addGameGUI = function(){
   this.scene.interface.game = this.scene.interface.gui.addFolder("Game");
+  this.scene.interface.game.open();
 
-  var obj = { startGame:this.startGame.bind(this) };
-  this.scene.interface.game.add(obj, "startGame");
+  var dropdown = this.scene.interface.game.add(this, "gameMode", this.gameModes);
+  dropdown.__select.selectedIndex = this.gameMode;
+
+  var btn = { startGame:this.startGame.bind(this) };
+  this.scene.interface.game.add(btn, "startGame");
 
 }
 
@@ -144,7 +152,7 @@ MyGameboard.prototype.pickCell = function(index){
       this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
       this.movePiece();
       this.matrix[y][x].piece.moving = true;
-      this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
+      // this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
       this.requestMovement();
       this.hideMoves();
       this.nextStep();

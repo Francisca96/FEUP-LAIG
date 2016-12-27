@@ -13,6 +13,7 @@
    this.currentPhase = 0;
    this.currentPlayer = -1;
    this.currentStep = -1;
+   this.startTime = -1;
 
    this.moveHistory = [];
    this.initialCell = {};
@@ -33,6 +34,14 @@ MyGameboard.prototype.nextStep = function(){
     this.currentPlayer = (this.currentPlayer + 1) % 2;
   }
 };
+
+MyGameboard.prototype.addGameGUI = function(){
+  this.scene.interface.game = this.scene.interface.gui.addFolder("Game");
+
+  var obj = { startGame:this.startGame.bind(this) };
+  this.scene.interface.game.add(obj, "startGame");
+
+}
 
 MyGameboard.prototype.addPieces = function(){
   this.scene.pieces = [];
@@ -76,11 +85,11 @@ MyGameboard.prototype.movePiece = function() {
   var pieceId = this.matrix[this.initialCell.y][this.initialCell.x].piece.id;
   this.matrix[this.initialCell.y][this.initialCell.x].piece = null;
   this.matchPieceTile(this.matrix[this.finalCell.y][this.finalCell.x], this.scene.pieces[pieceId]);
-  // this.unmatchPieceTile(this.matrix[this.initialCell.y][this.initialCell.x], this.matrix[this.initialCell.y][this.initialCell.x].piece);
 };
 
 MyGameboard.prototype.startGame = function(){
    this.phase = 1;
+   this.startTime = this.scene.time;
    this.currentStep = 0;
    this.currentPlayer = 0;
    this.requestInitialBoard();
@@ -107,7 +116,7 @@ MyGameboard.prototype.hideMoves = function(){
 };
 
 MyGameboard.prototype.controlsPiece = function(y){
-  return y >= this.currentPlayer*4 && y <= (this.currentPlayer+1)*4;
+  return y >= this.currentPlayer*4 && y < (this.currentPlayer+1)*4;
 };
 
 MyGameboard.prototype.pickCell = function(index){

@@ -54,13 +54,4 @@ MyInterface.prototype.processKeyDown = function(event) {
 	}
 };
 
-/**
- * processMouse
- * @param event {Event}
- */
-MyInterface.prototype.processMouseDown = function(event) {
-
-	CGFinterface.prototype.processMouseDown.call(this,event);
-		// console.log("x: ", event.x);
-		// console.log("y: ", event.y);
-};
+// Game Commands

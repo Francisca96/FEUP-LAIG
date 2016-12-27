@@ -35,6 +35,7 @@ XMLscene.prototype.init = function (application) {
     this.setPickEnabled(true);
 
     this.game = new MyGameboard(this,8,4);
+    this.gameAnimations = [];
 };
 
 XMLscene.prototype.logPicking = function ()
@@ -188,6 +189,13 @@ XMLscene.prototype.update = function(currTime) {
     }
   }
 
+
+  for(var i = 0; i < this.gameAnimations.length; i++){
+    this.gameAnimations[i].update(currTime);
+    if(this.gameAnimations[i].isComplete(currTime)){
+      this.gameAnimations.splice(i,1);
+    }
+  }
 };
 
 // Processes the graph components

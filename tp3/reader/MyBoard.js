@@ -63,6 +63,9 @@
           this.matrix[k][i].display();
           if(this.matrix[k][i].piece){
             this.scene.translate(0,0.25,0);
+            if(this.matrix[k][i].piece.moving){
+              this.matrix[k][i].piece.animation.apply();
+            }
             this.matrix[k][i].piece.display();
           }
          this.scene.popMatrix();

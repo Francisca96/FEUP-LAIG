@@ -30,6 +30,7 @@
    this.validMoves = [];
 
    this.addPieces();
+   this.placePieces();
  }
 
 MyGameboard.prototype = Object.create(MyBoard.prototype);
@@ -40,7 +41,6 @@ MyGameboard.prototype.getCurrentPlayerType = function() {
 };
 
 MyGameboard.prototype.verifyEndGame = function() {
-  console.log('verifying endgame');
   var ended = true;
   for(var i = 0; i < this.matrix.length/2; i++){
     for(var j = 0; j < this.matrix[i].length; j++){
@@ -73,8 +73,13 @@ MyGameboard.prototype.verifyEndGame = function() {
 MyGameboard.prototype.nextStep = function(){
   this.currentStep = (this.currentStep + 1) % 2;
   if(this.currentStep === 0){
-    //verify end game
     this.currentPlayer = (this.currentPlayer + 1) % 2;
+    var endGame = this.verifyEndGame();
+
+    if(endGame){
+      alert(endGame);
+      this.currentPhase++;
+    }
   }
 };
 
@@ -109,13 +114,6 @@ MyGameboard.prototype.addGameGUI = function(){
         this.addBotLevelsGUI();
   }.bind(this));
 
-  // this.botLevels.forEach(function(item, index){
-  //   var levelsFolder = interface.game.addFolder('Bot ' + Number(index + 1) + ' Level');
-  //
-  //   levelsFolder.add
-  //   interface.game.add(item,this,1,2).name('Bot ' + Number(index + 1) + ' Level');
-  // });
-
   var btn = { 'Start Game':this.startGame.bind(this) };
   interface.game.startBtn = interface.game.add(btn, 'Start Game');
 
@@ -127,6 +125,16 @@ MyGameboard.prototype.addPieces = function(){
   for(var i = 0; i < 18; i++){
     this.scene.pieces.push(new MyPiece(this.scene, Math.floor(i/6)+1, i));
   }
+};
+
+MyGameboard.prototype.clearTiles = function(){
+  for(var i = 0; i < this.matrix.length; i++)
+    for(var j = 0; j < this.matrix[i].length; j++)
+      this.matrix[i][j].piece = null;
+}
+
+MyGameboard.prototype.placePieces = function(){
+  this.clearTiles();
 
   this.matchPieceTile(this.matrix[1][2], this.scene.pieces[0]);
   this.matchPieceTile(this.matrix[2][1], this.scene.pieces[1]);
@@ -151,7 +159,6 @@ MyGameboard.prototype.addPieces = function(){
   this.matchPieceTile(this.matrix[this.du-2][this.dv-1],this.scene.pieces[15]);
   this.matchPieceTile(this.matrix[this.du-1][this.dv-2],this.scene.pieces[16]);
   this.matchPieceTile(this.matrix[this.du-1][this.dv-1],this.scene.pieces[17]);
-
 };
 
 MyGameboard.prototype.matchPieceTile = function(tile, piece){
@@ -178,6 +185,7 @@ MyGameboard.prototype.startGame = function(){
    this.points = [0,0];
 
    this.requestInitialBoard();
+   this.placePieces();
  };
 
 MyGameboard.prototype.highlightMoves = function(){
@@ -225,12 +233,6 @@ MyGameboard.prototype.makeMovement = function(){
   // this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
   this.requestMovement();
   this.nextStep();
-  var endGame = this.verifyEndGame();
-
-  if(endGame){
-    alert(endGame);
-    this.currentPhase++;
-  }
 };
 
 MyGameboard.prototype.pickCell = function(index){

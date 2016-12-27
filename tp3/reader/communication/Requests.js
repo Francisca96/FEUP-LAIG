@@ -27,6 +27,22 @@ MyGameboard.prototype.requestMovement = function(){
   this.getPrologRequest(requestStr, this.getBoard);
 };
 
+MyGameboard.prototype.requestAutomaticMovement = function(){
+  var playerAtom = 'player' + Number(this.currentPlayer + 1);
+  var requestStr = 'auto_move(' + this.prologBoard + ',' + playerAtom + ',' + this.botLevels[this.currentPlayer] + ')';
+  this.getPrologRequest(requestStr, this.getAutomaticMovement);
+};
+
+MyGameboard.prototype.getAutomaticMovement = function(data){
+  var move = eval(data.target.response);
+  this.initialCell.x = move[0];
+  this.initialCell.y = move[1];
+  this.finalCell.x = move[2];
+  this.finalCell.y = move[3];
+  this.nextStep();
+  this.makeMovement();
+};
+
 MyGameboard.prototype.getBoard = function(data){
   this.prologBoard = data.target.response;
   this.requestValidMovements();

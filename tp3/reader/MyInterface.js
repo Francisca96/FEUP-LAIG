@@ -54,4 +54,17 @@ MyInterface.prototype.processKeyDown = function(event) {
 	}
 };
 
+MyInterface.prototype.removeFolder = function(name,parent) {
+	if(!parent)
+		parent = this.gui;
+  var folder = parent.__folders[name];
+  if (!folder) {
+    return;
+  }
+  folder.close();
+  parent.__ul.removeChild(folder.domElement.parentNode);
+  delete parent.__folders[name];
+  parent.onResize();
+};
+
 // Game Commands

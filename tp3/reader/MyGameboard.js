@@ -17,7 +17,10 @@
    this.startTime = -1;
 
    this.gameModes = ['Player vs Player', 'Player vs CPU', 'CPU vs CPU'];
+   this.players = [['Player', 'Player'], ['Player','CPU'], ['CPU', 'CPU']];
    this.gameMode = 0;
+
+   this.botLevels = [1,1];
 
    this.moveHistory = [];
    this.initialCell = {};
@@ -39,17 +42,48 @@ MyGameboard.prototype.nextStep = function(){
   }
 };
 
+MyGameboard.prototype.addBotLevelsGUI = function(){
+  var interface = this.scene.interface;
+
+  interface.game.remove(interface.game.startBtn);
+  interface.game.botLevels = interface.game.addFolder("Bot Levels");
+  interface.game.botLevels.open();
+
+  controller_names = [];
+  for (var i=0; i<this.gameMode; i++) {
+    controller_names[i] = this.botLevels[i];
+    interface.game.botLevels.add(this.botLevels, i, controller_names[i]).min(1).max(2).step(1).name('Bot ' + Number(i + 1) + ' Level');
+  }
+
+  var btn = { 'Start Game':this.startGame.bind(this) };
+  interface.game.startBtn = interface.game.add(btn, 'Start Game');
+};
+
 MyGameboard.prototype.addGameGUI = function(){
-  this.scene.interface.game = this.scene.interface.gui.addFolder("Game");
-  this.scene.interface.game.open();
+  var interface = this.scene.interface;
+  interface.game = interface.gui.addFolder('Game');
+  interface.game.open();
 
-  var dropdown = this.scene.interface.game.add(this, "gameMode", this.gameModes);
+  var dropdown = interface.game.add(this, 'gameMode', {'Player vs Player': 0, 'Player vs CPU': 1, 'CPU vs CPU': 2}).name('Game Mode');
   dropdown.__select.selectedIndex = this.gameMode;
+  dropdown.onFinishChange(function(){
+      if(interface.game.botLevels)
+      interface.removeFolder('Bot Levels', interface.game);
+      if(this.gameMode > 0)
+        this.addBotLevelsGUI();
+  }.bind(this));
 
-  var btn = { startGame:this.startGame.bind(this) };
-  this.scene.interface.game.add(btn, "startGame");
+  // this.botLevels.forEach(function(item, index){
+  //   var levelsFolder = interface.game.addFolder('Bot ' + Number(index + 1) + ' Level');
+  //
+  //   levelsFolder.add
+  //   interface.game.add(item,this,1,2).name('Bot ' + Number(index + 1) + ' Level');
+  // });
 
-}
+  var btn = { 'Start Game':this.startGame.bind(this) };
+  interface.game.startBtn = interface.game.add(btn, 'Start Game');
+
+};
 
 MyGameboard.prototype.addPieces = function(){
   this.scene.pieces = [];
@@ -100,6 +134,7 @@ MyGameboard.prototype.startGame = function(){
    this.startTime = this.scene.time;
    this.currentStep = 0;
    this.currentPlayer = 0;
+   if(this.gameMode == 1) this.botLevels[1] = this.botLevels[0]; //This is needed to pass the correct level to prolog
    this.requestInitialBoard();
  };
 
@@ -127,6 +162,14 @@ MyGameboard.prototype.controlsPiece = function(y){
   return y >= this.currentPlayer*4 && y < (this.currentPlayer+1)*4;
 };
 
+MyGameboard.prototype.makeMovement = function(){
+  this.movePiece();
+  this.matrix[this.finalCell.y][this.finalCell.x].piece.moving = true;
+  // this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
+  this.requestMovement();
+  this.nextStep();
+};
+
 MyGameboard.prototype.pickCell = function(index){
   index--;
   var x = index % 4;
@@ -150,18 +193,10 @@ MyGameboard.prototype.pickCell = function(index){
     if(this.matrix[y][x].highlighted){
       this.finalCell = {x: x, y: y};
       this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
-      this.movePiece();
-      this.matrix[y][x].piece.moving = true;
-      // this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
-      this.requestMovement();
       this.hideMoves();
-      this.nextStep();
-      //at animation end
-      //check if validmove
-      //make move
+      this.makeMovement();
     }
   }
-
 };
 
 MyGameboard.prototype.display = function(){

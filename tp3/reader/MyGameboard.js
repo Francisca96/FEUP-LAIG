@@ -143,6 +143,8 @@ MyGameboard.prototype.pickCell = function(index){
       this.finalCell = {x: x, y: y};
       this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
       this.movePiece();
+      this.matrix[y][x].piece.moving = true;
+      this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
       this.requestMovement();
       this.hideMoves();
       this.nextStep();

@@ -93,7 +93,7 @@ MyGameboard.prototype.addBotLevelsGUI = function(){
   interface.game.botLevels.open();
 
   controller_names = [];
-  for (var i=0; i<this.gameMode; i++) {
+  for (var i=0; i<this.scene.interface.game.gameMode; i++) {
     controller_names[i] = this.botLevels[i];
     interface.game.botLevels.add(this.botLevels, i, controller_names[i]).min(1).max(2).step(1).name('Bot ' + Number(i + 1) + ' Level');
   }
@@ -109,12 +109,13 @@ MyGameboard.prototype.addGameGUI = function(){
 
   interface.game.add(this, 'speed').min(0.25).max(4).step(0.5);
 
-  var dropdown = interface.game.add(this, 'gameMode', {'Player vs Player': 0, 'Player vs CPU': 1, 'CPU vs CPU': 2}).name('Game Mode');
+  interface.game.gameMode = 0;
+  var dropdown = interface.game.add(interface.game, 'gameMode', {'Player vs Player': 0, 'Player vs CPU': 1, 'CPU vs CPU': 2}).name('Game Mode');
   dropdown.__select.selectedIndex = this.gameMode;
   dropdown.onFinishChange(function(){
       if(interface.game.botLevels)
-      interface.removeFolder('Bot Levels', interface.game);
-      if(this.gameMode > 0)
+        interface.removeFolder('Bot Levels', interface.game);
+      if(this.scene.interface.game.gameMode > 0)
         this.addBotLevelsGUI();
   }.bind(this));
 
@@ -135,7 +136,7 @@ MyGameboard.prototype.clearTiles = function(){
   for(var i = 0; i < this.matrix.length; i++)
     for(var j = 0; j < this.matrix[i].length; j++)
       this.matrix[i][j].piece = null;
-}
+};
 
 MyGameboard.prototype.placePieces = function(){
   this.clearTiles();
@@ -181,6 +182,7 @@ MyGameboard.prototype.startGame = function(){
    this.startTime = this.scene.time;
    this.currentStep = 0;
    this.currentPlayer = 0;
+   this.gameMode = this.scene.interface.game.gameMode;
    if(this.gameMode == 1) this.botLevels[1] = this.botLevels[0]; //This is needed to pass the correct level to prolog
 
    this.scene.waitedTime = 0;

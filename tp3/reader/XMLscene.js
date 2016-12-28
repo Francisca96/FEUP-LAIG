@@ -35,6 +35,7 @@ XMLscene.prototype.init = function (application) {
     this.setPickEnabled(true);
 
     this.game = new MyGameboard(this,8,4);
+    this.auxBoard = new MyBoard(this,6,6);
     this.gameAnimations = [];
 };
 
@@ -180,7 +181,7 @@ XMLscene.prototype.update = function(currTime) {
 
   if(this.game){
     if(this.game.currentPhase === 1 && this.game.getCurrentPlayerType() === 'CPU'){
-      if(this.waitedTime >= this.MOVE_WAIT_TIME){
+      if(this.waitedTime >= this.MOVE_WAIT_TIME/this.game.speed){
         this.game.requestAutomaticMovement();
         this.waitedTime = 0;
       }

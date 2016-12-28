@@ -7,6 +7,7 @@
    // 	CGFobject.call(this,scene);
    MyBoard.call(this, scene, du, dv);
 
+   this.auxBoard = this.scene.auxBoard;
 
    this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended'];
    this.steps = ['Waiting For Initial Cell Pick', 'Waiting For Final Cell Pick'];

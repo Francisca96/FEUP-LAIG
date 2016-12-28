@@ -27,16 +27,6 @@
   this.blackMaterial.setDiffuse(0,0,0,1);
   this.blackMaterial.setSpecular(0,0,0,1);
   this.blackMaterial.setAmbient(0.1,0.1,0.1,1);
-
-  this.redMaterial = new CGFappearance(this.scene);
-  this.redMaterial.setDiffuse(0.7,0,0,1);
-  this.redMaterial.setSpecular(0.7,0,0,1);
-  this.redMaterial.setAmbient(0.7,0.1,0.1,1);
-
-  this.yellowMaterial = new CGFappearance(this.scene);
-  this.yellowMaterial.setDiffuse(0.8,0.8,0,1);
-  this.yellowMaterial.setSpecular(0.8,0.8,0,1);
-  this.yellowMaterial.setAmbient(0.8,0.8,0,1);
  }
 
  MyBoard.prototype = Object.create(CGFobject.prototype);
@@ -50,11 +40,7 @@
      for(var k = 0; k < this.du; k++){
        for(var i = 0; i < this.dv; i++){
          this.scene.pushMatrix();
-         if(this.matrix[k][i].selected)
-            this.redMaterial.apply();
-          else if(this.matrix[k][i].highlighted)
-            this.yellowMaterial.apply();
-          else if((k+i) % 2 === 0)
+          if((k+i) % 2 === 0)
             this.whiteMaterial.apply();
           else
             this.blackMaterial.apply();

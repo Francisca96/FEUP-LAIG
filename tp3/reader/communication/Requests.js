@@ -35,10 +35,8 @@ MyGameboard.prototype.requestAutomaticMovement = function(){
 
 MyGameboard.prototype.getAutomaticMovement = function(data){
   var move = eval(data.target.response);
-  this.initialCell.x = move[0];
-  this.initialCell.y = move[1];
-  this.finalCell.x = move[2];
-  this.finalCell.y = move[3];
+  this.initialCell = {x:move[0], y:move[1]};
+  this.finalCell = {x:move[2], y:move[3]};
   this.nextStep();
   this.makeMovement();
 };

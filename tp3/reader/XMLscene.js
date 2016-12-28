@@ -181,7 +181,7 @@ XMLscene.prototype.update = function(currTime) {
 
   if(this.game){
     if(this.game.currentPhase === 1 && this.game.getCurrentPlayerType() === 'CPU'){
-      if(this.waitedTime >= this.MOVE_WAIT_TIME/this.game.speed){
+      if(!this.game.paused && this.waitedTime >= this.MOVE_WAIT_TIME/this.game.speed){
         this.game.requestAutomaticMovement();
         this.waitedTime = 0;
       }

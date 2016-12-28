@@ -230,7 +230,6 @@ MyGameboard.prototype.makeMovement = function(){
       this.points[this.currentPlayer] += targetTile.piece.type;
     }
     else{
-      //make_merge_animation
       var animPeriod = 250/this.speed;
       var mergeAnim = new MyPieceMergeAnimation(animDuration, animPeriod, initialTile.piece, initialTile.piece.type);
       initialTile.piece.type += targetTile.piece.type;
@@ -268,12 +267,12 @@ MyGameboard.prototype.pickCell = function(index){
       this.hideMoves();
       return;
     }
-    // if(this.matrix[y][x].highlighted){
+    if(this.matrix[y][x].highlighted){
       this.finalCell = {x: x, y: y};
       this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
       this.hideMoves();
       this.makeMovement();
-    // }
+    }
   }
 };
 

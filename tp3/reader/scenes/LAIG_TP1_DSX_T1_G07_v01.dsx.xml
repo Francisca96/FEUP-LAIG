@@ -188,7 +188,6 @@
             <children>
               <primitiveref id="gameboard" />
             </children>
-
         </component>
 
       </components>

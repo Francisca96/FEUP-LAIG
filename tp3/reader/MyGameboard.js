@@ -29,6 +29,8 @@
 
    this.validMoves = [];
 
+   this.speed = 1;
+
    this.addPieces();
    this.placePieces();
  }
@@ -105,6 +107,8 @@ MyGameboard.prototype.addGameGUI = function(){
   interface.game = interface.gui.addFolder('Game');
   interface.game.open();
 
+  interface.game.add(this, 'speed').min(0.25).max(4).step(0.5);
+
   var dropdown = interface.game.add(this, 'gameMode', {'Player vs Player': 0, 'Player vs CPU': 1, 'CPU vs CPU': 2}).name('Game Mode');
   dropdown.__select.selectedIndex = this.gameMode;
   dropdown.onFinishChange(function(){
@@ -180,7 +184,7 @@ MyGameboard.prototype.startGame = function(){
    if(this.gameMode == 1) this.botLevels[1] = this.botLevels[0]; //This is needed to pass the correct level to prolog
 
    this.scene.waitedTime = 0;
-   this.scene.MOVE_WAIT_TIME = 1000;
+   this.scene.MOVE_WAIT_TIME = 1500/this.speed;
 
    this.points = [0,0];
 

@@ -138,6 +138,11 @@ MyGameboard.prototype.clearTiles = function(){
       this.matrix[i][j].piece = null;
 };
 
+MyGameboard.prototype.resetPieces = function(){
+  for(var i = 0; i < this.scene.pieces.length; i++)
+    this.scene.pieces[i].reset();
+};
+
 MyGameboard.prototype.placePieces = function(){
   this.clearTiles();
 

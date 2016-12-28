@@ -18,13 +18,11 @@ function MyScoreBoard(scene) {
 	this.zeroMaterial.setAmbient(0.8,0.8,0.8,1);
 	this.zeroMaterial.setDiffuse(0.8,0.8,0.8,1);
 	this.zeroMaterial.setSpecular(0.8,0.8,0.8,1);
-	this.zeroMaterial.loadTexture("../resources/images/0.png");
 
 	this.nullMaterial = new CGFappearance(this.scene);
 	this.nullMaterial.setAmbient(0.8,0.8,0.8,1);
 	this.nullMaterial.setDiffuse(0.8,0.8,0.8,1);
 	this.nullMaterial.setSpecular(0.8,0.8,0.8,1);
-	this.nullMaterial.loadTexture("../resources/images/00.png");
 
 	this.boardMaterial = new CGFappearance(this.scene);
 	this.boardMaterial.setAmbient(0.8,0.8,0.8,1);

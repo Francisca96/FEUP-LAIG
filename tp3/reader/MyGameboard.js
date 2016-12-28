@@ -7,7 +7,9 @@
    // 	CGFobject.call(this,scene);
    MyBoard.call(this, scene, du, dv);
 
+   this.clickable = true;
    this.auxBoard = this.scene.auxBoard;
+   this.scoreboard = this.scene.scoreboard;
 
    this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended'];
    this.steps = ['Waiting For Initial Cell Pick', 'Waiting For Final Cell Pick'];
@@ -156,9 +158,9 @@ MyGameboard.prototype.addPieces = function(){
 };
 
 MyGameboard.prototype.clearTiles = function(){
-  for(var i = 0; i < this.matrix.length; i++)
-    for(var j = 0; j < this.matrix[i].length; j++)
-      this.matrix[i][j].piece = null;
+  MyBoard.prototype.clearTiles.call(this);
+
+  this.auxBoard.clearTiles();
 };
 
 MyGameboard.prototype.resetPieces = function(){
@@ -197,6 +199,15 @@ MyGameboard.prototype.placePieces = function(){
 MyGameboard.prototype.matchPieceTile = function(tile, piece){
   tile.piece = piece;
   piece.tile = tile;
+};
+
+MyGameboard.prototype.getFirstUnoccupiedAuxTile = function(){
+  for(var i = 0; i < this.auxBoard.matrix.length; i++){
+    for(var j = 0; j < this.auxBoard.matrix[i].length; j++){
+      if(!this.auxBoard.matrix[i][j].piece)
+        return {x: j, y: i};
+    }
+  }
 };
 
 MyGameboard.prototype.movePiece = function() {
@@ -304,8 +315,15 @@ MyGameboard.prototype.makeMovement = function(){
   var newAnim = new MyPieceAnimation(animDuration, initialTile.piece, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
 
   if(targetTile.piece){
+    var newPos = this.getFirstUnoccupiedAuxTile();
+    var eatenPiece = targetTile.piece;
+    eatenPiece.tile = this.auxBoard.matrix[newPos.y][newPos.x];
+    this.auxBoard.matrix[newPos.y][newPos.x].piece = eatenPiece;
+    eatenPiece.moving = true;
+    var dieAnim = new MyPieceDieAnimation(animDuration*1.9, animDuration*0.9, targetTile.piece, this.finalCell.x, this.finalCell.y, newPos.x,newPos.y);
+    eatenPiece.animation = dieAnim;
+    this.scene.gameAnimations.push(dieAnim);
     if(!this.controlsPiece(this.finalCell.y)){
-      //make eat animation
       this.points[this.currentPlayer] += targetTile.piece.type;
     }
     else{
@@ -356,5 +374,16 @@ MyGameboard.prototype.pickCell = function(index){
 };
 
 MyGameboard.prototype.display = function(){
+
+  this.scene.pushMatrix();
+    this.scene.translate(0,3,0);
+    this.scoreboard.display();
+  this.scene.popMatrix();
+
+  this.scene.pushMatrix();
+    this.scene.translate(-8,0,1);
+    this.auxBoard.display();
+  this.scene.popMatrix();
+
   MyBoard.prototype.display.call(this);
 };

@@ -32,6 +32,12 @@
  MyBoard.prototype = Object.create(CGFobject.prototype);
  MyBoard.prototype.constructor = MyBoard;
 
+ MyBoard.prototype.clearTiles = function() {
+   for(var i = 0; i < this.matrix.length; i++)
+     for(var j = 0; j < this.matrix[i].length; j++)
+       this.matrix[i][j].piece = null;
+ };
+
  MyBoard.prototype.display = function() {
 
    this.scene.pushMatrix();
@@ -45,7 +51,8 @@
           else
             this.blackMaterial.apply();
           this.scene.translate(i, 0, k);
-          this.scene.registerForPick(k*this.dv+i+1,this.matrix[k][i]);
+          if(this.clickable)
+            this.scene.registerForPick(k*this.dv+i+1,this.matrix[k][i]);
           this.matrix[k][i].display();
           if(this.matrix[k][i].piece){
             this.scene.translate(0,0.25,0);

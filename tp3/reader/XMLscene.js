@@ -34,9 +34,9 @@ XMLscene.prototype.init = function (application) {
     this.enableTextures(true);
     this.setPickEnabled(true);
 
-    this.game = new MyGameboard(this,8,4);
     this.auxBoard = new MyBoard(this,6,6);
     this.scoreboard = new MyScoreBoard(this);
+    this.game = new MyGameboard(this,8,4);
     this.gameAnimations = [];
 };
 
@@ -159,10 +159,6 @@ XMLscene.prototype.display = function () {
     this.processGraph("root");
 	}
 
-  this.pushMatrix();
-    this.translate(0, 3, 0);
-    this.scoreboard.display();
-  this.popMatrix();
 };
 
 // Updates lights states

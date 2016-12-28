@@ -105,7 +105,8 @@ MyLedFont.prototype.getCoords = function(char){
     case "Z":
 		case "z":
 			return [2, 5];
-	} else if (code >= 48 && code <= 57){
+	}
+} else if (code >= 48 && code <= 57){
 		switch(char) {
 		case "0":
 			return [5, 0];
@@ -162,17 +163,16 @@ MyLedFont.prototype.getCoords = function(char){
 			return [3, 6];
 		}
 	}
-}
 };
 
 MyLedFont.prototype.getBackgroundAppearance = function() {
 	return this.backgroundAppearance;
-}
+};
 
 MyLedFont.prototype.getAppearance = function() {
 	return this.appearance;
-}
+};
 
 MyLedFont.prototype.getShader = function() {
 	return this.shader;
-}
+};

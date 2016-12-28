@@ -12,7 +12,11 @@ function MyPiece(scene, type, id) {
 MyPiece.prototype = Object.create(CGFobject.prototype);
 MyPiece.prototype.constructor=MyPiece;
 
-MyPiece.prototype.display = function () {
+MyPiece.prototype.update = function() {
+	this.pyramid = new MyPyramid(this.scene, this.type);
+}
+
+MyPiece.prototype.display = function() {
 
 	this.scene.pushMatrix();
   	this.pyramid.display();

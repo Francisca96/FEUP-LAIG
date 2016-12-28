@@ -219,6 +219,11 @@ MyGameboard.prototype.controlsPiece = function(y){
 MyGameboard.prototype.makeMovement = function(){
   var initialTile = this.matrix[this.initialCell.y][this.initialCell.x];
   var targetTile = this.matrix[this.finalCell.y][this.finalCell.x];
+
+  var animDuration = 1/this.speed;
+  initialTile.piece.moving = true;
+  var newAnim = new MyPieceAnimation(animDuration, initialTile.piece, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
+
   if(targetTile.piece){
     if(!this.controlsPiece(this.finalCell.y)){
       //make eat animation
@@ -226,15 +231,17 @@ MyGameboard.prototype.makeMovement = function(){
     }
     else{
       //make_merge_animation
+      var animPeriod = 250/this.speed;
+      var mergeAnim = new MyPieceMergeAnimation(animDuration, animPeriod, initialTile.piece, initialTile.piece.type);
       initialTile.piece.type += targetTile.piece.type;
+      mergeAnim.initialTime = newAnim.initialTime + animDuration*1000;
+      newAnim.nextAnimation = mergeAnim;
+      this.scene.gameAnimations.push(mergeAnim);
     }
   }
-  initialTile.piece.moving = true;
-  var newAnim = new MyPieceAnimation(1, initialTile.piece,this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
   this.scene.gameAnimations.push(newAnim);
   initialTile.piece.animation = newAnim;
   this.movePiece();
-  // this.matrix[y][x].piece.animation = new MyPieceAnimation(3, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
   this.requestMovement();
   this.nextStep();
 };
@@ -261,12 +268,12 @@ MyGameboard.prototype.pickCell = function(index){
       this.hideMoves();
       return;
     }
-    if(this.matrix[y][x].highlighted){
+    // if(this.matrix[y][x].highlighted){
       this.finalCell = {x: x, y: y};
       this.matrix[this.initialCell.y][this.initialCell.x].selected = false;
       this.hideMoves();
       this.makeMovement();
-    }
+    // }
   }
 };
 

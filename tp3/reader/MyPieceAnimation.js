@@ -2,12 +2,14 @@
  * MyPieceAnimation
  * @constructor
  */
- function MyPieceAnimation(timeSpan, piece, x1, z1, x2, z2) {
+ function MyPieceAnimation(timeSpan, piece, x1, z1, x2, z2, nextAnimation) {
    MyAnimation.apply(this, arguments);
    this.deltaX = x1-x2;
    this.deltaZ = z1-z2;
 
    this.piece = piece;
+
+   this.nextAnimation = nextAnimation;
 
    this.initialTime = this.piece.scene.time;
 
@@ -30,8 +32,9 @@ MyPieceAnimation.prototype.update = function(currentTime){
   this.matrix = mat4.create();
 
   if(timePassed >= this.timeSpan){
-    this.piece.moving = false;
-    this.piece.animation = null;
+    if(!this.nextAnimation)
+      this.piece.moving = false;
+    this.piece.animation = this.nextAnimation;
     return;
   }
 

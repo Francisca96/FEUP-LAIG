@@ -10,7 +10,6 @@
    this.clickable = true;
    this.auxBoard = this.scene.auxBoard;
    this.scoreboard = this.scene.scoreboard;
-   this.panel = new MyPanel(this.scene, 2, 15);
 
    this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended'];
    this.steps = ['Waiting For Initial Cell Pick', 'Waiting For Final Cell Pick'];
@@ -378,16 +377,12 @@ MyGameboard.prototype.display = function(){
 
   this.scene.pushMatrix();
     this.scene.translate(0,3,0);
-    //this.scoreboard.display();
+    this.scoreboard.display();
   this.scene.popMatrix();
 
   this.scene.pushMatrix();
     this.scene.translate(-8,0,1);
-    //this.auxBoard.display();
-  this.scene.popMatrix();
-
-  this.scene.pushMatrix();
-    this.panel.display();
+    this.auxBoard.display();
   this.scene.popMatrix();
 
   MyBoard.prototype.display.call(this);

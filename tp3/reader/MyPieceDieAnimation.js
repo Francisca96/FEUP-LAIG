@@ -4,10 +4,8 @@
  */
  function MyPieceDieAnimation(timeSpan, waitTime, piece, x1, z1, x2, z2, nextAnimation) {
    MyAnimation.apply(this, arguments);
-   var translatedX2 = (x2-8);
-   var translatedZ2 = (z2+1);
-   this.deltaX = (x1-translatedX2);
-   this.deltaZ = (z1-translatedZ2);// (z1-this.z2);
+   this.deltaX = (x1-x2);
+   this.deltaZ = (z1-z2);
 
    this.piece = piece;
 

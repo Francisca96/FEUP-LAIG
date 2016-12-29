@@ -193,8 +193,15 @@ XMLscene.prototype.update = function(currTime) {
       else
         this.waitedTime += timePassed;
     }
+    if(this.game.timeout && this.game.getCurrentPlayerType() === 'Player'){
+      if(!this.game.paused && this.game.scoreboard.playTime <= 0){
+        this.game.requestAutomaticMovement();
+        this.game.scoreboard.playTime = this.game.timeoutTime;
+      }
+    }
+    if(this.game.timeout)
+      this.game.scoreboard.playTime -= timePassed/1000;
   }
-
 
   for(var i = 0; i < this.gameAnimations.length; i++){
     this.gameAnimations[i].update(currTime);

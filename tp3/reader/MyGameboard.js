@@ -3,13 +3,15 @@
  * @constructor
  */
  function MyGameboard(scene, du, dv) {
-  //  this.scene = scene;
-   // 	CGFobject.call(this,scene);
    MyBoard.call(this, scene, du, dv);
 
    this.clickable = true;
    this.auxBoard = this.scene.auxBoard;
    this.scoreboard = this.scene.scoreboard;
+   this.AUX_BOARD_TRANSLATION = {x: -8, y: 0, z: 1};
+
+   this.scene.MOVE_WAIT_TIME = 2000;
+   this.ANIM_DURATION = 1250;
 
    this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended'];
    this.steps = ['Waiting For Initial Cell Pick', 'Waiting For Final Cell Pick'];
@@ -23,7 +25,7 @@
 
    this.gameModes = ['Player vs Player', 'Player vs CPU', 'CPU vs CPU'];
    this.players = [['Player', 'Player'], ['Player','CPU'], ['CPU', 'CPU']];
-   this.points = [-1,-1];
+   this.scoreboard.points = [-1,-1];
    this.gameMode = 0;
 
    this.botLevels = [1,1];
@@ -35,6 +37,9 @@
    this.validMoves = [];
 
    this.speed = 1;
+   this.timeout = false;
+   this.timeoutTime = 30;
+   this.scoreboard.playTime = -1;
 
    this.addPieces();
    this.placePieces();
@@ -59,7 +64,7 @@ MyGameboard.prototype.verifyEndGame = function() {
   }
 
   if(ended)
-    return this.points[0] > this.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
+    return this.scoreboard.points[0] > this.scoreboard.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
 
   ended = true;
   for(var i = this.matrix.length/2; i < this.matrix.length; i++){
@@ -72,7 +77,7 @@ MyGameboard.prototype.verifyEndGame = function() {
   }
 
   if(ended)
-    return this.points[0] > this.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
+    return this.scoreboard.points[0] > this.scoreboard.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
   else
     return null;
 };
@@ -132,7 +137,17 @@ MyGameboard.prototype.addGameGUI = function(){
   interface.game = interface.gui.addFolder('Game');
   interface.game.open();
 
-  interface.game.add(this, 'speed').min(0.25).max(4).step(0.5);
+  interface.game.add(this, 'speed').min(0.25).max(4).step(0.5).name('Game Speed');
+
+  var timeoutBtn = interface.game.add(this, 'timeout').name('Play Timeout');
+  timeoutBtn.onFinishChange(function(){
+    if(this.timeout)
+      this.scoreboard.playTime = this.timeoutTime;
+    else
+      this.scoreboard.playTime = -1;
+  }.bind(this));
+
+  interface.game.add(this, 'timeoutTime').min(10).max(55).step(5).name('Timeout Duration');
 
   interface.game.gameMode = 0;
   var dropdown = interface.game.add(interface.game, 'gameMode', {'Player vs Player': 0, 'Player vs CPU': 1, 'CPU vs CPU': 2}).name('Game Mode');
@@ -225,9 +240,11 @@ MyGameboard.prototype.startGame = function(){
    if(this.gameMode == 1) this.botLevels[1] = this.botLevels[0]; //This is needed to pass the correct level to prolog
 
    this.scene.waitedTime = 0;
-   this.scene.MOVE_WAIT_TIME = 1500/this.speed;
 
-   this.points = [0,0];
+   this.scoreboard.points = [0,0];
+
+   if(this.timeout)
+    this.scoreboard.playTime=this.timeoutTime;
 
    this.addUndoButton();
 
@@ -262,11 +279,13 @@ MyGameboard.prototype.controlsPiece = function(y){
 MyGameboard.prototype.addPlayToHistory = function(){
   var initialTile = this.matrix[this.initialCell.y][this.initialCell.x];
   var targetTile = this.matrix[this.finalCell.y][this.finalCell.x];
+  var auxBoardPos = this.getFirstUnoccupiedAuxTile();
   var play = {
     initialCell : this.initialCell,
     finalCell : this.finalCell,
     initialCellPiece : initialTile.piece,
     finalCellPiece : targetTile.piece,
+    auxBoardPos : auxBoardPos,
     board : this.prologBoard,
     validMoves : this.validMoves,
   };
@@ -282,6 +301,8 @@ MyGameboard.prototype.undo = function(){
   var play = this.moveHistory.pop();
 
   this.currentPlayer = Math.abs(this.currentPlayer - 1) % 2;
+  if(this.timeout)
+    this.scoreboard.playTime = this.timeoutTime;
 
   this.prologBoard = play.board;
   this.validMoves = play.validMoves;
@@ -289,7 +310,7 @@ MyGameboard.prototype.undo = function(){
   this.initialCell = play.finalCell;
   this.finalCell = play.initialCell;
 
-  var animDuration = 1/this.speed;
+  var animDuration = this.ANIM_DURATION/1000/this.speed;
   play.initialCellPiece.moving = true;
   this.movePiece();
   var newAnim = new MyPieceAnimation(animDuration, play.initialCellPiece, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
@@ -297,10 +318,17 @@ MyGameboard.prototype.undo = function(){
   play.initialCellPiece.animation = newAnim;
 
   if(play.finalCellPiece){
-    //die anim inversed
-    this.points[this.currentPlayer] -= play.finalCellPiece.value;
-    this.matrix[this.initialCell.y][this.initialCell.x].piece = play.finalCellPiece;
-    play.finalCellPiece.tile = this.matrix[this.initialCell.y][this.initialCell.x];
+    var eatenPiece = this.auxBoard.matrix[play.auxBoardPos.y][play.auxBoardPos.x].piece;
+    var transformedPos = this.transformAuxBoardCoordinates(play.auxBoardPos.x,play.auxBoardPos.y);
+    var dieAnim = new MyPieceDieAnimation(animDuration, 0, eatenPiece, transformedPos.x, transformedPos.y, this.initialCell.x, this.initialCell.y);
+    eatenPiece.moving = true;
+    eatenPiece.animation = dieAnim;
+    this.scene.gameAnimations.push(dieAnim);
+    this.auxBoard.matrix[play.auxBoardPos.y][play.auxBoardPos.x].piece = null;
+    this.matrix[this.initialCell.y][this.initialCell.x].piece = eatenPiece;
+    eatenPiece.tile = this.matrix[this.initialCell.y][this.initialCell.x];
+    if(!this.controlsPiece(play.finalCell.y))
+      this.scoreboard.points[this.currentPlayer] -= eatenPiece.type;
   }
 };
 
@@ -310,7 +338,7 @@ MyGameboard.prototype.makeMovement = function(){
 
   this.addPlayToHistory();
 
-  var animDuration = 1/this.speed;
+  var animDuration = this.ANIM_DURATION/1000/this.speed;
   initialTile.piece.moving = true;
   var newAnim = new MyPieceAnimation(animDuration, initialTile.piece, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
 
@@ -320,17 +348,18 @@ MyGameboard.prototype.makeMovement = function(){
     eatenPiece.tile = this.auxBoard.matrix[newPos.y][newPos.x];
     this.auxBoard.matrix[newPos.y][newPos.x].piece = eatenPiece;
     eatenPiece.moving = true;
-    var dieAnim = new MyPieceDieAnimation(animDuration*1.9, animDuration*0.9, targetTile.piece, this.finalCell.x, this.finalCell.y, newPos.x,newPos.y);
+    var transformedPos = this.transformAuxBoardCoordinates(newPos.x,newPos.y);
+    var dieAnim = new MyPieceDieAnimation(animDuration*1.9, animDuration*0.9, targetTile.piece, this.finalCell.x, this.finalCell.y, transformedPos.x,transformedPos.y);
     eatenPiece.animation = dieAnim;
     this.scene.gameAnimations.push(dieAnim);
     if(!this.controlsPiece(this.finalCell.y)){
-      this.points[this.currentPlayer] += targetTile.piece.type;
+      this.scoreboard.points[this.currentPlayer] += targetTile.piece.type;
     }
     else{
       var animPeriod = 250/this.speed;
       var mergeAnim = new MyPieceMergeAnimation(animDuration, animPeriod, initialTile.piece, initialTile.piece.type);
       initialTile.piece.type += targetTile.piece.type;
-      mergeAnim.initialTime = newAnim.initialTime + animDuration*1000;
+      mergeAnim.initialTime = newAnim.initialTime + animDuration;
       newAnim.nextAnimation = mergeAnim;
       this.scene.gameAnimations.push(mergeAnim);
     }
@@ -339,6 +368,8 @@ MyGameboard.prototype.makeMovement = function(){
   initialTile.piece.animation = newAnim;
   this.movePiece();
   this.requestMovement();
+  if(this.timeout)
+    this.scoreboard.playTime=this.timeoutTime;
   this.nextStep();
 };
 
@@ -373,6 +404,12 @@ MyGameboard.prototype.pickCell = function(index){
   }
 };
 
+MyGameboard.prototype.transformAuxBoardCoordinates = function(x,y){
+  var translatedX = (x+this.AUX_BOARD_TRANSLATION.x);
+  var translatedY = (y+this.AUX_BOARD_TRANSLATION.z);
+  return {x: translatedX, y: translatedY};
+}
+
 MyGameboard.prototype.display = function(){
 
   this.scene.pushMatrix();
@@ -381,7 +418,7 @@ MyGameboard.prototype.display = function(){
   this.scene.popMatrix();
 
   this.scene.pushMatrix();
-    this.scene.translate(-8,0,1);
+    this.scene.translate(this.AUX_BOARD_TRANSLATION.x,this.AUX_BOARD_TRANSLATION.y,this.AUX_BOARD_TRANSLATION.z);
     this.auxBoard.display();
   this.scene.popMatrix();
 

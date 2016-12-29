@@ -3,11 +3,12 @@
  * @param gl {WebGLRenderingContext}
  * @constructor
  */
-function MyPanel(scene, nLines, nColumns) {
+function MyPanel(scene, nLines, nColumns, font) {
 	CGFobject.call(this,scene);
 
 	this.nLines = nLines;
 	this.nColumns = nColumns;
+	this.font = font;
 
 	this.panel=new MyUnitCubeQuad(this.scene);
 	this.rectangle=new MyRectangle(this.scene, 0, 0, 1, 1);
@@ -27,6 +28,8 @@ function MyPanel(scene, nLines, nColumns) {
 	this.boardMaterial.setDiffuse(0.8,0.8,0.8,1);
 	this.boardMaterial.setSpecular(0.8,0.8,0.8,1);
 	this.boardMaterial.loadTexture("../resources/images/scoreboard.png");
+
+	this.text = ['', ''];
 }
 
 MyPanel.prototype = Object.create(CGFobject.prototype);
@@ -36,14 +39,16 @@ MyPanel.prototype.display = function () {
 
 	this.scene.pushMatrix();
 
+	// this.scene.setActiveShader(this.font.shader);
+
 		this.scene.pushMatrix();
 			this.scene.scale(0.2, 0.4, 1);
 			for(i = 0; i < this.nLines; i++){
 				this.scene.translate(0, -1, 0);
 				this.scene.pushMatrix();
 				for(j = 0; j < this.nColumns; j++){
-					this.nullMaterial.apply();
-					this.rectangle.display();
+					var letter = (j < this.text[i].length) ? ' ' : letter = this.text[i][j]
+					this.font.displayWithLetter(this.text[i].charAt(j), this.rectangle);
 					this.scene.translate(1, 0, 0);
 				}
 				this.scene.popMatrix();
@@ -55,4 +60,6 @@ MyPanel.prototype.display = function () {
 		this.grayMaterial.apply();
 		this.panel.display();
 	this.scene.popMatrix();
+
+	// this.scene.setActiveShader(this.scene.defaultShader);
 };

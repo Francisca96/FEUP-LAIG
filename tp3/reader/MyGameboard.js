@@ -44,6 +44,7 @@
 
    this.addPieces();
    this.placePieces();
+   this.updateScoreboardText();
  }
 
 MyGameboard.prototype = Object.create(MyBoard.prototype);
@@ -52,6 +53,29 @@ MyGameboard.prototype.constructor = MyGameboard;
 MyGameboard.prototype.getCurrentPlayerType = function() {
   return this.players[this.gameMode][this.currentPlayer];
 };
+
+MyGameboard.prototype.updateScoreboardText = function(text){
+  this.scoreboard.stepsPanel.text[0] = this.phases[this.currentPhase]
+  this.scoreboard.infoPanel.text[0] = this.scoreboard.infoPanel.text[1] = '';
+  switch (this.currentPhase) {
+    case 0:
+      this.scoreboard.stepsPanel.text[1] = 'Press Start Game to start!'
+      break;
+    case 1:
+      this.scoreboard.stepsPanel.text[1] = this.steps[this.currentStep];
+      this.scoreboard.infoPanel.text[0] = this.getCurrentPlayerType() + ' ' + Number(this.currentPlayer+1) + ' turn';
+      break;
+    case 2:
+      this.scoreboard.stepsPanel.text[1] = text;
+      break;
+    default:
+      this.scoreboard.stepsPanel.text[1] = '';
+  }
+}
+
+MyGameboard.prototype.setInfoText = function(text){
+  this.scoreboard.infoPanel.text[1] = text;
+}
 
 MyGameboard.prototype.verifyEndGame = function() {
   var ended = true;
@@ -90,12 +114,15 @@ MyGameboard.prototype.nextStep = function(){
     var endGame = this.verifyEndGame();
 
     if(endGame){
-      alert(endGame);
+      // alert(endGame);
       var replayBtn = { 'Replay Game':this.startReplaying.bind(this) };
       this.scene.interface.game.replayBtn = this.scene.interface.game.add(replayBtn, 'Replay Game');
       this.currentPhase++;
+      this.updateScoreboardText(endGame);
+      return;
     }
   }
+  this.updateScoreboardText();
 };
 
 MyGameboard.prototype.addUndoButton = function(){
@@ -113,6 +140,12 @@ MyGameboard.prototype.addUndoButton = function(){
   if(interface.game.pauseBtn)
     return;
   this.scene.interface.game.pauseBtn = this.scene.interface.game.add(this,'paused').name('Paused');
+  this.scene.interface.game.pauseBtn.onFinishChange(function(){
+    if(this.paused)
+      this.setInfoText('Paused Game');
+    else
+      this.setInfoText('Unpaused Game');
+  }.bind(this));
 
   var btn = { 'Start Game':this.startGame.bind(this) };
   interface.game.startBtn = interface.game.add(btn, 'Start Game');
@@ -256,6 +289,7 @@ MyGameboard.prototype.startGame = function(replay=false){
    if(!replay)
     this.requestInitialBoard();
    this.placePieces();
+   this.updateScoreboardText();
  };
 
 MyGameboard.prototype.highlightMoves = function(){
@@ -300,9 +334,11 @@ MyGameboard.prototype.addPlayToHistory = function(){
 
 MyGameboard.prototype.undo = function(){
   if(this.moveHistory.length === 0){
-    alert('Nothing to undo! Make some plays first');
+    this.setInfoText('Nothing to undo');
     return;
   }
+  if(this.currentPhase !== 1)
+    return;
 
   var play = this.moveHistory.pop();
 
@@ -336,6 +372,7 @@ MyGameboard.prototype.undo = function(){
     if(!this.controlsPiece(play.finalCell.y))
       this.scoreboard.points[this.currentPlayer] -= eatenPiece.type;
   }
+    this.updateScoreboardText();
 };
 
 MyGameboard.prototype.startReplaying = function(){

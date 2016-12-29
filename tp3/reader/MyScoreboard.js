@@ -6,12 +6,12 @@
 function MyScoreBoard(scene) {
 	CGFobject.call(this,scene);
 
+	this.font = new MyLedFont(this.scene);
 	this.scoreboard=new MyUnitCubeQuad(this.scene);
 	this.rectangle=new MyRectangle(this.scene, -1, -1, 1, 1);
-	this.panel1 = new MyPanel(this.scene, 2, 15);
-	this.panel2 = new MyPanel(this.scene, 2, 30);
+	this.stepsPanel = new MyPanel(this.scene, 2, 30, this.font);
+	this.infoPanel = new MyPanel(this.scene, 2, 15, this.font);
 
-	this.font = new MyLedFont(this.scene);
 
 	this.grayMaterial = new CGFappearance(this.scene);
   this.grayMaterial.setDiffuse(0.2,0.2,0.2,1);
@@ -56,6 +56,17 @@ MyScoreBoard.prototype.display = function () {
 	this.scene.setActiveShader(this.font.shader);
 
 	this.scene.pushMatrix();
+
+		this.scene.pushMatrix();
+			this.scene.translate(0, 2.4, 0);
+			this.stepsPanel.display();
+		this.scene.popMatrix();
+
+		this.scene.pushMatrix();
+			this.scene.translate(0, 3.5, 0);
+			this.infoPanel.display();
+		this.scene.popMatrix();
+
 		this.scene.translate(1.8, 0, 0);
 
 		this.scene.pushMatrix();
@@ -114,13 +125,5 @@ MyScoreBoard.prototype.display = function () {
 		this.scoreboard.display();
 	this.scene.popMatrix();
 
-	this.scene.pushMatrix();
-		this.scene.translate(0, 2.4, 0);
-    this.panel1.display();
-  this.scene.popMatrix();
 
-	this.scene.pushMatrix();
-		this.scene.translate(0, 3.5, 0);
-    this.panel2.display();
-  this.scene.popMatrix();
 };

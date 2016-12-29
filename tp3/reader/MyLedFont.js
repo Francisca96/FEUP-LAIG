@@ -47,6 +47,8 @@ MyLedFont.prototype.getCharPos = function(char){
 			return [4, 3];
     case '-':
       return [1, 4];
+    case ' ':
+      return [3,6];
 		default:
 			return [3, 6];
 		}

@@ -10,7 +10,7 @@ function MyPanel(scene, nLines, nColumns) {
 	this.nColumns = nColumns;
 
 	this.panel=new MyUnitCubeQuad(this.scene);
-	this.rectangle=new MyRectangle(this.scene, 0, 0, 2, 2);
+	this.rectangle=new MyRectangle(this.scene, 0, 0, 1, 1);
 
 	this.grayMaterial = new CGFappearance(this.scene);
   this.grayMaterial.setDiffuse(0.2,0.2,0.2,1);
@@ -35,24 +35,23 @@ MyPanel.prototype.constructor=MyPanel;
 MyPanel.prototype.display = function () {
 
 	this.scene.pushMatrix();
-		this.scene.translate(0, 5, 0);
 
 		this.scene.pushMatrix();
 			this.scene.scale(0.2, 0.4, 1);
 			for(i = 0; i < this.nLines; i++){
-				this.scene.translate(0, -2.1, 0);
+				this.scene.translate(0, -1, 0);
 				this.scene.pushMatrix();
 				for(j = 0; j < this.nColumns; j++){
 					this.nullMaterial.apply();
 					this.rectangle.display();
-					this.scene.translate(2.1, 0, 0);
+					this.scene.translate(1, 0, 0);
 				}
 				this.scene.popMatrix();
 			}
 		this.scene.popMatrix();
 
-		this.scene.scale(this.nColumns*0.43, this.nLines*0.9, 0.3);
-		this.scene.translate(0.485, -0.5, -0.6);
+		this.scene.translate(0.2*this.nColumns/2, -0.4*this.nLines/2, -0.16);
+		this.scene.scale(0.2*this.nColumns, 0.4*this.nLines, 0.3);
 		this.grayMaterial.apply();
 		this.panel.display();
 	this.scene.popMatrix();

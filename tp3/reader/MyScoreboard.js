@@ -8,7 +8,8 @@ function MyScoreBoard(scene) {
 
 	this.scoreboard=new MyUnitCubeQuad(this.scene);
 	this.rectangle=new MyRectangle(this.scene, -1, -1, 1, 1);
-	this.panel = new MyPanel(this.scene, 2, 15);
+	this.panel1 = new MyPanel(this.scene, 2, 15);
+	this.panel2 = new MyPanel(this.scene, 2, 30);
 
 	this.font = new MyLedFont(this.scene);
 
@@ -114,7 +115,12 @@ MyScoreBoard.prototype.display = function () {
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.scene.translate(-1.25, -1.5, 0);
-    this.panel.display();
+		this.scene.translate(0, 2.4, 0);
+    this.panel1.display();
+  this.scene.popMatrix();
+
+	this.scene.pushMatrix();
+		this.scene.translate(0, 3.5, 0);
+    this.panel2.display();
   this.scene.popMatrix();
 };

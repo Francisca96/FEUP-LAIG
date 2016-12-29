@@ -13,7 +13,7 @@
    this.scene.MOVE_WAIT_TIME = 2000;
    this.ANIM_DURATION = 1250;
 
-   this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended'];
+   this.phases = ['Waiting For Start', 'Playing Game', 'Game Ended', 'Replaying'];
    this.steps = ['Waiting For Initial Cell Pick', 'Waiting For Final Cell Pick'];
 
    this.paused = false;
@@ -40,6 +40,7 @@
    this.timeout = false;
    this.timeoutTime = 30;
    this.scoreboard.playTime = -1;
+   this.replaying = false;
 
    this.addPieces();
    this.placePieces();
@@ -90,6 +91,8 @@ MyGameboard.prototype.nextStep = function(){
 
     if(endGame){
       alert(endGame);
+      var replayBtn = { 'Replay Game':this.startReplaying.bind(this) };
+      this.scene.interface.game.replayBtn = this.scene.interface.game.add(replayBtn, 'Replay Game');
       this.currentPhase++;
     }
   }
@@ -231,7 +234,9 @@ MyGameboard.prototype.movePiece = function() {
   this.matchPieceTile(this.matrix[this.finalCell.y][this.finalCell.x], this.scene.pieces[pieceId]);
 };
 
-MyGameboard.prototype.startGame = function(){
+MyGameboard.prototype.startGame = function(replay=false){
+    if(this.replaying)
+      return;
    this.currentPhase = 1;
    this.startTime = this.scene.time;
    this.currentStep = 0;
@@ -248,7 +253,8 @@ MyGameboard.prototype.startGame = function(){
 
    this.addUndoButton();
 
-   this.requestInitialBoard();
+   if(!replay)
+    this.requestInitialBoard();
    this.placePieces();
  };
 
@@ -332,6 +338,68 @@ MyGameboard.prototype.undo = function(){
   }
 };
 
+MyGameboard.prototype.startReplaying = function(){
+  this.startGame(true);
+  this.currentPhase = 3;
+  this.replaying = true;
+  this.replayIndex = 0;
+  this.replayAllMovements();
+}
+
+MyGameboard.prototype.replayAllMovements = function(){
+  setTimeout(function () {
+    if(this.replayIndex < this.moveHistory.length){
+      this.replayMovement();
+      this.replayAllMovements();
+      this.replayIndex++;
+    }
+    else {
+      this.replaying = false;
+    }
+  }.bind(this), this.scene.MOVE_WAIT_TIME/this.speed);
+
+}
+
+MyGameboard.prototype.replayMovement = function(){
+  var move = this.moveHistory[this.replayIndex];
+  this.initialCell = move.initialCell;
+  this.finalCell = move.finalCell;
+
+  var initialTile = this.matrix[this.initialCell.y][this.initialCell.x];
+  var targetTile = this.matrix[this.finalCell.y][this.finalCell.x];
+
+  var animDuration = this.ANIM_DURATION/1000/this.speed;
+  initialTile.piece.moving = true;
+  var newAnim = new MyPieceAnimation(animDuration, initialTile.piece, this.initialCell.x, this.initialCell.y, this.finalCell.x, this.finalCell.y);
+
+  if(targetTile.piece){
+    var newPos = this.getFirstUnoccupiedAuxTile();
+    var eatenPiece = targetTile.piece;
+    eatenPiece.tile = this.auxBoard.matrix[newPos.y][newPos.x];
+    this.auxBoard.matrix[newPos.y][newPos.x].piece = eatenPiece;
+    eatenPiece.moving = true;
+    var transformedPos = this.transformAuxBoardCoordinates(newPos.x,newPos.y);
+    var dieAnim = new MyPieceDieAnimation(animDuration*1.9, animDuration*0.9, targetTile.piece, this.finalCell.x, this.finalCell.y, transformedPos.x,transformedPos.y);
+    eatenPiece.animation = dieAnim;
+    this.scene.gameAnimations.push(dieAnim);
+    if(!this.controlsPiece(this.finalCell.y)){
+      this.scoreboard.points[this.currentPlayer] += targetTile.piece.type;
+    }
+    else{
+      var animPeriod = 250/this.speed;
+      var mergeAnim = new MyPieceMergeAnimation(animDuration, animPeriod, initialTile.piece, initialTile.piece.type);
+      initialTile.piece.type += targetTile.piece.type;
+      mergeAnim.initialTime = newAnim.initialTime + animDuration;
+      newAnim.nextAnimation = mergeAnim;
+      this.scene.gameAnimations.push(mergeAnim);
+    }
+  }
+  this.scene.gameAnimations.push(newAnim);
+  initialTile.piece.animation = newAnim;
+  this.movePiece();
+  this.currentPlayer = (this.currentPlayer + 1) % 2;
+}
+
 MyGameboard.prototype.makeMovement = function(){
   var initialTile = this.matrix[this.initialCell.y][this.initialCell.x];
   var targetTile = this.matrix[this.finalCell.y][this.finalCell.x];
@@ -380,6 +448,7 @@ MyGameboard.prototype.pickCell = function(index){
   var x = index % 4;
   var y = Math.floor(index / 4);
 
+  if(this.currentPhase !== 1) return;
   if(this.currentStep === 0){
     if(this.matrix[y][x].piece && this.controlsPiece(y)){
       this.initialCell = {x: x, y: y};

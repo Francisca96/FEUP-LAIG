@@ -184,8 +184,8 @@ XMLscene.prototype.update = function(currTime) {
   var timePassed = currTime - this.time;
   this.time = currTime;
 
-  if(this.game){
-    if(this.game.currentPhase === 1 && this.game.getCurrentPlayerType() === 'CPU'){
+  if(this.game && this.game.currentPhase === 1){
+    if(this.game.getCurrentPlayerType() === 'CPU'){
       if(!this.game.paused && this.waitedTime >= this.MOVE_WAIT_TIME/this.game.speed){
         this.game.requestAutomaticMovement();
         this.waitedTime = 0;
@@ -211,7 +211,6 @@ XMLscene.prototype.update = function(currTime) {
   }
 
   if(this.movingCamera){
-    // console.log("changing camera");
     this.cameraAnimation.update(currTime);
     this.interface.setActiveCamera(this.camera);
   }
@@ -220,7 +219,6 @@ XMLscene.prototype.update = function(currTime) {
 // Processes the graph components
 XMLscene.prototype.processGraph = function (nodeName)
 {
-
   var material = null;
   if(nodeName != null){
     var node = this.graph.components[nodeName];

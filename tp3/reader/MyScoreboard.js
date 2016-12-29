@@ -46,6 +46,12 @@ MyScoreBoard.prototype.display = function () {
 		pointDigits[1][0] = String(Math.floor(this.points[1]/10));
 		pointDigits[1][1] = String(this.points[1] % 10);
 	}
+	var timeDigits = ['-','1'];
+	if(this.playTime >= 0){
+		timeDigits[0] = String(Math.floor(this.playTime/10));
+		timeDigits[1] = String(this.playTime % 10);
+	}
+	this.scene.setActiveShader(this.font.shader);
 
 	this.scene.pushMatrix();
 		this.scene.translate(1.8, 0, 0);
@@ -54,13 +60,12 @@ MyScoreBoard.prototype.display = function () {
 			this.scene.scale(0.2, 0.4, 1);
 			this.scene.pushMatrix();
 				this.scene.translate(-1, 1.5, 0.35);
-				this.nullMaterial.apply();
-				this.rectangle.display();
+				this.font.displayWithLetter(timeDigits[0], this.rectangle);
 			this.scene.popMatrix();
 
 			this.scene.pushMatrix();
 				this.scene.translate(1, 1.5, 0.35);
-				this.rectangle.display();
+				this.font.displayWithLetter(timeDigits[1], this.rectangle);
 			this.scene.popMatrix();
 		this.scene.popMatrix();
 
@@ -91,6 +96,8 @@ MyScoreBoard.prototype.display = function () {
 				this.font.displayWithLetter(pointDigits[1][1], this.rectangle);
 			this.scene.popMatrix();
 		this.scene.popMatrix();
+
+		this.scene.setActiveShader(this.scene.defaultShader);
 
 		this.scene.scale(3.5, 2.7, 0.4);
 

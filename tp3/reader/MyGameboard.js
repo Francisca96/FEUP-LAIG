@@ -383,7 +383,7 @@ MyGameboard.prototype.display = function(){
 
   this.scene.pushMatrix();
     this.scene.translate(0,3,0);
-    //this.scoreboard.display();
+    this.scoreboard.display();
   this.scene.popMatrix();
 
   this.scene.pushMatrix();

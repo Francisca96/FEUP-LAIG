@@ -23,7 +23,7 @@
 
 MyLedFont.prototype.constructor = MyLedFont;
 
-MyLedFont.prototype.getCoords = function(char){
+MyLedFont.prototype.getCharPos = function(char){
   var code = char.toLowerCase().charCodeAt(0);
     if(code >= 'a'.charCodeAt(0) && code <= 'j'.charCodeAt(0))
       return [code-'a'.charCodeAt(0),0];
@@ -54,24 +54,8 @@ MyLedFont.prototype.getCoords = function(char){
 };
 
 MyLedFont.prototype.displayWithLetter = function(letter, obj) {
-  var coords = this.getCoords(letter);
-
+  var coords = this.getCharPos(letter);
   this.shader.setUniformsValues({'charCoords': coords});
-  this.scene.setActiveShader(this.shader);
   this.appearance.apply();
   obj.display();
-  this.scene.setActiveShader(this.scene.defaultShader);
-
 }
-
-MyLedFont.prototype.getBackgroundAppearance = function() {
-	return this.backgroundAppearance;
-};
-
-MyLedFont.prototype.getAppearance = function() {
-	return this.appearance;
-};
-
-MyLedFont.prototype.getShader = function() {
-	return this.shader;
-};

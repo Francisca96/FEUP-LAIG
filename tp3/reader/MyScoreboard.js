@@ -29,7 +29,7 @@ function MyScoreBoard(scene) {
 	this.boardMaterial.setDiffuse(0.8,0.8,0.8,1);
 	this.boardMaterial.setSpecular(0.8,0.8,0.8,1);
 	this.boardMaterial.loadTexture("../resources/images/scoreboard.png");
-};
+}
 
 MyScoreBoard.prototype = Object.create(CGFobject.prototype);
 MyScoreBoard.prototype.constructor=MyScoreBoard;

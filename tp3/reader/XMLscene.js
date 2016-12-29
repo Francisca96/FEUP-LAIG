@@ -38,6 +38,9 @@ XMLscene.prototype.init = function (application) {
     this.scoreboard = new MyScoreBoard(this);
     this.game = new MyGameboard(this,8,4);
     this.gameAnimations = [];
+
+    this.movingCamera = false;
+    this.CAMERA_ANIMATION_DURATION = 3;
 };
 
 XMLscene.prototype.logPicking = function ()
@@ -198,6 +201,12 @@ XMLscene.prototype.update = function(currTime) {
     if(this.gameAnimations[i].isComplete(currTime)){
       this.gameAnimations.splice(i,1);
     }
+  }
+
+  if(this.movingCamera){
+    // console.log("changing camera");
+    this.cameraAnimation.update(currTime);
+    this.interface.setActiveCamera(this.camera);
   }
 };
 

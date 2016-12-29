@@ -47,8 +47,11 @@ MyInterface.prototype.processKeyDown = function(event) {
 			break;
 		case (118): //v
 		case(86):
+		  var previousCamera = this.scene.perspectives[this.scene.cameraIndex];
 			this.scene.cameraIndex = (this.scene.cameraIndex + 1) % this.scene.perspectives.length;
 			this.scene.camera = this.scene.perspectives[this.scene.cameraIndex];
+			this.scene.movingCamera = true;
+			this.scene.cameraAnimation = new MyViewAnimation(this.scene.CAMERA_ANIMATION_DURATION, this.scene, previousCamera, this.scene.camera);
 			this.setActiveCamera(this.scene.camera);
 			break;
 	}

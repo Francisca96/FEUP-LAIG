@@ -3,8 +3,6 @@
  * @constructor
  */
  function MyGameboard(scene, du, dv) {
-  //  this.scene = scene;
-   // 	CGFobject.call(this,scene);
    MyBoard.call(this, scene, du, dv);
 
    this.clickable = true;
@@ -23,7 +21,7 @@
 
    this.gameModes = ['Player vs Player', 'Player vs CPU', 'CPU vs CPU'];
    this.players = [['Player', 'Player'], ['Player','CPU'], ['CPU', 'CPU']];
-   this.points = [-1,-1];
+   this.scoreboard.points = [-1,-1];
    this.gameMode = 0;
 
    this.botLevels = [1,1];
@@ -59,7 +57,7 @@ MyGameboard.prototype.verifyEndGame = function() {
   }
 
   if(ended)
-    return this.points[0] > this.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
+    return this.scoreboard.points[0] > this.scoreboard.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
 
   ended = true;
   for(var i = this.matrix.length/2; i < this.matrix.length; i++){
@@ -72,7 +70,7 @@ MyGameboard.prototype.verifyEndGame = function() {
   }
 
   if(ended)
-    return this.points[0] > this.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
+    return this.scoreboard.points[0] > this.scoreboard.points[1] ? 'Player 1 Won!' : 'Player 2 Won!';
   else
     return null;
 };
@@ -227,7 +225,7 @@ MyGameboard.prototype.startGame = function(){
    this.scene.waitedTime = 0;
    this.scene.MOVE_WAIT_TIME = 1500/this.speed;
 
-   this.points = [0,0];
+   this.scoreboard.points = [0,0];
 
    this.addUndoButton();
 
@@ -298,7 +296,7 @@ MyGameboard.prototype.undo = function(){
 
   if(play.finalCellPiece){
     //die anim inversed
-    this.points[this.currentPlayer] -= play.finalCellPiece.value;
+    this.scoreboard.points[this.currentPlayer] -= play.finalCellPiece.value;
     this.matrix[this.initialCell.y][this.initialCell.x].piece = play.finalCellPiece;
     play.finalCellPiece.tile = this.matrix[this.initialCell.y][this.initialCell.x];
   }
@@ -324,7 +322,7 @@ MyGameboard.prototype.makeMovement = function(){
     eatenPiece.animation = dieAnim;
     this.scene.gameAnimations.push(dieAnim);
     if(!this.controlsPiece(this.finalCell.y)){
-      this.points[this.currentPlayer] += targetTile.piece.type;
+      this.scoreboard.points[this.currentPlayer] += targetTile.piece.type;
     }
     else{
       var animPeriod = 250/this.speed;

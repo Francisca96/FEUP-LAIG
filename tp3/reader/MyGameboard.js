@@ -523,10 +523,5 @@ MyGameboard.prototype.display = function(){
     this.scoreboard.display();
   this.scene.popMatrix();
 
-  this.scene.pushMatrix();
-    this.scene.translate(this.AUX_BOARD_TRANSLATION.x,this.AUX_BOARD_TRANSLATION.y,this.AUX_BOARD_TRANSLATION.z);
-    this.auxBoard.display();
-  this.scene.popMatrix();
-
   MyBoard.prototype.display.call(this);
 };

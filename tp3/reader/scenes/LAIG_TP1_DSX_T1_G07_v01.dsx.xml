@@ -187,6 +187,24 @@
 
             <children>
               <primitiveref id="gameboard" />
+              <componentref id="auxboard" />
+            </children>
+        </component>
+
+        <component id="auxboard">
+
+            <transformation>
+              <translate x="-4" y="0" z="1"/>
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+              <primitiveref id="auxboard" />
             </children>
         </component>
 

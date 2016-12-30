@@ -392,12 +392,16 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 						 this.primitives[id] = new MyChessboard(this.scene, du, dv, texture, su, sv, c1, c2, cs);
 					 }
 					 else
-					 return "Invalid tag name(s) for chessboard colors! (should be c1 c2 and cs)";
+					 	return "Invalid tag name(s) for chessboard colors! (should be c1 c2 and cs)";
 				 break;
 			case 'gameboard':
 					this.primitives[id] = this.scene.game;
 					break;
 			case 'auxiliaryboard':
+					var material1 = this.reader.getString(primitives[i].children[0], 'mat1', false);
+					var material2 = this.reader.getString(primitives[i].children[0], 'mat2', false);
+					if(material1) this.scene.auxBoard.whiteMaterial = this.scene.materials[material1];
+					if(material2) this.scene.auxBoard.blackMaterial = this.scene.materials[material2];
 					this.primitives[id] = this.scene.auxBoard;
 					break;
 			case 'vehicle':

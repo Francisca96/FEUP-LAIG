@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyPlane.js', 'MyPatch.js', 'MyBoard.js', 'MyTriangle.js', 'MyPyramid.js', 'MyTile.js', 'MyQuad.js', 'MyUnitCubeQuad.js', 'MyGameboard.js', 'MyPiece.js', 'communication/Requests.js', 'MyAnimation.js', 'MyPieceAnimation.js', 'MyPieceMergeAnimation.js', 'MyPieceDieAnimation.js', 'MyRectangle.js', 'MyScoreboard.js', 'MyViewAnimation.js', 'MyPanel.js', 'MyLedFont.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyPlane.js', 'MyPatch.js', 'MyBoard.js', 'MyTriangle.js', 'MyPyramid.js', 'MyTile.js', 'MyQuad.js', 'MyUnitCubeQuad.js', 'MyGameboard.js', 'MyPiece.js', 'communication/Requests.js', 'MyAnimation.js', 'MyPieceAnimation.js', 'MyPieceMergeAnimation.js', 'MyPieceDieAnimation.js', 'MyRectangle.js', 'MyScoreboard.js', 'MyViewAnimation.js', 'MyPanel.js', 'MyLedFont.js', 'MyChessboard.js', 'MyCircularAnimation.js', 'MyCylinder.js', 'MyOpenCylinder.js', 'MyPolygon.js', 'MySphere.js', 'MyTorus.js', 'MyVehicle.js',
 
 main=function()
 {

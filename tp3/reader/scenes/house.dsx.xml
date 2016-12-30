@@ -91,7 +91,6 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="chessboard" file="../resources/images/chess_wood.jpg" length_s="1" length_t="1" />
         <texture id="floor" file="../resources/images/floor.png" length_s="1" length_t="1" />
         <texture id="wall" file="../resources/images/blueWall.png" length_s="1" length_t="1" />
 

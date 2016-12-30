@@ -76,6 +76,7 @@
         </spot>
     </lights>
 
+
     <textures>
 
         <!-- Deve existir um ou mais blocos "texture" -->
@@ -90,9 +91,7 @@
         <!-- objetos respetivos podem a violar esta regra.         -->
         <!-- Nao necessario aplicar fatores de escala em  -->
         <!-- quadricas (esfera, ciclindro...) -->
-        <texture id="floor" file="../resources/images/floor2.png" length_s="1" length_t="1" />
-        <texture id="wall" file="../resources/images/fence.png" length_s="1" length_t="1" />
-        <texture id="wall2" file="../resources/images/fence2.png" length_s="1" length_t="1" />
+        <texture id="mars" file="../resources/images/mars.png" length_s="1" length_t="1" />
 
     </textures>
 
@@ -116,24 +115,6 @@
 
         <!-- Deve existir um ou mais blocos "transformation" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-
-        <transformation id="wall1">
-            <scale x="4.5" y="2" z="3" />
-            <translate x="1" y="1" z="0" />
-        </transformation>
-
-        <transformation id="wall2">
-            <scale x="4.5" y="2" z="3" />
-            <translate x="0" y="1" z="1" />
-            <rotate axis="y" angle="90" />
-        </transformation>
-
-        <transformation id="grass">
-            <scale x="4.5" y="1" z="3" />
-            <translate x="1" y="0" z="1" />
-            <rotate axis="x" angle="-90" />
-        </transformation>
-
     </transformations>
 
     <animations>
@@ -155,8 +136,8 @@
           <auxiliaryboard />
         </primitive>
 
-        <primitive id="rectangle">
-            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
+        <primitive id="sphere">
+            <sphere radius="10" slices="40" stacks="40" />
         </primitive>
 
     </primitives>
@@ -186,7 +167,8 @@
         <component id="gameboard">
 
             <transformation>
-              <translate x="2.5" y="0" z="-1" />
+              <rotate axis="y" angle="10" />
+              <translate x="2" y="0" z="-1" />
             </transformation>
 
             <materials>
@@ -221,8 +203,7 @@
         <component id="scene">
 
             <transformation>
-              <translate x="-9" y="0" z="-4" />
-              <scale x="3" y="3" z="3" />
+
             </transformation>
 
             <materials>
@@ -232,63 +213,25 @@
             <texture id="null" />
 
             <children>
-              <componentref id="wall1" />
-              <componentref id="wall2" />
-              <componentref id="grass" />
+              <componentref id="mars" />
             </children>
 
         </component>
 
-        <component id="grass">
+        <component id="mars">
 
             <transformation>
-                <transformationref id="grass" />
+              <translate x="2" y="-10" z="-3" />
             </transformation>
 
             <materials>
                 <material id="defaultMaterial" />
             </materials>
 
-            <texture id="floor" />
+            <texture id="mars" />
 
             <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="wall1">
-
-            <transformation>
-                <transformationref id="wall1" />
-            </transformation>
-
-            <materials>
-                <material id="defaultMaterial" />
-            </materials>
-
-            <texture id="wall" />
-
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-
-        </component>
-
-        <component id="wall2">
-
-            <transformation>
-                <transformationref id="wall2" />
-            </transformation>
-
-            <materials>
-                <material id="defaultMaterial" />
-            </materials>
-
-            <texture id="wall2" />
-
-            <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="sphere" />
             </children>
 
         </component>

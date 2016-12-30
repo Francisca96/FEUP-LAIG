@@ -519,7 +519,8 @@ MyGameboard.prototype.transformAuxBoardCoordinates = function(x,y){
 MyGameboard.prototype.display = function(){
 
   this.scene.pushMatrix();
-    this.scene.translate(0,3,0);
+    this.scene.translate(-0.7,3.5,-2.75);
+    this.scene.scale(1.5, 1.5, 1);
     this.scoreboard.display();
   this.scene.popMatrix();
 

@@ -11,17 +11,13 @@ function MyScoreBoard(scene) {
 	this.rectangle=new MyRectangle(this.scene, -1, -1, 1, 1);
 	this.stepsPanel = new MyPanel(this.scene, 2, 30, this.font);
 	this.infoPanel = new MyPanel(this.scene, 2, 15, this.font);
+	this.cylinder = new MyCylinder(this.scene, 0.15, 0.15, 2.5, 40, 40);
 
 
 	this.grayMaterial = new CGFappearance(this.scene);
   this.grayMaterial.setDiffuse(0.2,0.2,0.2,1);
   this.grayMaterial.setSpecular(0.2,0.2,0.2,1);
   this.grayMaterial.setAmbient(0.2,0.2,0.2,1);
-
-	this.zeroMaterial = new CGFappearance(this.scene);
-	this.zeroMaterial.setAmbient(0.8,0.8,0.8,1);
-	this.zeroMaterial.setDiffuse(0.8,0.8,0.8,1);
-	this.zeroMaterial.setSpecular(0.8,0.8,0.8,1);
 
 	this.nullMaterial = new CGFappearance(this.scene);
 	this.nullMaterial.setAmbient(0.8,0.8,0.8,1);
@@ -58,12 +54,12 @@ MyScoreBoard.prototype.display = function () {
 	this.scene.pushMatrix();
 
 		this.scene.pushMatrix();
-			this.scene.translate(0, 2.4, 0);
+			this.scene.translate(-5, 3, 0);
 			this.stepsPanel.display();
 		this.scene.popMatrix();
 
 		this.scene.pushMatrix();
-			this.scene.translate(0, 3.5, 0);
+			this.scene.translate(-5, 2, 0);
 			this.infoPanel.display();
 		this.scene.popMatrix();
 
@@ -125,5 +121,11 @@ MyScoreBoard.prototype.display = function () {
 		this.scoreboard.display();
 	this.scene.popMatrix();
 
-
+	this.scene.pushMatrix();
+		this.scene.rotate(Math.PI/2, 1, 0, 0);
+		this.scene.translate(0.7, 0, 0);
+		this.cylinder.display();
+		this.scene.translate(2.3, 0, 0);
+		this.cylinder.display();
+	this.scene.popMatrix();
 };

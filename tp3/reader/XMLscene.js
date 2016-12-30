@@ -23,7 +23,7 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
     this.cameraIndex = 0;
-	  this.axis=new CGFaxis(this);
+	  //this.axis=new CGFaxis(this);
 
     this.parentMaterials = [];
     this.lightStatus = [false, false, false, false, false, false, false, false, false];
@@ -119,7 +119,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
   this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
-  this.axis = new CGFaxis(this, this.axisLength);
+  //this.axis = new CGFaxis(this, this.axisLength);
 
   this.cameraIndex = this.graph.perspectives[this.defaultView].index;
   this.camera = this.perspectives[this.cameraIndex];
@@ -147,7 +147,7 @@ XMLscene.prototype.display = function () {
 	this.applyViewMatrix();
 
 	// Draw axis
-	this.axis.display();
+	//this.axis.display();
 
 	this.setDefaultAppearance();
 

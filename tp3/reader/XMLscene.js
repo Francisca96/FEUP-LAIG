@@ -126,7 +126,8 @@ XMLscene.prototype.onGraphLoaded = function ()
   this.interface.setActiveCamera(this.camera);
 
   this.loadLights();
-  this.game.addGameGUI();
+  if(!this.interface.game)
+    this.game.addGameGUI();
 };
 
 XMLscene.prototype.display = function () {
@@ -255,3 +256,8 @@ XMLscene.prototype.processGraph = function (nodeName)
     }
   }
 };
+
+XMLscene.prototype.changeGraph = function(filename){
+  this.cameraIndex = 0;
+  this.graph = new MySceneGraph(filename, this);
+}

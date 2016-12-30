@@ -1,0 +1,298 @@
+<!-- Os comentarios devem ter espacos no inicio e no fim, a -->
+<!-- separar dos hifens -->
+<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
+<!-- Todas as tags e atributos sao obrigatorios, exceto onde for -->
+<!-- referido o contrario -->
+
+<!-- Na descricao abaixo, os simbolos utilizados tem o seguinte significado: -->
+    <!-- ii: integer value -->
+    <!-- ff: float value -->
+    <!-- ss: string value -->
+    <!-- cc: character "x" or "y" or "z" -->
+    <!-- tt: "0" or "1" with Boolean significance -->
+
+
+<dsx>
+
+
+    <!-- deve definir-se um objeto para raiz do grafo , assim -->
+    <!-- como o comprimento dos tres eixos (cilindros) -->
+    <scene root="root" axis_length="3" />
+
+
+    <views default="view1" >
+
+        <!-- declaracao obrigatoria de pelo menos uma vista; -->
+        <!-- se varias vistas declaradas, o default e' a -->
+        <!-- primeira vista; de cada vez que se pressione a tecla v/V, -->
+        <!-- a vista muda para a proxima da lista; da -->
+        <!-- ultima vista da lista volta 'a primeira -->
+        <perspective id="view1" near="0.1" far="500" angle="22">
+            <from x="15" y="20" z="35" />
+            <to x="5" y="5" z="5" />
+        </perspective>
+
+        <perspective id="view2" near="0.1" far="500" angle="22">
+            <from x="-15" y="20" z="35" />
+            <to x="3" y="3" z="3" />
+        </perspective>
+
+    </views>
+
+
+    <illumination doublesided="1" local="1" >
+
+        <ambient r="0.5" g="0.5" b="0.5" a="1" />
+        <background r="0" g="0" b="0" a="1" />
+
+    </illumination>
+
+
+    <lights>
+
+        <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <omni id="l1" enabled="1" >
+            <location x="2" y="15" z="3" w="1" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.5" g="0.5" b="0.5" a="1" />
+        </omni>
+
+        <omni id="l2" enabled="0" >
+            <location x="5" y="15" z="3" w="1" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.5" g="0.5" b="0.5" a="1" />
+        </omni>
+
+        <spot id="l3" enabled="0" angle="0" exponent="1">
+            <!-- atencao, "target" e' diferente de "direction" -->
+            <target x="0" y="0" z="0" />
+            <location x="3.5" y="15" z="3" w="1" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
+    </lights>
+
+    <textures>
+
+        <!-- Deve existir um ou mais blocos "texture" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <!-- length_s e length_t sao fatores de escala de textura:-->
+        <!-- Exemplo length_s=3.0: uma ocorrencia da textura, em -->
+        <!-- comprimento, deve cobrir um comprimento igual -->
+        <!-- a 3 unidades;  -->
+        <!-- Exemplo length_t=0.4, uma ocorrencia da textura, em -->
+        <!-- largura, deve cobrir uma largura igual a 0.4 unidades.  -->
+        <!-- Transf. Geometr. do tipo escalamento sobre os -->
+        <!-- objetos respetivos podem a violar esta regra.         -->
+        <!-- Nao necessario aplicar fatores de escala em  -->
+        <!-- quadricas (esfera, ciclindro...) -->
+        <texture id="chessboard" file="../resources/images/chess_wood.jpg" length_s="1" length_t="1" />
+        <texture id="floor" file="../resources/images/floor2.png" length_s="1" length_t="1" />
+        <texture id="wall" file="../resources/images/fence.png" length_s="1" length_t="1" />
+        <texture id="wall2" file="../resources/images/fence2.png" length_s="1" length_t="1" />
+
+    </textures>
+
+
+    <materials>
+
+        <!-- Deve existir um ou mais blocos "material" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <material id="defaultMaterial" >
+            <emission r="0.2" g="0.2" b="0.2" a="0.2" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+            <shininess value="50" />
+        </material>
+
+    </materials>
+
+
+    <transformations>
+
+        <!-- Deve existir um ou mais blocos "transformation" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+
+        <transformation id="wall1">
+            <scale x="4.5" y="2" z="3" />
+            <translate x="1" y="1" z="0" />
+        </transformation>
+
+        <transformation id="wall2">
+            <scale x="4.5" y="2" z="3" />
+            <translate x="0" y="1" z="1" />
+            <rotate axis="y" angle="90" />
+        </transformation>
+
+        <transformation id="grass">
+            <scale x="4.5" y="1" z="3" />
+            <translate x="1" y="0" z="1" />
+            <rotate axis="x" angle="-90" />
+        </transformation>
+
+    </transformations>
+
+    <animations>
+    <!-- podem existir zero ou mais nós "animation" -->
+    <!-- span é o tempo, em segundos, que a animação deve -->
+    <!-- demorar. Nesta versão do formato DSX, type pode ter -->
+    <!-- o valor "linear" ou "circular"; na animacao circular -->
+    <!-- os angulos sao expressos em graus  -->
+    </animations>
+
+
+    <primitives>
+
+        <primitive id="gameboard">
+          <gameboard />
+        </primitive>
+
+        <primitive id="auxboard">
+          <auxiliaryboard />
+        </primitive>
+
+        <primitive id="rectangle">
+            <rectangle x1="-1" y1="-1" x2="1" y2="1" />
+        </primitive>
+
+    </primitives>
+
+
+    <components>
+
+        <component id="root">
+
+            <transformation>
+            </transformation>
+
+            <materials>
+                <material id="null"/>
+            </materials>
+
+
+            <texture id="null"/>
+
+            <children>
+                <componentref id="gameboard" />
+                <componentref id="scene" />
+            </children>
+
+        </component>
+
+        <component id="gameboard">
+
+            <transformation>
+              <translate x="2.5" y="0" z="-1" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+              <primitiveref id="gameboard" />
+              <componentref id="auxboard" />
+            </children>
+        </component>
+
+        <component id="auxboard">
+
+            <transformation>
+              <translate x="-4" y="0" z="1"/>
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+              <primitiveref id="auxboard" />
+            </children>
+        </component>
+
+        <component id="scene">
+
+            <transformation>
+              <translate x="-9" y="0" z="-4" />
+              <scale x="3" y="3" z="3" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="null" />
+
+            <children>
+              <componentref id="wall1" />
+              <componentref id="wall2" />
+              <componentref id="grass" />
+            </children>
+
+        </component>
+
+        <component id="grass">
+
+            <transformation>
+                <transformationref id="grass" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="floor" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="wall1">
+
+            <transformation>
+                <transformationref id="wall1" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wall" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+        <component id="wall2">
+
+            <transformation>
+                <transformationref id="wall2" />
+            </transformation>
+
+            <materials>
+                <material id="defaultMaterial" />
+            </materials>
+
+            <texture id="wall2" />
+
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+
+        </component>
+
+      </components>
+</dsx>

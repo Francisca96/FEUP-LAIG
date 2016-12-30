@@ -18,8 +18,9 @@ MyInterface.prototype.constructor = MyInterface;
 MyInterface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
 	this.gui = new dat.GUI();
+	this.scenes = this.gui.addFolder("Scene");
 	this.gui.scene = 'house';
-	this.gui.sceneList = this.gui.add(this.gui, 'scene', ['house']);
+	this.gui.sceneList = this.scenes.add(this.gui, 'scene', ['house', 'football']);
 	this.gui.sceneList.onFinishChange(function(){
 		while(this.lights.__controllers.length>0)
 			this.lights.remove(this.lights.__controllers[0]);

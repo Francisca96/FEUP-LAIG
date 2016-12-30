@@ -371,6 +371,10 @@ MyGameboard.prototype.undo = function(){
     eatenPiece.tile = this.matrix[this.initialCell.y][this.initialCell.x];
     if(!this.controlsPiece(play.finalCell.y))
       this.scoreboard.points[this.currentPlayer] -= eatenPiece.type;
+    else {
+      play.initialCellPiece.type -= eatenPiece.type;
+      play.initialCellPiece.update();
+    }
   }
     this.updateScoreboardText();
 };

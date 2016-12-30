@@ -52,7 +52,7 @@ XMLscene.prototype.logPicking = function ()
 				if (obj)
 				{
 					var customId = this.pickResults[i][1];
-					console.log("Picked object: " + obj + ", with pick id " + customId);
+					// console.log("Picked object: " + obj + ", with pick id " + customId);
           this.game.pickCell(customId);
 				}
 			}
@@ -245,14 +245,14 @@ XMLscene.prototype.processGraph = function (nodeName)
       if(!node.animations[i].isComplete)
         break;
     }
-    for(i = 0; i < node.primitives.length; i++){
-      this.graph.primitives[node.primitives[i]].display();
-    }
     for(i = 0; i < node.subComponents.length; i++){
       this.pushMatrix();
       if(material != null) material.apply();
       this.processGraph(node.subComponents[i]);
       this.popMatrix();
+    }
+    for(i = 0; i < node.primitives.length; i++){
+      this.graph.primitives[node.primitives[i]].display();
     }
   }
 };

@@ -10,19 +10,19 @@ function MyPiece(scene, type, id) {
   this.tile = null;
 
 	var blueMaterial = new CGFappearance(this.scene);
-	blueMaterial.setDiffuse(0,0,0.7,1);
-	blueMaterial.setSpecular(0,0,0.7,1);
-	blueMaterial.setAmbient(0.1,0.1,0.7,1);
+	blueMaterial.setDiffuse(0,0,0.4,1);
+	blueMaterial.setSpecular(0,0,0.4,1);
+	blueMaterial.setAmbient(0.1,0.1,0.4,1);
 
 	var redMaterial = new CGFappearance(this.scene);
-	redMaterial.setDiffuse(0.7,0,0,1);
-	redMaterial.setSpecular(0.7,0,0,1);
-	redMaterial.setAmbient(0.7,0.1,0.1,1);
+	redMaterial.setDiffuse(0.4,0,0,1);
+	redMaterial.setSpecular(0.4,0,0,1);
+	redMaterial.setAmbient(0.4,0.1,0.1,1);
 
 	var yellowMaterial = new CGFappearance(this.scene);
-	yellowMaterial.setDiffuse(0.8,0.8,0.2,1);
-	yellowMaterial.setSpecular(0.8,0.8,0.2,1);
-	yellowMaterial.setAmbient(0.8,0.8,0.2,1);
+	yellowMaterial.setDiffuse(0.5,0.5,0.2,1);
+	yellowMaterial.setSpecular(0.5,0.5,0.2,1);
+	yellowMaterial.setAmbient(0.5,0.5,0.2,1);
 
 	this.materials = [redMaterial, yellowMaterial, blueMaterial];
 }
@@ -42,6 +42,7 @@ MyPiece.prototype.update = function() {
 MyPiece.prototype.display = function() {
 
 	this.scene.pushMatrix();
+		// console.log(this.type);
 		this.materials[this.type-1].apply();
   	this.pyramid.display();
 	this.scene.popMatrix();

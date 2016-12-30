@@ -158,8 +158,8 @@
             <texture id="null"/>
 
             <children>
-                <componentref id="gameboard" />
                 <componentref id="scene" />
+                <componentref id="gameboard" />
             </children>
 
         </component>
@@ -178,8 +178,8 @@
             <texture id="null" />
 
             <children>
-              <primitiveref id="gameboard" />
               <componentref id="auxboard" />
+              <primitiveref id="gameboard" />
             </children>
         </component>
 

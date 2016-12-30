@@ -4,14 +4,14 @@
  */
  function MyLedFont(scene) {
   this.scene = scene;
-	this.shader = new CGFshader(scene.gl, 'shaders/font.vert', 'shaders/font.frag');
+	this.shader = new CGFshader(scene.gl, 'font/shaders/font.vert', 'font/shaders/font.frag');
   this.shader.setUniformsValues({'dims': [10, 6]});
 	this.appearance = new CGFappearance(scene);
 	this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
 	this.appearance.setDiffuse(0.7, 0.7, 0.7, 1);
 	this.appearance.setSpecular(0.0, 0.0, 0.0, 1);
 	this.appearance.setShininess(120);
-	this.texture = new CGFtexture(scene, '../resources/images/font.png');
+	this.texture = new CGFtexture(scene, '../../resources/images/font.png');
 	this.appearance.setTexture(this.texture);
 
 	this.backgroundAppearance =  new CGFappearance(scene);

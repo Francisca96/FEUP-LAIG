@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }
 
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyPlane.js', 'MyPatch.js', 'MyBoard.js', 'MyTriangle.js', 'MyPyramid.js', 'MyTile.js', 'MyQuad.js', 'MyUnitCubeQuad.js', 'MyGameboard.js', 'MyPiece.js', 'communication/Requests.js', 'MyAnimation.js', 'MyPieceAnimation.js', 'MyPieceMergeAnimation.js', 'MyPieceDieAnimation.js', 'MyRectangle.js', 'MyScoreboard.js', 'MyViewAnimation.js', 'MyPanel.js', 'MyLedFont.js', 'MyChessboard.js', 'MyCircularAnimation.js', 'MyCylinder.js', 'MyOpenCylinder.js', 'MyPolygon.js', 'MySphere.js', 'MyTorus.js', 'MyVehicle.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'primitives/MyPlane.js', 'primitives/MyPatch.js', 'game/MyBoard.js', 'primitives/MyTriangle.js', 'primitives/MyPyramid.js', 'primitives/MyTile.js', 'primitives/MyQuad.js', 'primitives/MyUnitCubeQuad.js', 'game/MyGameboard.js', 'game/GameLogic.js', 'game/GameInterfaceActions.js', 'game/MyPiece.js', 'communication/Requests.js', 'animations/MyAnimation.js', 'animations/MyPieceAnimation.js', 'animations/MyPieceMergeAnimation.js', 'animations/MyPieceDieAnimation.js', 'primitives/MyRectangle.js', 'game/MyScoreboard.js', 'animations/MyViewAnimation.js', 'game/MyPanel.js', 'font/MyLedFont.js', 'primitives/MyChessboard.js', 'animations/MyCircularAnimation.js', 'animations/MyLinearAnimation.js', 'primitives/MyCylinder.js', 'primitives/MyOpenCylinder.js', 'primitives/MyPolygon.js', 'primitives/MySphere.js', 'primitives/MyTorus.js', 'primitives/MyVehicle.js',
 
 main=function()
 {

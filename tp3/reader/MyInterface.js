@@ -18,7 +18,8 @@ MyInterface.prototype.constructor = MyInterface;
 MyInterface.prototype.init = function(application) {
 	CGFinterface.prototype.init.call(this, application);
 	this.gui = new dat.GUI();
-	this.scenes = this.gui.addFolder("Scene");
+	this.scenes = this.gui.addFolder("Scenes");
+	this.scenes.open();
 	this.gui.scene = 'Mars';
 	this.gui.sceneList = this.scenes.add(this.gui, 'scene', ['Mars', 'Football', 'House']);
 	this.gui.sceneList.onFinishChange(function(){

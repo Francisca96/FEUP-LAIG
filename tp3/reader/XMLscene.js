@@ -34,7 +34,7 @@ XMLscene.prototype.init = function (application) {
     this.enableTextures(true);
     this.setPickEnabled(true);
 
-    this.auxBoard = new MyBoard(this,6,6);
+    this.auxBoard = new MyBoard(this,6,3);
     this.scoreboard = new MyScoreBoard(this);
     this.game = new MyGameboard(this,8,4);
     this.gameAnimations = [];
@@ -199,7 +199,7 @@ XMLscene.prototype.update = function(currTime) {
         this.game.scoreboard.playTime = this.game.timeoutTime;
       }
     }
-    if(this.game.timeout)
+    if(!this.game.paused && this.game.timeout)
       this.game.scoreboard.playTime -= timePassed/1000;
   }
 

@@ -8,7 +8,7 @@
    this.clickable = true;
    this.auxBoard = this.scene.auxBoard;
    this.scoreboard = this.scene.scoreboard;
-   this.AUX_BOARD_TRANSLATION = {x: -8, y: 0, z: 1};
+   this.AUX_BOARD_TRANSLATION = {x: -4, y: 0, z: 1};
 
    this.scene.MOVE_WAIT_TIME = 2000;
    this.ANIM_DURATION = 1250;

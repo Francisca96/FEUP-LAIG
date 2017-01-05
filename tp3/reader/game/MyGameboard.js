@@ -58,7 +58,8 @@ MyGameboard.prototype.nextStep = function(){
 
     if(endGame){
       var replayBtn = { 'Replay Game':this.startReplaying.bind(this) };
-      this.scene.interface.game.replayBtn = this.scene.interface.game.add(replayBtn, 'Replay Game');
+      if(!this.scene.interface.game.replayBtn)
+        this.scene.interface.game.replayBtn = this.scene.interface.game.add(replayBtn, 'Replay Game');
       this.currentPhase++;
       this.updateScoreboardText(endGame);
       return;
